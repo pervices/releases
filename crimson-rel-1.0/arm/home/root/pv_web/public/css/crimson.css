@@ -54,14 +54,19 @@ body {
 	font-weight: 300;
 }
 
-#footer {
-	margin-top: 30px;
-	font-size: 11px;
+.nav-tabs li.active a, .nav-tabs li.active a:hover  {
+   color: #cb2026;
+   font-weight: bold;
+   font-size: 20px;
 }
 
 ul.nav li a {
-	color: #cb2026;
-	font-weight: bold;
+   color: gray;
+}
+
+#footer {
+	margin-top: 30px;
+	font-size: 11px;
 }
 
 .center {

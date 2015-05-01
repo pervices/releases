@@ -1,8 +1,10 @@
 var express = require('express');
 var app     = express();
+var favicon = require('serve-favicon');
 
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 app.get('/', function (req, res) {
   res.render('index', {
@@ -40,7 +42,7 @@ app.get('/debug', function (req, res) {
   });
 });
 
-var io = require('socket.io').listen(app.listen(3000, function () {
+var io = require('socket.io').listen(app.listen(80, function () {
     var host = this.address().address;
     var port = this.address().port;
     console.log('Crimson server listening at http://%s:%s', host, port);
