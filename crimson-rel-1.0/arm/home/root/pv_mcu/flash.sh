@@ -25,8 +25,8 @@ then
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:synth.hex
 	echo -e "exit\r" > /dev/ttyS1
 	echo "- Done programming."
+	usleep 300000
 fi
-
 
 if [ "$1" = 'rx' ] || [ "$1" = 'all' ]
 then
@@ -39,8 +39,8 @@ then
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:rx.hex
 	echo -e "exit\r" > /dev/ttyS1
 	echo "- Done programming."
+	usleep 4000000
 fi
-
 
 if [ "$1" = 'tx' ] || [ "$1" = 'all' ]
 then
@@ -53,6 +53,7 @@ then
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:tx.hex
 	echo -e "exit\r" > /dev/ttyS1
 	echo "- Done programming."
+	usleep 300000
 fi
 
 if [ "$1" = 'dig' ] || [ "$1" = 'all' ]
