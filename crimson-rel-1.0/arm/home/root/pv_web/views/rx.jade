@@ -25,8 +25,8 @@ block content
             input(type="checkbox", name='hi-low', unchecked)#rf_band
          .col-md-1
             p
-               b LNA Bypass
-            input(type="checkbox", name='en', unchecked)#lna_bypass
+               b LNA Enable
+            input(type="checkbox", name='en', unchecked)#lna_en
          .col-md-2
             p
                b Synthesizer Frequency
@@ -67,10 +67,20 @@ block content
          .col-md-3
             p
                b Sample Rate
-            input(type='range', min='2', max='256', step='1')#sr_range
-            p.no-margin
-               | Effective sample rate:
-               #sr_display.inline-block
+            .row
+               .col-md-12
+                  | Desired: 
+                  input.input-xs(type="text", style="width:150px;")#sr
+                  |  SPS &nbsp;&nbsp;
+                  button.btn.btn-default.btn-xs#sr_set Set
+            .row(style="padding-top:10px;")
+               .col-md-12
+                  | Actual: 322265625 * 
+                  #sr_resamp_display.inline-block
+                  #sr_div_display.inline-block
+                  |  = 
+                  #sr_display.inline-block
+                  |  SPS
          .col-md-4
             p
                b Destination Link
