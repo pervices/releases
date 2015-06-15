@@ -1,0 +1,50 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]
+then
+	echo "Usage : $0 dig | rx | tx | synth | all"
+	exit
+fi
+
+if [ "$1" != 'synth' ] && [ "$1" != 'tx' ] && [ "$1" != 'rx' ] && [ "$1" != 'dig' ] && [ "$1" != 'all' ]
+then
+	echo "- invalid argument"
+	echo "- Usage : $0 dig | rx | tx | synth | all"	
+	exit
+fi
+
+if [ "$1" = 'synth' ] || [ "$1" = 'all' ]
+then
+	echo "-- Press <ENTER> when ready to program --"
+	read
+	sudo avrdude -p atxmega256a3 -P usb -c avrispmkII    -e -B 8 -U boot:w:SYNTH-xboot-boot.hex    -U fuse2:w:0xBF:m
+	sudo avrdude -c avrispmkII -B 8 -p x256a3u -P usb -U application:w:synth.hex
+	echo "-- Finished programming the $1 board --"
+fi
+
+if [ "$1" = 'rx' ] || [ "$1" = 'all' ]
+then
+	echo "-- Press <ENTER> when ready to program --"
+	read
+	sudo avrdude -p atxmega256a3 -P usb -c avrispmkII    -e -B 8 -U boot:w:RX-xboot-boot.hex    -U fuse2:w:0xBF:m
+	sudo avrdude -c avrispmkII -B 8 -p x256a3u -P usb -U application:w:rx.hex
+	echo "-- Finished programming the $1 board --"
+fi
+
+if [ "$1" = 'tx' ] || [ "$1" = 'all' ]
+then
+	echo "-- Press <ENTER> when ready to program --"
+	read
+	sudo avrdude -p atxmega256a3 -P usb -c avrispmkII    -e -B 8 -U boot:w:TX-xboot-boot.hex    -U fuse2:w:0xBF:m
+	sudo avrdude -c avrispmkII -B 8 -p x256a3u -P usb -U application:w:tx.hex
+	echo "-- Finished programming the $1 board --"
+fi
+
+if [ "$1" = 'dig' ] || [ "$1" = 'all' ]
+then
+	echo "-- Press <ENTER> when ready to program --"
+	read
+	sudo avrdude -p atxmega256a3 -P usb -c avrispmkII    -e -B 8 -U boot:w:DIG-xboot-boot.hex    -U fuse2:w:0xBF:m
+	sudo avrdude -c avrispmkII -B 8 -p x256a3u -P usb -U application:w:dig.hex
+	echo "-- Finished programming the $1 board --"
+fi
