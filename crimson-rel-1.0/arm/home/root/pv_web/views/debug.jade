@@ -77,24 +77,6 @@ block content
                a(href="http://www.ti.com/lit/gpn/lmk04828", target="_blank") Datasheet
             td Synth
    br
-   h3 Programming via Bootloader
-   hr
-   form.form-horizontal
-      .form-group
-         label(for='program_board').control-label.col-md-1 Board:
-         .col-md-3
-            select.form-control.input-sm#program_board
-               option(value="tx") TX
-               option(value="rx") RX
-               option(value="synth") Synth
-               option(value="dig") Digital
-      .form-group
-         label(for='program_hexfile').control-label.col-md-1 Hexfile:
-         .col-md-3
-            input(type='file')#program_hexfile
-      .form-group
-         .col-md-1
-            button(type='button').btn.btn-block.btn-default.btn-md.disabled#program_start Program
    h3 Raw Command Line Interface
    hr
    .container-fluid
