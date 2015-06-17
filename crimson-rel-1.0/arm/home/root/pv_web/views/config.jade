@@ -7,11 +7,6 @@ block content
    .container-fluid
       .row.top-buffer-5
          .col-md-1
-            | DHCP Enable
-         .col-md-1
-            input(type="checkbox", name='en', unchecked)#dhcp_en
-      .row.top-buffer-5
-         .col-md-1
             | Host Name
          .col-md-1
             input(type='text')#hostname
@@ -23,6 +18,8 @@ block content
       .row.top-buffer-5
          .col-md-1
             button.btn.btn-default.btn-xs#mgmt_set Update
+         .col-md-3
+            i(style="color:red;display:block-inline;") Changes will take into affect after hard reset.
    br
 
    .container-fluid.no-padding
