@@ -63,5 +63,5 @@ then
 	usleep 300000
 	echo -e "\r\r\r\r\r" > /dev/ttyS1
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:dig.hex
-	echo "- Done programming."
+	echo "- Done programming. Please wait a few minutes for eLinux to boot-up."
 fi
