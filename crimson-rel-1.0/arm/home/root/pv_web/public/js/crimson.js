@@ -127,6 +127,14 @@ $("#temperature").click(function() {
       socket.emit('raw_cmd', { message: "echo 'board -c 15 -u' | mcu -f r" });
 });
 
+// system reset
+$("#reset_system").click(function() {
+   socket.emit('raw_cmd', { message: "echo 'board -r' | mcu -f s"});
+   socket.emit('raw_cmd', { message: "echo 'board -r' | mcu -f r"});
+   socket.emit('raw_cmd', { message: "echo 'board -r' | mcu -f t"});
+   socket.emit('raw_cmd', { message: "echo 'board -r' | mcu"});
+});
+
 // board channel features
 $("#chan_init,#chan_demo,#chan_mute,#chan_reset").click(function() {
    $("#adminModal").modal('show');
