@@ -21,7 +21,7 @@ then
 	usleep 300000
 	echo -e "boot -e\r" > /dev/ttyS1
 	usleep 300000
-	echo -e "\r\r\r\r\r" > /dev/ttyS1
+	echo -e "abcdefghijklmnopqrstuvwxyz\r" > /dev/ttyS1
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:synth.hex
 	echo -e "exit\r" > /dev/ttyS1
 	echo "- Done programming."
@@ -35,7 +35,7 @@ then
 	usleep 300000
 	echo -e "boot -e\r" > /dev/ttyS1
 	usleep 300000
-	echo -e "\r\r\r\r\r" > /dev/ttyS1
+	echo -e "abcdefghijklmnopqrstuvwxyz\r" > /dev/ttyS1
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:rx.hex
 	echo -e "exit\r" > /dev/ttyS1
 	echo "- Done programming."
@@ -49,7 +49,7 @@ then
 	usleep 300000
 	echo -e "boot -e\r" > /dev/ttyS1
 	usleep 300000
-	echo -e "\r\r\r\r\r" > /dev/ttyS1
+	echo -e "abcdefghijklmnopqrstuvwxyz\r" > /dev/ttyS1
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:tx.hex
 	echo -e "exit\r" > /dev/ttyS1
 	echo "- Done programming."
@@ -61,7 +61,7 @@ then
 	echo "-  Programming the digital board MCU..."
 	echo -e "boot -e\r" > /dev/ttyS1
 	usleep 300000
-	echo -e "\r\r\r\r\r" > /dev/ttyS1
+	echo -e "abcdefghijklmnopqrstuvwxyz\r" > /dev/ttyS1
 	avrdude -c avr109 -B 8 -p x256a3u -P /dev/ttyS1 -b 115200 -e -U flash:w:dig.hex
 	echo "- Done programming. Please wait a few minutes for eLinux to boot-up."
 fi
