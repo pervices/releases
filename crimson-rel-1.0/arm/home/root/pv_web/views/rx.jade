@@ -17,7 +17,7 @@ block content
    input(type="checkbox", name='en', unchecked)#chan_en
    h3 Radio Configuration
    hr
-   .container-fluid(style="text-align:center")
+   .container-fluid(style="text-align:left")
       .row
          .col-md-1
             p
@@ -42,15 +42,15 @@ block content
    img(src="/img/rx_chain.svg", style="max-width: 100%;max-height: 100%;").center
    h3 RX DSP Chain
    hr
-   .container-fluid(style="text-align:center")
+   .container-fluid(style="text-align:left")
       .row
          .col-md-1
             p
                b Reset DSP
             button.btn.btn-default.btn-xs#dsp_reset Reset
-         .col-md-2
+         .col-md-1
             p
-               b DSP Signed Data
+               b Signed Data
             input(type="checkbox", name='en', unchecked)#signed
          .col-md-2
             p
@@ -82,19 +82,19 @@ block content
                .col-md-4.text-right
                   | IPV4 IP Address
                .col-md-4
-                  input.input-xs(type="text")#ip
+                  input.width-150.input-xs(type="text")#ip
                .col-md-4.text-left
                   button.btn.btn-default.btn-xs#link_set Set
             .row.top-buffer-5
                .col-md-4.text-right
                   | MAC Address
                .col-md-4
-                  input.input-xs(type="text")#mac
+                  input.width-150.input-xs(type="text")#mac
             .row.top-buffer-5
                .col-md-4.text-right
                   | UDP Port
                .col-md-4
-                  input.input-xs(type="text")#port
+                  input.width-150.input-xs(type="text")#port
       .row
          .col-md-1
             p
