@@ -11,6 +11,7 @@ case "$1" in
         /etc/init.d/server_init.sh &
 	sleep 15
         mem rw sys3 0x1
+	sleep 30
         mem rw sys4 0x0
 	;;
   stop)
