@@ -1,0 +1,153 @@
+extends ./layout.jade
+
+block content
+   p This page allows the configuration of the entire transmit chain from the digital backend to the RF frontend. Select the channel that is being configured.
+   p The digital signal comes from the FPGA and gets interpolated through the DSP chain on the FPGA. The interpolation can go up to a maximum of 322 MSPS and can be frequency adjusted prior to DAC conversion. The digital signal is sent to the RF frontend using the JESD serial interface, providing the DAC with both IQ channel values. The analog signal passes through an RF switch for high band and low band selection. The high band is reserved for signals greater than 500 MHz and the low band is reserved for signals under 500 MHz. The high band offers a frequency mixer for up-conversion up to a maximum of 6 GHz.
+   ul.nav.nav-tabs
+      li.active(role="presentation")
+         a#chan_a Channel A
+      li(role="presentation")
+         a#chan_b Channel B
+      li(role="presentation")
+         a#chan_c Channel C
+      li(role="presentation")
+         a#chan_d Channel D
+   br
+   b Channel Enable 
+   input(type="checkbox", name='en', unchecked)#chan_en
+   h3 Radio Configuration
+   hr
+   .container-fluid(style="text-align:left;")
+      .row
+         .col-md-1.right-pad-0
+            p
+               b RF Band
+            input(type="checkbox", name='hi-low', unchecked)#rf_band
+         .col-md-2.right-pad-0
+            p
+               b Synthesizer Frequency
+            input.input-xs.width-100(type="text")#synth_freq
+            |  Hz &nbsp;&nbsp;
+            button.btn.btn-default.btn-xs#synth_freq_set Set
+         .col-md-2.right-pad-0
+            p
+               b DAC NCO Offset
+            input.input-xs.width-100(type="text")#dac_nco
+            |  Hz &nbsp;&nbsp;
+            button.btn.btn-default.btn-xs#dac_nco_set Set
+         .col-md-3.right-pad-0
+            p
+               b IQ Voltage Bias
+            .row
+               .col-md-4.align-left#ibias_display I:
+               .col-md-8
+                  input(type='range', min='0', max='2400', step='100')#ibias_range
+            .row
+               .col-md-4.align-left#qbias_display Q:
+               .col-md-8
+                  input(type='range', min='0', max='2400', step='100')#qbias_range
+            p
+               .inline-block
+         .col-md-4
+            p
+               b TX Gain - RFSA2013
+            input(type='range', min='0', max='28', step='1')#gain_range
+            p
+               #gain_display.inline-block
+                  
+   img(src="/img/tx_chain.svg", style="max-width: 100%;max-height: 100%;").center
+   h3 TX DSP Chain
+   hr
+   .container-fluid(style="text-align:left")
+      .row
+         .col-md-1
+            p
+               b Reset DSP
+            button.btn.btn-default.btn-xs#dsp_reset Reset
+         .col-md-2
+            p
+               b DSP NCO Offset
+            input.input-xs(type="text").width-100#dsp_nco
+            |  Hz &nbsp;&nbsp;
+            button.btn.btn-default.btn-xs#dsp_nco_set Set
+         .col-md-5
+            p
+               b Sample Rate
+            .row
+               .col-md-12
+                  | Desired: 
+                  input.input-xs(type="text", style="width:150px;")#sr
+                  |  SPS &nbsp;&nbsp;
+                  button.btn.btn-default.btn-xs#sr_set Set
+            .row(style="padding-top:10px;")
+               .col-md-12
+                  | Actual: 322265625 * 
+                  #sr_resamp_display.inline-block
+                  #sr_div_display.inline-block
+                  |  = 
+                  #sr_display.inline-block
+                  |  SPS
+         .col-md-4
+            p
+               b Origin Link
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | IPV4 IP Address
+               .col-md-4
+                  input.width-150.input-xs(type="text", placeholder='configuration page', disabled)
+               .col-md-4.text-left
+                  button.btn.btn-default.btn-xs#link_set Set
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | MAC Address
+               .col-md-4
+                  input.width-150.input-xs(type="text", placeholder='configuration page', disabled)
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | UDP Port
+               .col-md-4
+                  input.width-150.input-xs(type="text")#port
+   br
+   br
+   img(src="/img/tx_dsp.svg", style="max-width: 100%;max-height: 100%;").center
+   br
+   h3 TX Board Control
+   hr
+   .container-fluid
+      .row
+         .col-md-3
+            b JESD Sync
+            .row
+               .col-md-4.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#jesdsync Sync
+            br
+            b Channel IC's
+            br
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  | DAC
+               .col-md-3.top-buffer-5.right-pad-0
+                  | GPIOX
+               .col-md-3.top-buffer-5.right-pad-0
+                  | LED
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#dac_dump Dump
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#gpiox_dump Dump
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#led Test
+         .col-md-2
+            b Board Version
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#version Get
+            br
+            b Board Temperature
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#temperature Get
+         .col-md-7
+            b Console Output
+            br
+            textarea.form-control#cout(rows='10')
