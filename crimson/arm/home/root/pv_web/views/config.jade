@@ -2,15 +2,15 @@ extends ./layout.jade
 
 block content
    p The digital board houses the FPGA with the SoC ARM Cortex-A9 Processor and hard processing system for JESD communication between the boards. The digital board is required for communicating with the RX and TX board, and retrieves all of the clocks through the Synth board. The digital board supports 20Gbps using dual 10GbE and digital down/up conversion on the FPGA with Per Vices DSP IP core. The ADC and DAC chains that you see refer to the hardware running on the Arria V ST FPGA. It includes a series of filters before it feeds to and from the 10GbE SFP + Port.
-   h3 System Reset
-   hr
-   .container-fluid
-      .row.top-buffer-5
-         .col-md-1
-            button.btn.btn-default.btn-xs#reset_system System Reset
-         .col-md-11
-            i(style="color:red;display:block-inline;") Please wait a few minutes for Crimson to come back online.
-   br
+   //h3 System Reset
+   //hr
+   //.container-fluid
+   //   .row.top-buffer-5
+   //      .col-md-1
+   //         button.btn.btn-default.btn-xs#reset_system System Reset
+   //      .col-md-11
+   //         i(style="color:red;display:block-inline;") Please wait a few minutes for Crimson to come back online.
+   //br
 
    h3 Network Configuration
    hr

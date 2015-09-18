@@ -23,6 +23,10 @@ block content
             p
                b RF Band
             input(type="checkbox", name='hi-low', unchecked)#rf_band
+         .col-md-1.right-pad-0
+            p
+               b Mute
+            input(type="checkbox", name='en', unchecked)#mute
          .col-md-2.right-pad-0
             p
                b Synthesizer Frequency
@@ -35,16 +39,16 @@ block content
             input.input-xs.width-100(type="text")#dac_nco
             |  Hz &nbsp;&nbsp;
             button.btn.btn-default.btn-xs#dac_nco_set Set
-         .col-md-3.right-pad-0
+         .col-md-2.right-pad-0
             p
                b IQ Voltage Bias
             .row
-               .col-md-4.align-left#ibias_display I:
-               .col-md-8
+               .col-md-5.align-left.no-padding#ibias_display I:
+               .col-md-7
                   input(type='range', min='0', max='2400', step='100')#ibias_range
             .row
-               .col-md-4.align-left#qbias_display Q:
-               .col-md-8
+               .col-md-5.align-left.no-padding#qbias_display Q:
+               .col-md-7
                   input(type='range', min='0', max='2400', step='100')#qbias_range
             p
                .inline-block

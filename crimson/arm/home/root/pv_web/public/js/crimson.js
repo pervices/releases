@@ -206,6 +206,16 @@ $("#sr_set").click(function(){
    }, 500);
 });
 
+// mute
+$("#mute").on('switchChange.bootstrapSwitch', function(event, state) {
+   if (state) {
+      socket.emit('raw_cmd', { message: "echo 'board -c " + cur_chan + " -o 0' | mcu -f t" });
+   } else {
+      socket.emit('raw_cmd', { message: "echo 'board -c " + cur_chan + " -o 1' | mcu -f t" });
+      setTimeout(function(){ $("#synth_freq_set").click(); }, 1500);
+   }
+});
+
 // rf band
 $("#rf_band").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/band', message: state ? '1' : '0' });
@@ -239,6 +249,7 @@ $("#ext_vco").on('switchChange.bootstrapSwitch', function(event, state) {
 // frequency of synthesizer
 $("#synth_freq_set").click( function() {
    if (!$("#synth_freq").val()) return;
+   $('#mute').bootstrapSwitch('state', false, true);
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/val', message: $("#synth_freq").val() });
    setTimeout( function() {
       socket.emit('prop_rd', { file: cur_root + '/rf/freq/val', debug: true});
@@ -430,7 +441,7 @@ socket.on('prop_ret', function (data) {
       $("#ibias_display").text('I: ' + parseInt(data.message)*100 + ' mV');
    } else if (data.file == cur_root + '/rf/freq/q_bias') {
       $('#qbias_range').val(parseInt(data.message)*100);
-      $("#qbias_display").text('I: ' + parseInt(data.message)*100 + ' mV');
+      $("#qbias_display").text('Q: ' + parseInt(data.message)*100 + ' mV');
    } else if (data.file == cur_root + '/rf/dac/nco') {
       $('#dac_nco').val(data.message);
    } else if (data.file == cur_root + '/dsp/loopback') {
@@ -447,8 +458,8 @@ socket.on('prop_ret', function (data) {
 
 // en/disable the configurations
 function activateControls_rx(state) {
-   //$('#rf_band').bootstrapSwitch('readonly', !state);
-   //$('#lna_en').bootstrapSwitch('readonly', !state);
+   $('#rf_band').bootstrapSwitch('readonly', !state);
+   $('#lna_en').bootstrapSwitch('readonly', !state);
    $("#synth_freq").prop('disabled', !state);
    $("#synth_freq_set").prop('disabled', !state);
    $("#gain_range").prop('disabled', !state);
@@ -466,7 +477,8 @@ function activateControls_rx(state) {
 }
 
 function activateControls_tx(state) {
-   //$('#rf_band').bootstrapSwitch('readonly', !state);
+   $('#rf_band').bootstrapSwitch('readonly', !state);
+   $('#mute').bootstrapSwitch('readonly', !state);
    $("#synth_freq").prop('disabled', !state);
    $("#synth_freq_set").prop('disabled', !state);
    $("#dac_nco").prop('disabled', !state);
@@ -508,6 +520,7 @@ function write_tx() {
    socket.emit('prop_wr', { file: cur_root + '/dsp/nco_adj'   , message: $('#dsp_nco').val()});
    socket.emit('prop_wr', { file: cur_root + '/dsp/rate'      , message: $('#sr').val()});
    socket.emit('prop_wr', { file: cur_root + '/link/port'     , message: $('#port').val()});
+   $('#mute').bootstrapSwitch('state', false, true);	 // bootup is always un-muted
 }
 
 // Loading config data
