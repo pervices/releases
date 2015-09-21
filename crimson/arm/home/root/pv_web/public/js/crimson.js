@@ -219,6 +219,9 @@ $("#mute").on('switchChange.bootstrapSwitch', function(event, state) {
 // rf band
 $("#rf_band").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/band', message: state ? '1' : '0' });
+   if ( state ) {
+      setTimeout(function(){ $("#synth_freq_set").click(); }, 1500);
+   }
 });
 
 // lna bypass
@@ -249,7 +252,7 @@ $("#ext_vco").on('switchChange.bootstrapSwitch', function(event, state) {
 // frequency of synthesizer
 $("#synth_freq_set").click( function() {
    if (!$("#synth_freq").val()) return;
-   $('#mute').bootstrapSwitch('state', false, true);
+   $('#mute').bootstrapSwitch('state', false, false);
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/val', message: $("#synth_freq").val() });
    setTimeout( function() {
       socket.emit('prop_rd', { file: cur_root + '/rf/freq/val', debug: true});
@@ -493,6 +496,7 @@ function activateControls_tx(state) {
    $("#sr_set").prop('disabled', !state);
    $("#link_set").prop('disabled', !state);
    $("#port").prop('disabled', !state);
+   $('#mute').bootstrapSwitch('state', true, false);	 // bootup is always muted
 }
 
 // write the current settings to SDR
@@ -520,7 +524,6 @@ function write_tx() {
    socket.emit('prop_wr', { file: cur_root + '/dsp/nco_adj'   , message: $('#dsp_nco').val()});
    socket.emit('prop_wr', { file: cur_root + '/dsp/rate'      , message: $('#sr').val()});
    socket.emit('prop_wr', { file: cur_root + '/link/port'     , message: $('#port').val()});
-   $('#mute').bootstrapSwitch('state', false, true);	 // bootup is always un-muted
 }
 
 // Loading config data
