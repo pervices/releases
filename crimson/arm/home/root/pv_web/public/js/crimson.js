@@ -207,20 +207,16 @@ $("#sr_set").click(function(){
 });
 
 // mute
-$("#mute").on('switchChange.bootstrapSwitch', function(event, state) {
-   if (state) {
-      socket.emit('raw_cmd', { message: "echo 'board -c " + cur_chan + " -o 0' | mcu -f t" });
-   } else {
-      socket.emit('raw_cmd', { message: "echo 'board -c " + cur_chan + " -o 1' | mcu -f t" });
-      setTimeout(function(){ $("#synth_freq_set").click(); }, 1500);
-   }
+$("#mute").click(function() {
+   $("#synth_freq").val("0");
+   setTimeout( function() { $("#synth_freq_set").click(); }, 100);
 });
 
 // rf band
 $("#rf_band").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/band', message: state ? '1' : '0' });
    if ( state ) {
-      setTimeout(function(){ $("#synth_freq_set").click(); }, 1500);
+      setTimeout(function(){ $("#synth_freq_set").click(); }, 900);
    }
 });
 
@@ -252,7 +248,6 @@ $("#ext_vco").on('switchChange.bootstrapSwitch', function(event, state) {
 // frequency of synthesizer
 $("#synth_freq_set").click( function() {
    if (!$("#synth_freq").val()) return;
-   $('#mute').bootstrapSwitch('state', false, false);
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/val', message: $("#synth_freq").val() });
    setTimeout( function() {
       socket.emit('prop_rd', { file: cur_root + '/rf/freq/val', debug: true});
@@ -481,7 +476,6 @@ function activateControls_rx(state) {
 
 function activateControls_tx(state) {
    $('#rf_band').bootstrapSwitch('readonly', !state);
-   $('#mute').bootstrapSwitch('readonly', !state);
    $("#synth_freq").prop('disabled', !state);
    $("#synth_freq_set").prop('disabled', !state);
    $("#dac_nco").prop('disabled', !state);
@@ -490,13 +484,13 @@ function activateControls_tx(state) {
    $("#qbias_range").prop('disabled', !state);
    $("#gain_range").prop('disabled', !state);
    $("#dsp_reset").prop('disabled', !state);
+   $("#mute").prop('disabled', !state);
    $("#dsp_nco").prop('disabled', !state);
    $("#dsp_nco_set").prop('disabled', !state);
    $("#sr").prop('disabled', !state);
    $("#sr_set").prop('disabled', !state);
    $("#link_set").prop('disabled', !state);
    $("#port").prop('disabled', !state);
-   $('#mute').bootstrapSwitch('state', true, false);	 // bootup is always muted
 }
 
 // write the current settings to SDR
