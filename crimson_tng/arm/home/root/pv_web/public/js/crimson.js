@@ -48,6 +48,9 @@ $("#chan_a,#chan_b,#chan_c,#chan_d").click(function() {
 $("#chan_en").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/pwr', message: state ? '1' : '0' });
    var is_rx = cur_root.indexOf('rx') > -1;
+   if (is_rx) {
+      socket.emit('prop_wr', { file: cur_root + '/stream', message: state ? '1' : '0' });
+   }
 
    // if turn on, overwrite with the current settings
    if (state) {
@@ -61,7 +64,7 @@ $("#chan_en").on('switchChange.bootstrapSwitch', function(event, state) {
             activateControls_tx(true);
          }
          $("#loadingModal").modal('hide');
-      }, 4000);
+      }, 500);
    } else {
       if (is_rx)  activateControls_rx(false);
       else        activateControls_tx(false);
@@ -179,8 +182,14 @@ $("#program_start").click(function() {
 
 // gain
 $("#gain_range").change(function(){
-   $("#gain_display").text($(this).val() + ' dB');
+   $("#gain_display").text('+' + ($(this).val() / 4) + ' dB');
    socket.emit('prop_wr', { file: cur_root + '/rf/gain/val', message: $(this).val() });
+});
+
+// atten
+$("#atten_range").change(function(){
+   $("#atten_display").text('-' + ($(this).val() / 4) + ' dB');
+   socket.emit('prop_wr', { file: cur_root + '/rf/atten/val', message: $(this).val() });
 });
 
 // i-bias
@@ -206,22 +215,52 @@ $("#sr_set").click(function(){
    }, 500);
 });
 
-// mute
-$("#mute").click(function() {
-   $("#synth_freq").val("0");
-   setTimeout( function() { $("#synth_freq_set").click(); }, 100);
-});
-
 // rf band
 $("#rf_band").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/band', message: state ? '1' : '0' });
    if ( state ) {
+	   // if RX, enable DSA slider
+	   if (pathname.indexOf('rx') > -1) {
+		   $("#atten_range").prop('disabled', !state);
+		   $('#pa_en').bootstrapSwitch('readonly', !state);
+		   
+		   // Force Attenuation Setting to MAX
+		   $("#atten_range").val(127);
+		   $("#atten_range").change();
+		   
+	   } else if (pathname.indexOf('tx') > -1) {
+		   // Force Gain Setting to MIN
+		   $("#gain_range").val(0);
+		   $("#gain_range").change();
+	   }
+	   
+	   $("#synth_freq").prop('disabled', !state);
+	   $("#synth_freq_set").prop('disabled', !state);
+	   
       setTimeout(function(){ $("#synth_freq_set").click(); }, 900);
+   } else {
+	   // if RX, disable DSA slider
+	   if (pathname.indexOf('rx') > -1) {
+		   $("#atten_range").prop('disabled', !state);
+		   $('#pa_en').bootstrapSwitch('readonly', !state);
+		   
+		   // Force Attenuation Setting to MAX
+		   $("#atten_range").val(127);
+		   $("#atten_range").change();
+		   
+	   } else if (pathname.indexOf('tx') > -1) {
+		   // Force Gain Setting to MIN
+		   $("#gain_range").val(0);
+		   $("#gain_range").change();
+	   }
+	   
+	   $("#synth_freq").prop('disabled', !state);
+	   $("#synth_freq_set").prop('disabled', !state);
    }
 });
 
-// lna bypass
-$("#lna_en").on('switchChange.bootstrapSwitch', function(event, state) {
+// pa bypass
+$("#pa_en").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/lna', message: state ? '0' : '1' });
 });
 
@@ -235,19 +274,38 @@ $("#ext_ref").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/source/ref', message: state ? 'external' : 'internal' });
 });
 
-// external sync
-$("#ext_sync").on('switchChange.bootstrapSwitch', function(event, state) {
+// Enable DevClock Output
+$("#out_devclk_en").on('switchChange.bootstrapSwitch', function(event, state) {
+   socket.emit('prop_wr', { file: cur_root + '/source/devclk', message: state ? 'external' : 'internal' });
+});
+
+// Enable PLL Output
+$("#out_pll_en").on('switchChange.bootstrapSwitch', function(event, state) {
+   socket.emit('prop_wr', { file: cur_root + '/source/pll', message: state ? 'external' : 'internal' });
+});
+
+// Enable SysRef Output
+$("#out_sysref_en").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/source/sync', message: state ? 'external' : 'internal' });
 });
 
-// external VCO 
-$("#ext_vco").on('switchChange.bootstrapSwitch', function(event, state) {
+// Enable VCO Output
+$("#out_vco_en").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/source/vco', message: state ? 'external' : 'internal' });
 });
 
 // frequency of synthesizer
 $("#synth_freq_set").click( function() {
-   if (!$("#synth_freq").val()) return;
+	var reqfreq = $("#synth_freq").val();
+   if (!reqfreq) return;
+   
+   // Frequency Setting less than 53MHz is considered invalid 
+   if ((reqfreq < 53000000) && (reqfreq > 0)) {		// Setting to 0 is a valid command to mute PLL
+	   $("#synth_error_display").show();
+   } else {
+	   $("#synth_error_display").hide();
+   }
+   
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/val', message: $("#synth_freq").val() });
    setTimeout( function() {
       socket.emit('prop_rd', { file: cur_root + '/rf/freq/val', debug: true});
@@ -258,6 +316,9 @@ $("#synth_freq_set").click( function() {
 $("#dsp_nco_set").click( function() {
    if (!$("#dsp_nco").val()) return;
    socket.emit('prop_wr', { file: cur_root + '/dsp/nco_adj', message: $("#dsp_nco").val() });
+   setTimeout( function() {
+	   socket.emit('prop_rd', { file: cur_root + '/dsp/nco_adj', debug: true });
+   }, 1000);
 });
 
 // dsp reset
@@ -302,6 +363,9 @@ $("#mgmt_set").click( function() {
 $("#dac_nco_set").click( function() {
    if (!$("#dac_nco").val()) return;
    socket.emit('prop_wr', { file: cur_root + '/rf/dac/nco', message: $("#dac_nco").val() });
+   setTimeout( function() {
+	   socket.emit('prop_rd', { file: cur_root + '/rf/dac/nco', debug: true });
+   }, 1000);
 });
 
 // hexfile
@@ -310,33 +374,149 @@ $("#program_hexfile").change( function() {
       $("#program_start").removeClass('disabled');
 });
 
+/////////////////////////////////////////////////////////////////////
+// Pressing ENTER on Textboxes activates their button press events //
+/////////////////////////////////////////////////////////////////////
+
+$("#synth_freq").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#synth_freq_set").click();
+	}
+});
+
+$("#dac_nco").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#dac_nco_set").click();
+	}
+});
+
+$("#dsp_nco").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#dsp_nco_set").click();
+	}
+});
+
+$("#sr").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#sr_set").click();
+	}
+});
+
+$("#ip").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#link_set").click();
+	}
+});
+
+$("#mac").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#link_set").click();
+	}
+});
+
+$("#port").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#link_set").click();
+	}
+});
+
+$("#hostname").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#mgmt_set").click();
+	}
+});
+
+$("#mgmt_ip").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#mgmt_set").click();
+	}
+});
+
+$("#sfpa_ip").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#sfpa_set").click();
+	}
+});
+
+$("#sfpa_mac").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#sfpa_set").click();
+	}
+});
+
+$("#sfpa_paylen").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#sfpa_set").click();
+	}
+});
+
+$("#sfpb_ip").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#sfpb_set").click();
+	}
+});
+
+$("#sfpb_mac").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#sfpb_set").click();
+	}
+});
+
+$("#sfpb_paylen").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#sfpb_set").click();
+	}
+});
+
+$("#uart_cmd").keyup(function(e) {
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$("#send_uart_cmd").click();
+	}
+});
+
+
 // receive console from server
 socket.on('raw_reply', function (data) {
    // if reading back the sample rate
    if (data.cmd == ("mem rr " + cur_board + cur_chan + "1")) {
-      val1 = parseInt("0x" + data.message.substring(data.message.length-3, data.message.length-1)) + 1;
-      val2 = parseInt("0x" + data.message.substring(data.message.length-5, data.message.length-3)) + 1;
-      val = val1 * val2;
+      var val = parseInt(data.message) + 1;
       $("#sr_div_display").text("1/" + val);
-      if ($("#sr_resamp_display").text() != "")
-         $("#sr_display").text((322265625 * 4 / 5 / val));
-      else
-         $("#sr_display").text((322265625 / val));
+      if ($("#sr_resamp_display").text() != "") {
+	  $("#sr_display").text((322265625 * 4 / 5 / val));
+      } else {
+	$("#sr_display").text((322265625 / val));
+      }
       return;
    }
 
    if (data.cmd == ("mem rr " + cur_board + cur_chan + "4")) {
-      val = parseInt(data.message.substring(0, data.message.length-1));
-      div = $("#sr_div_display").text();
-      div = div.substring(2, div.length);
-      if (val >= 0x8000) {
-         $("#sr_resamp_display").text("4/5 * ");
-         $("#sr_display").text((322265625 * 4 / 5 / parseInt(div)));
-      } else {
-         $("#sr_resamp_display").text("");
-         $("#sr_display").text((322265625 / parseInt(div)));
-      }
-      return;
+       var val = parseInt(data.message.substring(0, data.message.length-1));
+       var div = $("#sr_div_display").text();
+       div = div.substring(2, div.length);
+       if (val >= 0x8000) {
+	   $("#sr_resamp_display").text("4/5 * ");
+	   $("#sr_display").text((322265625 * 4 / 5 / parseInt(div)));
+       } else {
+	   $("#sr_resamp_display").text("");
+	   $("#sr_display").text((322265625 / parseInt(div)));
+       }
+       return;
    }
 
    //console.log("Raw reply: " + data.message);
@@ -409,13 +589,24 @@ socket.on('prop_ret', function (data) {
       }
    } else if (data.file == cur_root + '/rf/freq/val') {
       $('#synth_freq').val(data.message);
+      var synth_freq_en = $('#chan_en').bootstrapSwitch('state') && $('#rf_band').bootstrapSwitch('state');
+      $("#synth_freq").prop('disabled', !synth_freq_en);
+      $("#synth_freq_set").prop('disabled', !synth_freq_en);
    } else if (data.file == cur_root + '/rf/freq/lna') {
-      $('#lna_en').bootstrapSwitch('state', parseInt(data.message) == 0, true);
+      $('#pa_en').bootstrapSwitch('readonly', false);
+      $('#pa_en').bootstrapSwitch('state', parseInt(data.message) == 0, true);
+      $('#pa_en').bootstrapSwitch('readonly', !($('#rf_band').bootstrapSwitch('state') && $('#chan_en').bootstrapSwitch('state')));
    } else if (data.file == cur_root + '/rf/gain/val') {
       $('#gain_range').val(parseInt(data.message));
-      $("#gain_display").text(parseInt(data.message) + ' dB');
+      $("#gain_display").text('+' + (parseInt(data.message) / 4) + ' dB');
+   } else if (data.file == cur_root + '/rf/atten/val') {
+      $('#atten_range').val(parseInt(data.message));
+      $('#atten_display').text('-' + (parseInt(data.message) / 4) + ' dB');
+      $("#atten_range").prop('disabled', !($('#rf_band').bootstrapSwitch('state') && $('#chan_en').bootstrapSwitch('state')));
    } else if (data.file == cur_root + '/rf/freq/band') {
+      $('#rf_band').bootstrapSwitch('readonly', false);
       $('#rf_band').bootstrapSwitch('state', parseInt(data.message) != 0, true);
+      $('#rf_band').bootstrapSwitch('readonly', !($('#chan_en').bootstrapSwitch('state')));
    } else if (data.file == cur_root + '/dsp/signed') {
       $('#signed').bootstrapSwitch('state', parseInt(data.message) != 0, true);
    } else if (data.file == cur_root + '/dsp/nco_adj') {
@@ -432,7 +623,7 @@ socket.on('prop_ret', function (data) {
       // read the actual values for the sample rate
       setTimeout(function() {
          socket.emit('raw_cmd', { message: "mem rr " + cur_board + cur_chan + "1" });
-         socket.emit('raw_cmd', { message: "mem rr " + cur_board + cur_chan + "4" });
+	 socket.emit('raw_cmd', { message: "mem rr " + cur_board + cur_chan + "4" });
       }, 500);
    } else if (data.file == cur_root + '/rf/freq/i_bias') {
       $('#ibias_range').val(parseInt(data.message)*100);
@@ -446,10 +637,14 @@ socket.on('prop_ret', function (data) {
       $('#loopback').bootstrapSwitch('state', parseInt(data.message) != 0, true);
    } else if (data.file == cur_root + '/source/ref') {
       $('#ext_ref').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
-   } else if (data.file == cur_root + '/source/sync') {
-      $('#ext_sync').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
-   } else if (data.file == cur_root + '/source/vco') {
-      $('#ext_vco').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
+//   } else if (data.file == cur_root + '/source/devclk') {
+//      $('#out_devclk_en').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
+//   } else if (data.file == cur_root + '/source/pll') {
+//      $('#out_pll_en').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
+//   } else if (data.file == cur_root + '/source/sync') {
+//      $('#out_sysref_en').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
+//   } else if (data.file == cur_root + '/source/vco') {
+//      $('#out_vco_en').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
    }
 
 });
@@ -457,10 +652,11 @@ socket.on('prop_ret', function (data) {
 // en/disable the configurations
 function activateControls_rx(state) {
    $('#rf_band').bootstrapSwitch('readonly', !state);
-   $('#lna_en').bootstrapSwitch('readonly', !state);
-   $("#synth_freq").prop('disabled', !state);
-   $("#synth_freq_set").prop('disabled', !state);
+   $('#pa_en').bootstrapSwitch('readonly', !(state && $('#rf_band').bootstrapSwitch('state')));
+   $("#synth_freq").prop('disabled', !(state && $('#rf_band').bootstrapSwitch('state')));
+   $("#synth_freq_set").prop('disabled', !(state && $('#rf_band').bootstrapSwitch('state')));
    $("#gain_range").prop('disabled', !state);
+   $("#atten_range").prop('disabled', !(state && $('#rf_band').bootstrapSwitch('state')));
    $("#dsp_reset").prop('disabled', !state);
    //$('#signed').bootstrapSwitch('readonly', !state);
    $("#dsp_nco").prop('disabled', !state);
@@ -476,15 +672,14 @@ function activateControls_rx(state) {
 
 function activateControls_tx(state) {
    $('#rf_band').bootstrapSwitch('readonly', !state);
-   $("#synth_freq").prop('disabled', !state);
-   $("#synth_freq_set").prop('disabled', !state);
+   $("#synth_freq").prop('disabled', !(state && $('#rf_band').bootstrapSwitch('state')));
+   $("#synth_freq_set").prop('disabled', !(state && $('#rf_band').bootstrapSwitch('state')));
    $("#dac_nco").prop('disabled', !state);
    $("#dac_nco_set").prop('disabled', !state);
    $("#ibias_range").prop('disabled', !state);
    $("#qbias_range").prop('disabled', !state);
    $("#gain_range").prop('disabled', !state);
    $("#dsp_reset").prop('disabled', !state);
-   $("#mute").prop('disabled', !state);
    $("#dsp_nco").prop('disabled', !state);
    $("#dsp_nco_set").prop('disabled', !state);
    $("#sr").prop('disabled', !state);
@@ -495,10 +690,11 @@ function activateControls_tx(state) {
 
 // write the current settings to SDR
 function write_rx() {
-   socket.emit('prop_wr', { file: cur_root + '/rf/freq/val'   , message: $('#synth_freq').val()});
-   socket.emit('prop_wr', { file: cur_root + '/rf/freq/lna'   , message: $('#lna_en').bootstrapSwitch('state') ? '0' : '1'});
+   socket.emit('prop_wr', { file: cur_root + '/rf/freq/lna'   , message: $('#pa_en').bootstrapSwitch('state') ? '0' : '1'});
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/band'  , message: $('#rf_band').bootstrapSwitch('state') ? '1' : '0'});
    socket.emit('prop_wr', { file: cur_root + '/rf/gain/val'   , message: $('#gain_range').val()});
+   socket.emit('prop_wr', { file: cur_root + '/rf/atten/val'  , message: $('#atten_range').val()});
+   socket.emit('prop_wr', { file: cur_root + '/rf/freq/val'   , message: $('#synth_freq').val()});
    socket.emit('prop_wr', { file: cur_root + '/dsp/signed'    , message: $('#signed').bootstrapSwitch('state') ? '1' : '0'});
    socket.emit('prop_wr', { file: cur_root + '/dsp/nco_adj'   , message: $('#dsp_nco').val()});
    socket.emit('prop_wr', { file: cur_root + '/dsp/rate'      , message: $('#sr').val()});
@@ -509,12 +705,12 @@ function write_rx() {
 }
 
 function write_tx() {
-   socket.emit('prop_wr', { file: cur_root + '/rf/freq/val'   , message: $('#synth_freq').val()});
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/i_bias', message: $('#ibias_range').val()/100});
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/q_bias', message: $('#qbias_range').val()/100});
    socket.emit('prop_wr', { file: cur_root + '/rf/freq/band'  , message: $('#rf_band').bootstrapSwitch('state') ? '1' : '0'});
    socket.emit('prop_wr', { file: cur_root + '/rf/gain/val'   , message: $('#gain_range').val()});
    socket.emit('prop_wr', { file: cur_root + '/rf/dac/nco'    , message: $('#dac_nco').val()});
+   socket.emit('prop_wr', { file: cur_root + '/rf/freq/val'   , message: $('#synth_freq').val()});
    socket.emit('prop_wr', { file: cur_root + '/dsp/nco_adj'   , message: $('#dsp_nco').val()});
    socket.emit('prop_wr', { file: cur_root + '/dsp/rate'      , message: $('#sr').val()});
    socket.emit('prop_wr', { file: cur_root + '/link/port'     , message: $('#port').val()});
@@ -534,10 +730,12 @@ function load_config (isLoad) {
 }
 
 function load_rx (isLoad) {
+   socket.emit('prop_rd', { file: cur_root + '/pwr'           ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/rf/freq/band'  ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/freq/val'   ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/freq/lna'   ,debug: isLoad});
-   socket.emit('prop_rd', { file: cur_root + '/rf/freq/band'  ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/gain/val'   ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/rf/atten/val'  ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/dsp/signed'    ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/dsp/nco_adj'   ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/dsp/rate'      ,debug: isLoad});
@@ -545,25 +743,26 @@ function load_rx (isLoad) {
    socket.emit('prop_rd', { file: cur_root + '/link/port'     ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/link/ip_dest'  ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/link/mac_dest' ,debug: isLoad});
-   socket.emit('prop_rd', { file: cur_root + '/pwr'           ,debug: isLoad});
 }
 
 function load_tx (isLoad) {
-   socket.emit('prop_rd', { file: cur_root + '/rf/freq/val'   ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/pwr'           ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/freq/i_bias',debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/freq/q_bias',debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/freq/band'  ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/rf/freq/val'   ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/gain/val'   ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/rf/dac/nco'    ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/dsp/nco_adj'   ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/dsp/rate'      ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/link/port'     ,debug: isLoad});
-   socket.emit('prop_rd', { file: cur_root + '/pwr'           ,debug: isLoad});
 }
 
 function load_clock (isLoad) {
-   socket.emit('prop_rd', { file: cur_root + '/source/vco'    ,debug: isLoad});
-   socket.emit('prop_rd', { file: cur_root + '/source/sync'   ,debug: isLoad});
+//   socket.emit('prop_rd', { file: cur_root + '/source/vco'    ,debug: isLoad});
+//   socket.emit('prop_rd', { file: cur_root + '/source/sysref' ,debug: isLoad});
+//   socket.emit('prop_rd', { file: cur_root + '/source/devclk' ,debug: isLoad});
+//   socket.emit('prop_rd', { file: cur_root + '/source/pll'    ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/source/ref'    ,debug: isLoad});
 }
 
@@ -582,7 +781,7 @@ window.onload = function() {
    } else if (pathname.indexOf('debug') > -1) {
       cur_board = 'fpga';
       cur_root = cur_board;
-      //loadFunc = load_debug;
+      return;
    } else if (pathname.indexOf('rx') > -1) {
       cur_board = 'rx';
       cur_root = cur_board + '_' + cur_chan;
@@ -591,6 +790,10 @@ window.onload = function() {
       cur_board = 'tx';
       cur_root = cur_board + '_' + cur_chan;
       loadFunc = load_tx;
+   } else {
+      cur_board = 'coverpage';
+      cur_root = cur_board;
+      return;
    }
 
    loadFunc(true);
