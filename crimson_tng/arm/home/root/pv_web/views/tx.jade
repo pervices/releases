@@ -17,49 +17,48 @@ block content
    input(type="checkbox", name='en', unchecked)#chan_en
    h3 Radio Configuration
    hr
-   .container-fluid(style="text-align:left;")
+   .container-fluid(style="text-align:center;")
       .row
          .col-md-1.right-pad-0
             p
                b RF Band
             input(type="checkbox", name='hi-low', unchecked)#rf_band
-         .col-md-1
-            p
-               b Synth Freq
-            button.btn.btn-default.btn-xs#mute Mute
          .col-md-2.right-pad-0
-            p
-               b Synthesizer Frequency
-            input.input-xs.width-100(type="text")#synth_freq
-            |  Hz &nbsp;&nbsp;
-            button.btn.btn-default.btn-xs#synth_freq_set Set
+            .row
+               p
+                  b Synthesizer Frequency
+               input.input-xs.width-100(type="text")#synth_freq
+               |  Hz &nbsp;&nbsp;
+               button.btn.btn-default.btn-xs#synth_freq_set Set
+            .row
+               div(class="alert alert-danger", style="display: none")#synth_error_display MUST be >= 53MHz
          .col-md-2.right-pad-0
             p
                b DAC NCO Offset
             input.input-xs.width-100(type="text")#dac_nco
             |  Hz &nbsp;&nbsp;
             button.btn.btn-default.btn-xs#dac_nco_set Set
-         .col-md-2.right-pad-0
+         .col-md-3.right-pad-0
             p
                b IQ Voltage Bias
             .row
-               .col-md-5.align-left.no-padding#ibias_display I:
+               .col-md-5.align-right.no-padding#ibias_display I:
                .col-md-7
                   input(type='range', min='0', max='2400', step='100')#ibias_range
             .row
-               .col-md-5.align-left.no-padding#qbias_display Q:
+               .col-md-5.align-right.no-padding#qbias_display Q:
                .col-md-7
                   input(type='range', min='0', max='2400', step='100')#qbias_range
             p
                .inline-block
          .col-md-4
             p
-               b TX Gain - RFSA2013
-            input(type='range', min='0', max='28', step='1')#gain_range
+               b TX Gain - PE43704
+            input(type='range', min='0', max='127', step='1')#gain_range
             p
                #gain_display.inline-block
                   
-   img(src="/img/tx_chain.svg", style="max-width: 100%;max-height: 100%;").center
+   img(src="/img/tx_chain.svg", style="width: 100%; height: 100%;").center
    h3 TX DSP Chain
    hr
    .container-fluid(style="text-align:left")
@@ -86,7 +85,6 @@ block content
             .row(style="padding-top:10px;")
                .col-md-12
                   | Actual: 322265625 * 
-                  #sr_resamp_display.inline-block
                   #sr_div_display.inline-block
                   |  = 
                   #sr_display.inline-block
@@ -113,7 +111,7 @@ block content
                   input.width-150.input-xs(type="text")#port
    br
    br
-   img(src="/img/tx_dsp.svg", style="max-width: 100%;max-height: 100%;").center
+   img(src="/img/tx_dsp.svg", style="width: 75%; height: 75%;").center
    br
    h3 TX Board Control
    hr
@@ -154,4 +152,4 @@ block content
          .col-md-7
             b Console Output
             br
-            textarea.form-control#cout(rows='10')
+            textarea.form-control#cout(rows='10', readonly)

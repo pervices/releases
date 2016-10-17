@@ -17,7 +17,7 @@ block content
    input(type="checkbox", name='en', unchecked)#chan_en
    h3 Radio Configuration
    hr
-   .container-fluid(style="text-align:left")
+   .container-fluid(style="text-align:center")
       .row
          .col-md-1
             p
@@ -25,21 +25,35 @@ block content
             input(type="checkbox", name='hi-low', unchecked)#rf_band
          .col-md-1
             p
-               b LNA Enable
-            input(type="checkbox", name='en', unchecked)#lna_en
+               b PA Enable
+            input(type="checkbox", name='en', unchecked)#pa_en
          .col-md-2
-            p
-               b Synthesizer Frequency
-            input.input-xs(type="text").width-100#synth_freq
-            |  Hz &nbsp;&nbsp;
-            button.btn.btn-default.btn-xs#synth_freq_set Set
-         .col-md-7
-            p
-               b RX Gain - ADRF6518
-            input(type='range', min='0', max='95', step='1')#gain_range
-            p
-               #gain_display.inline-block
-   img(src="/img/rx_chain.svg", style="max-width: 100%;max-height: 100%;").center
+            .row 
+               p
+                  b Synthesizer Frequency
+               input.input-xs(type="text").width-100#synth_freq
+               |  Hz &nbsp;&nbsp;
+               button.btn.btn-default.btn-xs#synth_freq_set Set
+            .row
+               div(class="alert alert-danger", style="display: none")#synth_error_display MUST be >= 53MHz
+         .col-md-8
+            .row
+               .col-md-6
+                  p
+                     b RX Attenuation - PE43704
+                  input(type='range', min='0', max='127', step='1')#atten_range
+                  p
+                     #atten_display.inline-block
+               .col-md-6
+                  p
+                     b RX Gain - LMH6521
+                  input(type='range', min='0', max='126', step='2')#gain_range
+                  p
+                     #gain_display.inline-block
+            .row
+               div(class="alert alert-warning", style="display: none")#overvolt_warning ADC INPUT OVER-VOLTAGE DETECTED! REDUCE GAIN OR INCREASE ATTENUATON.
+                  
+   img(src="/img/rx_chain.svg", style="width: 100%; height: 100%;").center
    h3 RX DSP Chain
    hr
    .container-fluid(style="text-align:left")
@@ -70,7 +84,6 @@ block content
             .row(style="padding-top:10px;")
                .col-md-12
                   | Actual: 322265625 * 
-                  #sr_resamp_display.inline-block
                   #sr_div_display.inline-block
                   |  = 
                   #sr_display.inline-block
@@ -102,7 +115,7 @@ block content
             input(type="checkbox", name='en', unchecked)#loopback
    br
    br
-   img(src="/img/rx_dsp.svg", style="max-width: 100%;max-height: 100%;").center
+   img(src="/img/rx_dsp.svg", style="width: 75%; height: 75%;").center
    br
    h3 RX Board Control
    hr
@@ -120,7 +133,7 @@ block content
                .col-md-3.top-buffer-5.right-pad-0
                   | ADC
                .col-md-3.top-buffer-5.right-pad-0
-                  | ADRF
+                  | LMH
                .col-md-3.top-buffer-5.right-pad-0
                   | GPIOX
                .col-md-3.top-buffer-5.right-pad-0
@@ -147,4 +160,4 @@ block content
          .col-md-7
             b Console Output
             br
-            textarea.form-control#cout(rows='10')
+            textarea.form-control#cout(rows='10', readonly)

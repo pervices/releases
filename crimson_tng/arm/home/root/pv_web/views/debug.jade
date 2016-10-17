@@ -15,11 +15,11 @@ block content
       tbody
          tr
             td AD5624R
-            td Quad 12-bit nanoDACs
-            td Voltage controlled attenuators, varactor, RF mixing
+            td Quad 12-bit nanoDAC
+            td Reference VCO Tuning, RF Mixing
             td 
-               a(href="http://www.analog.com/static/imported-files/data_sheets/AD5624R_5644R_5664R.pdf", target="_blank") Datasheet
-            td TX,RX
+               a(href="http://www.analog.com/media/en/technical-documentation/data-sheets/AD5624R_5644R_5664R.pdf", target="_blank") Datasheet
+            td RX
          tr
             td ADC16DX370
             td Dual 16-bit ADC with JESD204B
@@ -28,11 +28,18 @@ block content
                a(href="http://www.ti.com/lit/gpn/adc16dx370", target="_blank") Datasheet
             td RX
          tr
-            td ADRF6518
-            td Variable Gain Amplifier with Baseband Filter
-            td ADC driver before the ADC16DX370
+            td ADF4355
+            td Fractional-N PLL with VCO
+            td 54-6800 MHz synthesizer for RF mixing on the high band RF chain
             td 
-               a(href="http://www.analog.com/static/imported-files/data_sheets/ADRF6518.pdf", target="_blank") Datasheet
+               a(href="http://www.analog.com/media/en/technical-documentation/data-sheets/ADF4355.pdf", target="_blank") Datasheet
+            td TX, RX
+         tr
+            td CDCLVP1204
+            td High Performance Clock Buffer
+            td Reference Input Clock Buffer
+            td 
+               a(href="http://www.ti.com/lit/ds/symlink/cdclvp1204.pdf", target="_blank") Datasheet
             td RX
          tr
             td DAC38J84
@@ -49,26 +56,19 @@ block content
                a(href="http://www.nxp.com/documents/data_sheet/PCA9538.pdf", target="_blank") Datasheet
             td TX, RX
          tr
-            td HMC830LP6G
-            td Fractional-N PLL with VCO
-            td 25-3000 MHz synthesizer to feed into HMC833LP6G
+            td HMC988LP3E
+            td Programmable Clock Divider and Delay
+            td RF Programmable Phase Delay 
             td 
-               a(href="http://www.hittite.com/content/documents/data_sheet/hmc830lp6g.pdf", target="_blank") Datasheet
-            td TX, RX
-         tr
-            td HMC833LP6G
-            td Fractional-N PLL with VCO
-            td 25-6000 MHz synthesizer for RF mixing on the high band RF chain
-            td 
-               a(href="http://www.hittite.com/content/documents/data_sheet/hmc833lp6g.pdf", target="_blank") Datasheet
-            td TX, RX
-         tr
-            td HMC987LP5E
-            td Low Noise Fanout Buffer
-            td Clock buffer prior to fanout into daughter boards
-            td 
-               a(href="https://www.hittite.com/content/documents/data_sheet/hmc987lp5e.pdf", target="_blank") Datasheet
+               a(href="http://www.analog.com/media/en/technical-documentation/data-sheets/hmc988.pdf", target="_blank") Datasheet
             td Synth
+         tr
+            td LMH6521
+            td Variable Gain Amplifier
+            td ADC driver before the ADC16DX370
+            td 
+               a(href="http://www.ti.com/lit/ds/symlink/lmh6521.pdf", target="_blank") Datasheet
+            td RX
          tr
             td LMK04828
             td Dual/Cascaded PLL
@@ -76,6 +76,13 @@ block content
             td 
                a(href="http://www.ti.com/lit/gpn/lmk04828", target="_blank") Datasheet
             td Synth
+         tr
+            td PE43704
+            td Digital Step Attenuator
+            td RF Programmable Attenuation
+            td 
+               a(href="http://www.psemi.com/pdf/datasheets/pe43704ds.pdf", target="_blank") Datasheet
+            td TX, RX
    br
    h3 Raw Command Line Interface
    hr
@@ -90,8 +97,8 @@ block content
          .col-md-7
             | Console Output
             br
-            textarea.form-control#cout(rows='15')
+            textarea.form-control#cout(rows='15', readonly)
          .col-md-5
             | Command History
             br
-            textarea.form-control#chist(rows='15')
+            textarea.form-control#chist(rows='15', readonly)
