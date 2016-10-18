@@ -1,0 +1,13 @@
+[Unit]
+Description=Crimson Server
+Requires=network-online.target
+Before=crimson-website.service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/server -d
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
