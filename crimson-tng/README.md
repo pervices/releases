@@ -1,12 +1,6 @@
 Per Vices Crimson TNG Testing Release
 ==========================
 
-## FILESYSTEM
-The code here pertains to the Linux file system running on the SoC. Copy
-the contents of this folder into the root directory of the file system.
-```
-scp -r filesystem/* root@192.168.10.2:/
-```
 ## MCU
 The files in this directory contains the utility and the latest code that
 are used to flash the MCU
