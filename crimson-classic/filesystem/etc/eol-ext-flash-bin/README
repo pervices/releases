@@ -1,0 +1,8 @@
+mcu/bin: avrdude versions of the MCU code.
+
+This code is only required to support external programming, using
+the programming dongle for Crimson Classic.
+
+Do not use these binaries with the default AVR tool; you will
+break your Crimson Classic unit. These binaries are provided
+for End Of Life support only.
