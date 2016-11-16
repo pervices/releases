@@ -116,7 +116,7 @@ def convert_str_to_int(string):
 # Checks the requested file system format is supported
 def validate_format(fs_format):
 
-    match = re.search("^(ext[2-4]|xfs|vfat|fat|none|raw)$", fs_format, re.I)
+    match = re.search("^(ext[2-4]|xfs|fat32|vfat|fat|none|raw)$", fs_format, re.I)
     if match:
         return True
     else:
@@ -194,7 +194,7 @@ def derive_fdisk_type_from_format(pformat):
 
     if re.match('^ext[2-4]|xfs$', pformat):
         ptype = '83'
-    elif re.match('^vfat|fat$', pformat):
+    elif re.match('^vfat|fat|fat32$', pformat):
         ptype = 'b'
     else:
         print "error:", pformat,": unknown format"
@@ -326,21 +326,18 @@ def create_loopback(image_name, size, offset=0):
 
     try:
         if offset != 0:
-            device = check_output(["losetup", "-f"])
-            dummy = check_output(
-                  ["losetup", "-f", "-o "+str(offset),
+            device = check_output(
+                  ["losetup", "--show", "-f", "-o "+str(offset),
                    "--sizelimit", str(size), image_name])
         else:
-            device = check_output(["losetup", "-f"])        
-            dummy = check_output(
-                        ["losetup", "-f",
+            device = check_output(
+                        ["losetup", "--show", "-f",
                          "--sizelimit", str(size), image_name])
     except subprocess.CalledProcessError:
         print "error: failed to get a loopback device"
         clean_up()
         sys.exit(-1)
 
-    print "After losetup: " + check_output(["losetup", "-f"])
     # strip trailing \n
     device = str.rstrip(device)
     # keep track of the devices used
@@ -351,7 +348,6 @@ def create_loopback(image_name, size, offset=0):
 #==============================================================================
 # this function deletes a loopback device
 def delete_loopback(device):
-    print "Devices: " + str(device)
 
     try:
         check_output(["losetup", "-d", str(device)], stderr=subprocess.STDOUT)
@@ -456,7 +452,7 @@ def get_mkfs_from_format(pformat):
 
     if re.search("^ext[2-4]$", pformat):
         cmd = "mkfs."+pformat
-    elif re.search("fat|vfat", pformat):
+    elif re.search("fat|vfat|fat32", pformat):
         cmd = "mkfs.vfat"
     elif re.search("^xfs$", pformat):
         cmd = "mkfs.xfs"
@@ -464,13 +460,29 @@ def get_mkfs_from_format(pformat):
     return cmd
 
 #==============================================================================
+# map format to a command parameter
+def get_mkfs_params_from_format(pformat):
+
+    params = ""
+
+    if re.search("fat32", pformat):
+        params = "-F 32"
+
+    return params
+
+#==============================================================================
 # formats a vlock device
 def format_partition(loopback, fs_format):
 
     cmd = get_mkfs_from_format(fs_format)
+    params = get_mkfs_params_from_format(fs_format)
     if cmd:
-        p = subprocess.Popen([cmd, loopback],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if params:
+            p = subprocess.Popen([cmd, loopback, params],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        else:
+            p = subprocess.Popen([cmd, loopback],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         #RODO: add timeout?
         p.wait()
         if p.returncode != 0:
@@ -480,6 +492,13 @@ def format_partition(loopback, fs_format):
 
     return
 
+def get_mountfs_from_format(pformat):
+    format = pformat
+
+    if re.search("fat32|fat", pformat):
+        format = "vfat"
+
+    return format
 #==============================================================================
 # mount a file system
 #! returns the mnt point
@@ -493,7 +512,9 @@ def mount_fs(loopback, fs_format):
         clean_up()
         sys.exit(-1)
 
-    p = subprocess.Popen(["mount", "-t", str(fs_format), loopback, mp],
+    format = get_mountfs_from_format(fs_format)
+
+    p = subprocess.Popen(["mount", "-t", format, loopback, mp],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
     if p.returncode != 0:
@@ -563,7 +584,7 @@ def do_copy(loopback, partition_data):
             stuff = stuff+"/*"
 
         # some file systems have limited flags like FAT
-        if re.search("^fat|vfat$", partition_data['format']):
+        if re.search("^fat|vfat|fat32$", partition_data['format']):
             cp_opt = "-rt"
         else:
             cp_opt = "-at"
@@ -608,6 +629,11 @@ def copy_files_to_partition(loopback, partition_data):
 def do_partition(partition, image_name):
 
     offset_bytes = partition['start'] * 512
+
+    if partition['format'] == "fat32" and partition['size'] < 33554432:
+        print "error: Unable to create a fat32 partition size < 32MB"
+        sys.exit(-1)
+
     loopback = create_loopback(image_name, partition['size'], offset_bytes)
     format_partition(loopback, partition['format'])
     copy_files_to_partition(loopback, partition)
@@ -662,7 +688,7 @@ Usage: PROG [-h] -P <partition info> [-P ...]
 ))
 parser.add_argument('-P', dest='part_args', action='append',
                     help='''specifies a partition. May be used multiple times.
-                            file[,file,...],num=<part_num>,format=<vfat|ext[2-4]|xfs|raw>,
+                            file[,file,...],num=<part_num>,format=<vfat|fat32|ext[2-4]|xfs|raw>,
                             size=<num[K|M|G]>[,type=ID]''')
 parser.add_argument('-s', dest='size', action='store',
                     default='8G', help='specifies the size of the image. Units K|M|G can be used.')
