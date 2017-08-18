@@ -14,10 +14,9 @@ PATH_TIME="/dev/ttycrimson-time"
 PATH_RX="/dev/ttycrimson-rx"
 PATH_TX="/dev/ttycrimson-tx"
 
-HEXFILE_TIME="synth.hex"
-HEXFILE_RX="rx.hex"
-HEXFILE_TX="tx.hex"
-
+HEXFILE_TIME="/lib/mcu/synth.hex"
+HEXFILE_RX="/lib/mcu/rx.hex"
+HEXFILE_TX="/lib/mcu/tx.hex"
 
 AVRDUDE_BIN="avrdude"
 AVRDUDE_ARGS="-c avr109 -B 8 -p x256a3u -b 115200"
@@ -29,10 +28,15 @@ AVRDUDE_FUSES="-U fuse2:w:0xBE:m  -U fuse4:w:0xF3:m -U fuse5:w:0xE9:m"
 #Bootloader specific functions
 BOOTLOADER_LOAD_PATTERN="BOOT"
 BOOTLOADER_ENTRY_SEQUENCE="abcdefghijklmnopqrstuvwxyz\r"
+#Approximately three times the default watchdog timeout value.
+BOOTLOADER_TIMEOUT="19"
+
+#Check permissions to confirm running as root.
+CHECKPERM=$(whoami)
 
 # Prep functions to be carried out prior to programming.
 function start_prep {
-    if [ ! -f /etc/crimson/crimson-mcu ]; 
+    if [ ! -f /etc/crimson/crimson-mcu ];
     then
             echo -e "WARNING: Unable to determine version."
     else
@@ -87,7 +91,7 @@ function program_app() {
         #Get current time dangerously
         #There needs to be a better method to doing this then
         #using the system time, which is mutable.
-        EXIT_TIME=$(( $(date +%s) + 10 ))
+        EXIT_TIME=$(( $(date +%s) + $BOOTLOADER_TIMEOUT ))
 
         echo -e "Using $BOARD_HEX to program $PATH_DEV\n"
 
@@ -122,7 +126,7 @@ function program_app() {
                             echo -e "ERROR: Invalid Operation specified: $BOARD_OP "
                         fi
                         echo -e "exit\r" > $PATH_DEV
-                        echo "installed-${version}-$BOARD_HEX" >> /etc/crimson/crimson-mcu
+                        echo "[$(date -Ins)] FLASH.SH: Installed  installed-${version}-$BOARD_HEX" >> /etc/crimson/crimson-mcu
                         fpga_progpin_disable
                         break
                 fi
@@ -142,17 +146,26 @@ function program_app() {
 
 }
 
+# Check if root.
+if [ "$CHECKPERM" != 'root' ];
+then
+    echo -e "[$(date -Ins)] $0 ERROR: $0 must be run with root permissions, or using:"
+    echo -e "\t sudo $0";
+    exit 1
+fi
+
+
 # Check number of arguaments
 if [ $# -lt 2 ] || [ $# -gt 2 ]; 
 then
     help_summary
-    return 1
+    exit 1
 fi
 
 if [ "$1" != 'w' ] && [ "$1" != 'v' ]
 then
     help_summary
-    return 1
+    exit 1
 fi
 
 if [ "$2" != 'time' ] && [ "$2" != 'tx' ] && [ "$2" != 'rx' ] && [ "$2" != 'all' ]
@@ -169,19 +182,21 @@ start_prep
 
 BOARD_OPERATON="$1"
 
+
 if [ "$2" = 'time' ] || [ "$2" = 'all' ]
 then
         program_app "$PATH_TIME"  "$HEXFILE_TIME" "$BOARD_OPERATON"
 fi
 
-if [ "$2" = 'rx' ] || [ "$2" = 'all' ]
-then
-        program_app "$PATH_RX"  "$HEXFILE_RX" "$BOARD_OPERATON"
-fi
-
 if [ "$2" = 'tx' ] || [ "$2" = 'all' ]
 then
         program_app "$PATH_TX"  "$HEXFILE_TX" "$BOARD_OPERATON"
+fi
+
+
+if [ "$2" = 'rx' ] || [ "$2" = 'all' ]
+then
+        program_app "$PATH_RX"  "$HEXFILE_RX" "$BOARD_OPERATON"
 fi
 #
 # This function MUST be the last thing called.
