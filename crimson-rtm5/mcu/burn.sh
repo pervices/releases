@@ -1,14 +1,14 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] \n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5]\n"
     echo -e "Examples:"
-    echo -e "\t Flash Tx bootloader code:"
-    echo -e "\t\t $0 b tx\n"
-    echo -e "\t Flash Rx application code:"
-    echo -e "\t\t $0 a rx\n"
-    echo -e "\t Flash Time bootloader and application code:"
-    echo -e "\t\t $0 c time\n"
+    echo -e "\t Flash RTM4 Tx bootloader code:"
+    echo -e "\t\t $0 b tx rtm4\n"
+    echo -e "\t Flash RTM5 Rx application code:"
+    echo -e "\t\t $0 a rx rtm5\n"
+    echo -e "\t Flash RTM4 Time bootloader and application code:"
+    echo -e "\t\t $0 c time rtm4\n"
     exit
 }
 
@@ -26,6 +26,7 @@ HEXFILE_TX_BOOT="TX-xboot-boot.hex"
 AVRDUDE_BIN="avrdude"
 AVRDUDE_ARGS="-p atxmega256a3 -P usb -c avrispmkII -B 8 -b 115200"
 AVRDUDE_FUSES="-U fuse2:w:0xBE:m  -U fuse4:w:0xF3:m -U fuse5:w:0xE9:m"
+AVRDUDE_FUSE_REV="-U fuse0:w:0xff:m" #Default Fuse to indicate unprogrammed.
 
 # Common Programming Sequence
 # program_app( $PATH_TO_DEVICE $NAME_OF_HEXFILE)
@@ -38,7 +39,7 @@ function burn_seq() {
         then
             RESPONSE=""
             echo -e "Start bootloader programming using $BOARD_HEX_BOOT"
-            echo $AVRDUDE_BIN $AVRDUDE_ARGS -e -U boot:w:$BOARD_HEX_BOOT $AVRDUDE_FUSES
+            echo $AVRDUDE_BIN $AVRDUDE_ARGS -e -U boot:w:$BOARD_HEX_BOOT $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
             $AVRDUDE_BIN $AVRDUDE_ARGS -e -U boot:w:$BOARD_HEX_BOOT $AVRDUDE_FUSES
             echo "Completed bootloader programming using $BOARD_HEX_BOOT"
             RESPONSE="marker"
@@ -69,7 +70,7 @@ function burn_seq() {
 }
 
 # Check number of arguaments
-if [ $# -lt 2 ] || [ $# -gt 2 ]; 
+if [ $# -lt 3 ] || [ $# -gt 3 ]; 
 then
     help_summary
     return 1
@@ -86,6 +87,23 @@ then
     help_summary
     return 1
 fi
+
+
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ]
+then
+    help_summary
+    return 1
+fi
+
+if [ "$3" == 'rtm4' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x04:m"
+fi
+
+if [ "$3" == 'rtm5' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x05:m"
+fi 
 
 BOARD_OPERATON="$1"
 
