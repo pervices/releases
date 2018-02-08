@@ -1,0 +1,104 @@
+extends ./layout.jade
+
+block content
+   b This section is for experienced users who understand the raw commands to configure the boards. As of now, this feature should only be reserved for Per Vices for debugging purposes. Be aware that using this feature might cause the board to be in an improper state and result in a malfunction with the boards.
+   h3 IC Information
+   hr
+   table(style="width:100%;").table
+      thead(style="font-weight:bold;")
+         tr
+            td IC
+            td Description
+            td Purpose
+            td Datasheet
+            td Location
+      tbody
+         tr
+            td AD5624R
+            td Quad 12-bit nanoDAC
+            td Reference VCO Tuning, RF Mixing
+            td 
+               a(href="http://www.analog.com/media/en/technical-documentation/data-sheets/AD5624R_5644R_5664R.pdf", target="_blank") Datasheet
+            td RX
+         tr
+            td ADC16DX370
+            td Dual 16-bit ADC with JESD204B
+            td RF IQ sampling
+            td 
+               a(href="http://www.ti.com/lit/gpn/adc16dx370", target="_blank") Datasheet
+            td RX
+         tr
+            td ADF4355
+            td Fractional-N PLL with VCO
+            td 54-6800 MHz synthesizer for RF mixing on the high band RF chain
+            td 
+               a(href="http://www.analog.com/media/en/technical-documentation/data-sheets/ADF4355.pdf", target="_blank") Datasheet
+            td TX, RX
+         tr
+            td CDCLVP1204
+            td High Performance Clock Buffer
+            td Reference Input Clock Buffer
+            td 
+               a(href="http://www.ti.com/lit/ds/symlink/cdclvp1204.pdf", target="_blank") Datasheet
+            td RX
+         tr
+            td DAC38J84
+            td Quad 16-bit DAC with JESD204B
+            td RF IQ generator
+            td 
+               a(href="http://www.ti.com/lit/gpn/dac38j84", target="_blank") Datasheet
+            td TX
+         tr
+            td GPIOX PCA9538
+            td 8-bit GPIO Extender
+            td GPIO extender to 8 pins with I2C
+            td 
+               a(href="http://www.nxp.com/documents/data_sheet/PCA9538.pdf", target="_blank") Datasheet
+            td TX, RX
+         tr
+            td HMC988LP3E
+            td Programmable Clock Divider and Delay
+            td RF Programmable Phase Delay 
+            td 
+               a(href="http://www.analog.com/media/en/technical-documentation/data-sheets/hmc988.pdf", target="_blank") Datasheet
+            td Synth
+         tr
+            td LMH6521
+            td Variable Gain Amplifier
+            td ADC driver before the ADC16DX370
+            td 
+               a(href="http://www.ti.com/lit/ds/symlink/lmh6521.pdf", target="_blank") Datasheet
+            td RX
+         tr
+            td LMK04828
+            td Dual/Cascaded PLL
+            td Clock generation for all the boards
+            td 
+               a(href="http://www.ti.com/lit/gpn/lmk04828", target="_blank") Datasheet
+            td Synth
+         tr
+            td PE43704
+            td Digital Step Attenuator
+            td RF Programmable Attenuation
+            td 
+               a(href="http://www.psemi.com/pdf/datasheets/pe43704ds.pdf", target="_blank") Datasheet
+            td TX, RX
+   br
+   h3 Raw Command Line Interface
+   hr
+   .container-fluid
+      .row
+         .col-md-1 Command: 
+         .col-md-2
+            input(type='text', style="width:100%;")#uart_cmd
+         .col-md-1
+            button.btn.btn-default.btn-sm#send_uart_cmd Send Command
+      .row
+         .col-md-7
+            | Console Output
+            br
+            textarea.form-control#cout(rows='15', readonly)
+         .col-md-5
+            | Command History
+            br
+            textarea.form-control#chist(rows='15', readonly)
