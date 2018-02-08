@@ -43,7 +43,7 @@ tar -xf crimson-rtm5.tar
 
 sudo chown root:root -R crimson-rtm5/
 
-sudo chmod a+r -R crimson-rtm5/
+sudo chmod a+rX -R crimson-rtm5/
 
 You may log in and sudo using the same password you used to copy over the binaries. 
 This will expand the tarball and create a directory called crimson-rtm5 which contains all the binaries you will need to update.
@@ -98,6 +98,8 @@ sudo systemctl stop crimson-server
 
 2. Move the upgraded binaries to /usr/bin
 
+From within the directory the release package is in, type:
+
 sudo mv crimson-rtm5/firmware/* /usr/bin/
 
 3. Sync the filesystem is synchronized by typing
@@ -124,7 +126,7 @@ sudo mount /dev/mmcblk0p1 /mnt
 
 From the same location that you copied the release package to, type;
 
-mv crimson-rtm5/fpga/soc_system.rbf /mnt/
+sudo mv crimson-rtm5/fpga/soc_system.rbf /mnt/
 
 Note: You may safely ignore the following, specific, error:
 
@@ -134,7 +136,7 @@ This is because the FAT filesystem you are copying the image to does not provide
 
 3. Safely unmount the SD Partition
 
-umount /mnt
+sudo umount /mnt
 
 This step ensures that the partition is safely unmounted.
 
@@ -148,7 +150,7 @@ These instructions assume that you are SSH'd onto the crimson unit, as the dev0 
 
 sudo rm -rf /usr/lib/node_modules/crimson-webserver
 
-2. Move the updated website directory to /usr/lib/node_modules;
+2. From the location you have the release package in, move the updated website directory to /usr/lib/node_modules;
 
 sudo mv crimson-rtm5/crimson-webserver /usr/lib/node_modules/
 
@@ -158,7 +160,7 @@ sudo chown root:root -R /usr/lib/node_modules/crimson-webserver
 
 4. Confirm read permissions of the crimson-webserver directory;
 
-sudo chmod a+r /usr/lib/node_modules/crimson-webserver
+sudo chmod a+rX /usr/lib/node_modules/crimson-webserver
 
 sudo chmod u+rw /usr/lib/node_modules/crimson-webserver
 
