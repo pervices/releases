@@ -33,7 +33,7 @@ scp -r crimson-rtm5.tar dev0@192.168.10.2:/home/dev0
 
 Using SSH, you can login to the crimson unit, and uncompress the tar ball. If you've followed the above instructions, this may be accomplished with:
 
-$ ssh dev0@192.168.10.2
+ssh dev0@192.168.10.2
 
 After logging into the unit, use sudo to correct the user and group permissions:
 
@@ -42,10 +42,10 @@ tar -xf crimson-rtm5.tar
 4. Fix file permissions to root ownership, and enable read permissions;
 
 sudo chown root:root -R crimson-rtm5/
+
 sudo chmod a+r -R crimson-rtm5/
 
-You may log in and sudo using the same password you used to copy over the binaries.
-
+You may log in and sudo using the same password you used to copy over the binaries. 
 This will expand the tarball and create a directory called crimson-rtm5 which contains all the binaries you will need to update.
 
 The remainder of these instructions assumes that you have successfully copied these files to your crimson unit, using the above instructions.
@@ -77,6 +77,7 @@ sudo mv crimson-rtm5/mcu /lib/
 Enter the mcu directory and use the flash tool to update all the MCUs;
 
 cd /lib/mcu
+
 sudo ./flash w all
 
 Wait for this process to be completed.
@@ -158,6 +159,7 @@ sudo chown root:root -R /usr/lib/node_modules/crimson-webserver
 4. Confirm read permissions of the crimson-webserver directory;
 
 sudo chmod a+r /usr/lib/node_modules/crimson-webserver
+
 sudo chmod u+rw /usr/lib/node_modules/crimson-webserver
 
 5. Sync the filesystem.
