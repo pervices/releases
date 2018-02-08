@@ -188,7 +188,9 @@ In the event that you desire phase coherence on the high frequency branch, it ma
 
 This is one-time process that regenerate the look up tables, which are specific to each Rx board and each radio chain.
 
-NOTE: It will take approximately 30 min to fully complete this process.
+NOTE 1: It will take approximately 30 min to fully complete this process.
+
+NOTE 2: If you have just updated the unit, it is best to first reboot the unit to ensure that you are using the latest code, prior to regenerating the LUT.
 
 0. SSH into the Crimson unit, using the dev0 user and the password provided by Per Vices.
 
@@ -202,12 +204,12 @@ sudo rm -rf /var/crimson/calibration-data/
 
 You will need to generate the LUT for each radio chain. During the LUT generation processs, you will not be able to use Crimson.
 
-sudo echo 1 |tee {t,r}x/{a,b,c,d}/rf/freq/lut_en
+echo 1 |sudo tee /var/crimson/state/{t,r}x/{a,b,c,d}/rf/freq/lut_en
 
 This process will take approximately 30min; when the bottom LED on the crimson unit stops flashing the process will have completed. 
 
 While logging on to the Crimson unit, you may observe the current LUT generation process status by typing;
 
-systemctl status crimson-server
+sudo systemctl status crimson-server
 
 The log results will indicate the radio chain, frequency and offset you will need.
