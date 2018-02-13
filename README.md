@@ -212,4 +212,11 @@ While logging on to the Crimson unit, you may observe the current LUT generation
 
 sudo systemctl status crimson-server
 
-The log results will indicate the radio chain, frequency and offset you will need.
+The log results will indicate the radio chain, frequency and offset you will need, and are automatically used in the calibration tables.
+
+UHD
+===
+
+After updating all components, ensure that you are running an appropriate version of UHD. Speaking broadly, if you compiled from master,
+then you should use the master UHD branch. If you compiled from another branch, you should use the corresponding branch, unless otherwise
+specified.
