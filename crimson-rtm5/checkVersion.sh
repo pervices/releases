@@ -2,7 +2,7 @@ rxHash=$(echo board -v |mcu -f r|grep Revision -m 1|tail -c 9);
 txHash=$(echo board -v |mcu -f t|grep Revision -m 1|tail -c 9); 
 synthHash=$(echo board -v |mcu -f s|grep Revision -m 1|tail -c 9); 
 serverHash=$(server -v|grep Revision|tail -c 9); 
-fpgaHash=$(server -v |grep FPGA|tail -c 9); 
+fpgaHash=$(server -v |grep FPGA|tail -c 10); 
 metapvHASH=$(cat /etc/crimson/crimson-filesystem|grep meta-pervices|tail -c 41); 
 webHASH=$(cat /etc/crimson/crimson-website|tail -c 41); 
 
@@ -11,7 +11,7 @@ CMCU=$(cat versions|grep MCU|tail -c 9)
 CFIRM=$(cat versions|grep FIRMWARE|tail -c 9)
 CMETAPV=$(cat versions|grep METAPV|tail -c 41)
 CWEB=$(cat versions|grep WEB|tail -c 41)
-CFPGA=$(cat versions|grep FPGA|tail -c 9)
+CFPGA=$(cat versions|grep FPGA|tail -c 10)
 
 error=0
 echo "Checking Version"
