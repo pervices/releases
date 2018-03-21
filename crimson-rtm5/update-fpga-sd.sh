@@ -168,7 +168,6 @@ fpga_update="/device-tree/overlays/fpga-update"
         systemctl start crimson-website
         sleep 10
         echo -e "$ok Soft update Successful"
-        ./$0 soft
         echo -e "[        ] Updating FPGA image on SD card"
         if [[ -d $sd_mountfolder ]]
         then
