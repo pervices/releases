@@ -1,1 +1,1 @@
-sh create_ramdisk.sh;sh update-website.sh;sh update-mcu.sh; sh update-server.sh ; sh update-fpga-sd.sh ; echo "Waiting 2mins for server to come up"; sleep 120; sh adf-lut.sh; 
+sh create_ramdisk.sh;sh update-website.sh;sh update-mcu.sh; sh update-server.sh ; sh update-fpga-sd.sh ; echo "Waiting 2mins for server to come up"; sleep 120; sh checkVersion.sh; sh adf-lut.sh; 
