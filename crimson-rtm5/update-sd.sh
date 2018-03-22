@@ -2,7 +2,7 @@ sh create_ramdisk.sh;sh update-website.sh;sh update-mcu.sh; sh update-server.sh 
 if [ -z "$1" ]
   then
     sh adf-lut.sh; 
-  elif [ "$1" = "nolut" ]
+  elif [ "$1" = "nolut" ]; then
     exit
   else
     sh adf-lut.sh; 
