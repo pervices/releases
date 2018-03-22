@@ -39,15 +39,15 @@ echo 'echo "OK"' >> crimsonUpdate.sh
 #Update crimson
 echo "cd $updateDirNoRel" >> crimsonUpdate.sh
 
-if [ -z "$3" ]
-  then
+echo 'if [ -z "$1" ]'>> crimsonUpdate.sh
+echo '  then'>> crimsonUpdate.sh
+    echo '      sh update-sd.sh' >> crimsonUpdate.sh
+echo '   elif [ "$1" = "nolut" ]' >> crimsonUpdate.sh
+echo '  then'>> crimsonUpdate.sh
+    echo '      sh update-sd.sh nolut' >> crimsonUpdate.sh
+echo '  else' >> crimsonUpdate.sh
     echo 'sh update-sd.sh' >> crimsonUpdate.sh
-  elif [ "$3" = "nolut" ]
-  then
-    echo 'sh update-sd.sh nolut' >> crimsonUpdate.sh
-  else
-    echo 'sh update-sd.sh' >> crimsonUpdate.sh
-fi
+echo 'fi' >> crimsonUpdate.sh
 
 echo "cd ../" >> crimsonUpdate.sh
 echo "rm -rf $updateDirNoRel" >> crimsonUpdate.sh
