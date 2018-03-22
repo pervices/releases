@@ -43,7 +43,6 @@ if [ -z "$w" ]
   then
     echo 'sh update-sd.sh' >> crimsonUpdate.sh
   elif [ "$w" = "nolut" ]
-    echo 'echo "ADF LUT will not be created' >> crimsonUpdate.sh
     echo 'sh update-sd.sh nolut' >> crimsonUpdate.sh
   else
     echo 'sh update-sd.sh' >> crimsonUpdate.sh
