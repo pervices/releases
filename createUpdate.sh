@@ -43,6 +43,7 @@ if [ -z "$w" ]
   then
     echo 'sh update-sd.sh' >> crimsonUpdate.sh
   elif [ "$w" = "nolut" ]
+  then
     echo 'sh update-sd.sh nolut' >> crimsonUpdate.sh
   else
     echo 'sh update-sd.sh' >> crimsonUpdate.sh
