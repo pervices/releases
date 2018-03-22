@@ -38,7 +38,16 @@ echo 'echo "OK"' >> crimsonUpdate.sh
 
 #Update crimson
 echo "cd $updateDirNoRel" >> crimsonUpdate.sh
-echo 'sh update-sd.sh' >> crimsonUpdate.sh
+
+if [ -z "$w" ]
+  then
+    echo 'sh update-sd.sh' >> crimsonUpdate.sh
+  elif [ "$w" = "nolut" ]
+    echo 'sh update-sd.sh nolut' >> crimsonUpdate.sh
+  else
+    echo 'sh update-sd.sh' >> crimsonUpdate.sh
+fi
+
 echo "cd ../" >> crimsonUpdate.sh
 echo "rm -rf $updateDirNoRel" >> crimsonUpdate.sh
 echo 'sleep 3600' >> crimsonUpdate.sh
