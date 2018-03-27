@@ -48,21 +48,21 @@ else
     error=1
 fi
 
-if [[ "$CMETAPV" = "$metapvHASH" ]];
-then
-    echo "FS-METAPV $CMETAPV"
-else
-    echo "FS-METAPV Bad: Crimson   $metapvHASH  doesnt match $CMETAPV"
-    error=1
-fi
+#if [[ "$CMETAPV" = "$metapvHASH" ]];
+#then
+#    echo "FS-METAPV $CMETAPV"
+#else
+#    echo "FS-METAPV Bad: Crimson   $metapvHASH  doesnt match $CMETAPV"
+#    error=1
+#fi
 
-if [[ "$CWEB" = "$webHASH" ]];
-then
-    echo "WEBPV $CWEB"
-else
-    echo "WEBPV Bad: Crimson  $webHASH  doesnt match $CWEB"
-    error=1
-fi
+#if [[ "$CWEB" = "$webHASH" ]];
+#then
+#    echo "WEBPV $CWEB"
+#else
+#    echo "WEBPV Bad: Crimson  $webHASH  doesnt match $CWEB"
+#    error=1
+#fi
 
 if [[ "$CFPGA" = "$fpgaHash" ]];
 then
