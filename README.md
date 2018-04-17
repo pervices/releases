@@ -23,7 +23,7 @@ There are five steps to this process;
 
 Each step shall be reviewed in order.
 
-CLONE RELEASE REPORTER
+CLONE RELEASE REPOSITORY
 ===
 
 You can use git to clone the latest releases repo as follows;
@@ -88,28 +88,21 @@ After the SDCard image and FPGA image have been update, and the server has come
 up again, (which can take up to 10minutes), you should see something similar to 
 the the following output, but with version numbers that reflect your release;
 
-
-Checking Version
-
-RX 1f33a442
-
-TX 1f33a442
-
-SYNTH 1f33a442
-
-FRIMWARE 4acd189d
-
-FS-METAPV c64b534d25b6907292cd1bd2693b21fecbba6339
-
-WEBPV 1aa775024abdff7481f973279959baa787b4f461 
-
-FPGA 9a10c7830
-
-==================
-
-VERSION GOOD
-
-==================
+---
+  
+Checking Version  
+RX 1f33a442  
+TX 1f33a442  
+SYNTH 1f33a442  
+FRIMWARE 4acd189d  
+FS-METAPV c64b534d25b6907292cd1bd2693b21fecbba6339  
+WEBPV 1aa775024abdff7481f973279959baa787b4f461  
+FPGA 9a10c7830  
+\=\=\=\=\=\=\=\=\=  
+VERSION GOOD  
+\=\=\=\=\=\=\=\=\=  
+  
+---
 
 
 To complete the update process, reboot crimson from the shell by typing:
@@ -159,6 +152,9 @@ specified.
 
 To identify the correct version of UHD, select the branch or release that shares the same release tag as the one you selected when updating Crimson.
 
+You can always determine what UHD version you have installed, by typing;
+
+$ uhd_usrp_probe --version
 
 MANUAL UPDATE INSTRUCTIONS
 ===
