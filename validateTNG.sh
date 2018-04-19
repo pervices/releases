@@ -9,7 +9,15 @@ read isrtm5
 if [[ "$isrtm5" -eq "5" ]] || [[ "$isrtm5" = "rtm5" ]] || [[ "$isrtm5" = "RTM5" ]]
 then
     echo "Validating RTM5"
-    sh validateRTM5.sh
+    if [ -z "$1" ]
+    then
+        sh validateRTM5.sh
+    elif [ "$1" = "nolut" ]
+    then
+        sh validateRTM5.sh nolut
+    else
+        sh validateRTM5.sh
+    fi
 elif [[ "$isrtm5" -eq  "4" ]] || [[ "$isrtm5" = "rtm4" ]] || [[ "$isrtm5" = "RTM4" ]]
 then
     echo "Validating RTM4"
