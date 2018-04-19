@@ -23,7 +23,7 @@ read isFlash
 if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] || [[ "$isFlash" = "yes" ]]
 then
     echo "Updating unit"
-    scp updateCrimsonRtm5 root@192.168.10.2:~/
+    scp updateCrimsonRtm5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@192.168.10.2:~/ 
     ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
     ./updateCrimsonRtm5; \
     exit\
