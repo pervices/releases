@@ -24,10 +24,25 @@ if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] 
 then
     echo "Updating unit"
     scp updateCrimsonRtm5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@192.168.10.2:~/ 
-    ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
-    ./updateCrimsonRtm5; \
-    exit\
-    '
+    
+    if [ -z "$1" ]
+    then
+        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+        ./updateCrimsonRtm5; \
+        exit\
+        '
+    elif [ "$1" = "nolut" ]
+    then
+        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+        ./updateCrimsonRtm5 nolut; \
+        exit\
+        '
+    else
+        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+        ./updateCrimsonRtm5; \
+        exit\
+        '
+    fi
     sleep 120
     echo ""
     loopDone=1
