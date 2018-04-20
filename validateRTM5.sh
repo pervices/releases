@@ -1,11 +1,6 @@
-if [ $# -lt 1 ] || [ $# -gt 1 ]; 
-then
-    echo "Specify serial number"
-    read serial_num
-else
-    fEx='.version'
-    serial_num=$1
-fi
+ echo "Specify serial number"
+read serial_num
+
 if [[ -z "${serial_num// }" ]]
 then
     echo "Error, no Serial number"
