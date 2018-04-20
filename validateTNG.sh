@@ -12,16 +12,20 @@ then
     if [ -z "$1" ]
     then
         sh validateRTM5.sh
+        cleanSDCard nolut
     elif [ "$1" = "nolut" ]
     then
         sh validateRTM5.sh nolut
+        cleanSDCard nolut
     else
         sh validateRTM5.sh
+        cleanSDCard nolut
     fi
 elif [[ "$isrtm5" -eq  "4" ]] || [[ "$isrtm5" = "rtm4" ]] || [[ "$isrtm5" = "RTM4" ]]
 then
     echo "Validating RTM4"
     sh validateRTM4.sh
+    cleanSDCard nolut
 else
     echo "No valit selection, please type '5,rtm5,RTM5' for validationg rtm5 OR '4,rtm4,RTM4' for rtm4"
 
