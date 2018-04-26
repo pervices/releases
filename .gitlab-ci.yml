@@ -12,6 +12,6 @@ run_grpv_tests_on_kempar:
        cd /home/jade/cfri-workspace/uhd-build/examples &&\
        ./tx_waveforms --rate 1e6 --freq 15e6 --wave-type SINE --wave-freq 100e3 --channels 0,1,2,3 --nsamps 10000000\
        "
-
+       
   only:
-  - master-testing
+    - master-testing
