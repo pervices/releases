@@ -51,7 +51,6 @@ echo 'fi' >> crimsonUpdate.sh
 
 echo "cd ../" >> crimsonUpdate.sh
 echo "rm -rf $updateDirNoRel" >> crimsonUpdate.sh
-echo 'echo "Finished"' >> crimsonUpdate.sh
 echo 'exit 0' >> crimsonUpdate.sh
 echo '__TARFILE_FOLLOWS__' >> crimsonUpdate.sh
 
