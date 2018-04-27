@@ -8,11 +8,33 @@ run_grpv_tests_on_kempar:
   script:
     - apk update
     - apk add openssh sshpass
+    #Display exported variables for testing
     - export
-    - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST "\
-       cd /home/jade/cfri-workspace/uhd-build/examples &&\
-       ./tx_waveforms --rate 1e6 --freq 15e6 --wave-type SINE --wave-freq 100e3 --channels 0,1,2,3 --nsamps 10000000\
-       "
+    #SSH into test setup
+    #Compile UHD in tmp folder
+    #Run command
+    - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
+       cd ~
+       tempDir=ci-temp
+       mkdir -p $tempDir
+       cd $tempDir
+       rm -rf uhd
+       git clone --branch tng-v2.0.3 https://github.com/pervices/uhd
+       cd uhd
+       mkdir build
+       cd build
+       cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_DOXYGEN=OFF -DENABLE_MANUAL=OFF -DENABLE_MAN_PAGES=OFF -DPYTHON_EXECUTABLE="$(which python2.7)" -DENABLE_C_API=OFF -DENABLE_UTILS=ON -DENABLE_USB=OFF -DENABLE_USRP2=OFF -DENABLE_X300=OFF -DENABLE_N230=OFF -DENABLE_OCTOCLOCK=OFF ../host
+       make -j8
+       git clone https://github.com/pervices/gr-pv
+       cd gr-pv
+       sed -i -e "s/plt./#plt./g" python/qa_single_streamer_loopback.py
+       mkdir build
+       cd build
+       cmake ../
+       make -j8
+       LD_PRELOAD=~/$tempDir/uhd/build/lib/libuhd.so.3 ./python/qa_single_streamer_loopback_test.sh
+       '
+       
        
   only:
     - master-testing
