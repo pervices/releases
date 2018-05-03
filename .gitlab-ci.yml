@@ -16,6 +16,10 @@ run_grpv_tests_on_kempar:
     - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
        cd ~;
        tempDir=ci-temp;
+       git clone --branch master-testing https://github.com/pervices/releases;
+       scp upateCrimsonRtm5 dev0@192.168.10.2:~/;
+       sshpass -p dev0 ssh -oStrictHostKeyChecking=no dev0@192.168.10.2 "echo dev0 | sudo -S ./updateCrimsonRtm5 nolut";
+       sleep 120
        mkdir -p $tempDir;
        cd $tempDir;
        rm -rf uhd;
