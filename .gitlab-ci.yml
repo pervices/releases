@@ -1,22 +1,15 @@
 image: alpine:latest
 
 stages:
-  - prepare
   - update
   - build
   - test
 
-prepare_job:
-  stage: prepare
-  script:
-    - apk update
-    - apk add openssh sshpass
-  only:
-    - master-testing
-
 update_crimson_on_host:
   stage: update
   script:
+    - apk update
+    - apk add openssh sshpass
     #Display exported variables for testing
     - export
     #SSH get releases and update crimson
@@ -39,6 +32,8 @@ update_crimson_on_host:
 build_uhd_gr_pv:
   stage: build
   script:
+    - apk update
+    - apk add openssh sshpass
     - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
        cd ~;
        tempDir=ci-temp;
@@ -65,6 +60,8 @@ build_uhd_gr_pv:
 run_grpv_tests_on_host:
   stage: test
   script:
+    - apk update
+    - apk add openssh sshpass
     #Run test
     - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
        cd ~;
