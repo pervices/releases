@@ -10,16 +10,25 @@ run_grpv_tests_on_kempar:
     - apk add openssh sshpass
     #Display exported variables for testing
     - export
-    #SSH into test setup
-    #Compile UHD in tmp folder
-    #Run command
+    #SSH get releases and update crimson
     - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
        cd ~;
        tempDir=ci-temp;
+       mkdir -p $tempDir;
+       cd $tempDir;
+       rm -rf releases;
        git clone --branch master-testing https://github.com/pervices/releases;
-       scp upateCrimsonRtm5 dev0@192.168.10.2:~/;
+       cd releases;
+       sshpass -p dev0 scp updateCrimsonRtm5 dev0@192.168.10.2:~/;
        sshpass -p dev0 ssh -oStrictHostKeyChecking=no dev0@192.168.10.2 "echo dev0 | sudo -S ./updateCrimsonRtm5 nolut";
+       sshpass -p dev0 ssh -oStrictHostKeyChecking=no dev0@192.168.10.2 "echo dev0 | sudo -S mem rw sys0 0";
        sleep 120
+       '
+    #SSH into test setup
+    #Compile UHD in tmp folder
+    - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
+       cd ~;
+       tempDir=ci-temp;
        mkdir -p $tempDir;
        cd $tempDir;
        rm -rf uhd;
@@ -38,7 +47,14 @@ run_grpv_tests_on_kempar:
        make -j8;
        LD_PRELOAD=~/$tempDir/uhd/build/lib/libuhd.so.3 ./python/qa_single_streamer_loopback_test.sh;
        '
-       
-       
+    #Run test
+    - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
+       cd ~;
+       tempDir=ci-temp;
+       mkdir -p $tempDir;
+       cd $tempDir;
+       cd uhd/build/gr-pv/build;
+       LD_PRELOAD=~/$tempDir/uhd/build/lib/libuhd.so.3 ./python/qa_single_streamer_loopback_test.sh;
+       '
   only:
     - master-testing
