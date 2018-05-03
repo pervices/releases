@@ -1,13 +1,22 @@
 image: alpine:latest
 
 stages:
+  - prepare
+  - update
+  - build
   - test
 
-run_grpv_tests_on_kempar:
-  stage: test
+prepare_job:
+  stage: prepare
   script:
     - apk update
     - apk add openssh sshpass
+  only:
+    - master-testing
+
+update_crimson_on_host:
+  stage: update
+  script:
     #Display exported variables for testing
     - export
     #SSH get releases and update crimson
@@ -24,8 +33,12 @@ run_grpv_tests_on_kempar:
        sshpass -p dev0 ssh -oStrictHostKeyChecking=no dev0@192.168.10.2 "echo dev0 | sudo -S mem rw sys0 0";
        sleep 120
        '
-    #SSH into test setup
-    #Compile UHD in tmp folder
+  only:
+    - master-testing
+
+build_uhd_gr_pv:
+  stage: build
+  script:
     - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
        cd ~;
        tempDir=ci-temp;
@@ -45,8 +58,13 @@ run_grpv_tests_on_kempar:
        cd build;
        cmake ../;
        make -j8;
-       LD_PRELOAD=~/$tempDir/uhd/build/lib/libuhd.so.3 ./python/qa_single_streamer_loopback_test.sh;
        '
+  only:
+    - master-testing
+  
+run_grpv_tests_on_host:
+  stage: test
+  script:
     #Run test
     - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
        cd ~;
