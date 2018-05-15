@@ -1,40 +1,75 @@
 image: alpine:latest
 
 stages:
+  - update
+  - build
   - test
 
-run_grpv_tests_on_kempar:
-  stage: test
+update_crimson_on_host:
+  stage: update
   script:
     - apk update
     - apk add openssh sshpass
     #Display exported variables for testing
     - export
-    #SSH into test setup
-    #Compile UHD in tmp folder
-    #Run command
+    #SSH get releases and update crimson
     - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
-       cd ~
-       tempDir=ci-temp
-       mkdir -p $tempDir
-       cd $tempDir
-       rm -rf uhd
-       git clone --branch tng-v2.0.3 https://github.com/pervices/uhd
-       cd uhd
-       mkdir build
-       cd build
-       cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_DOXYGEN=OFF -DENABLE_MANUAL=OFF -DENABLE_MAN_PAGES=OFF -DPYTHON_EXECUTABLE="$(which python2.7)" -DENABLE_C_API=OFF -DENABLE_UTILS=ON -DENABLE_USB=OFF -DENABLE_USRP2=OFF -DENABLE_X300=OFF -DENABLE_N230=OFF -DENABLE_OCTOCLOCK=OFF ../host
-       make -j8
-       git clone https://github.com/pervices/gr-pv
-       cd gr-pv
-       sed -i -e "s/plt./#plt./g" python/qa_single_streamer_loopback.py
-       mkdir build
-       cd build
-       cmake ../
-       make -j8
-       LD_PRELOAD=~/$tempDir/uhd/build/lib/libuhd.so.3 ./python/qa_single_streamer_loopback_test.sh
+       cd ~;
+       tempDir=ci-temp;
+       mkdir -p $tempDir;
+       cd $tempDir;
+       rm -rf releases;
+       git clone --branch master-testing https://github.com/pervices/releases;
+       cd releases;
+       sshpass -p dev0 scp updateCrimsonRtm5 dev0@192.168.10.2:~/;
+       sshpass -p dev0 ssh -oStrictHostKeyChecking=no dev0@192.168.10.2 "echo dev0 | sudo -S ./updateCrimsonRtm5 nolut";
+       sshpass -p dev0 ssh -oStrictHostKeyChecking=no dev0@192.168.10.2 "echo dev0 | sudo -S mem rw sys0 0";
+       sleep 120
        '
-       
-       
+  only:
+    - master-testing
+
+build_uhd_gr_pv:
+  stage: build
+  script:
+    - apk update
+    - apk add openssh sshpass
+    - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
+       cd ~;
+       tempDir=ci-temp;
+       mkdir -p $tempDir;
+       cd $tempDir;
+       rm -rf uhd;
+       git clone --branch master-testing https://github.com/pervices/uhd;
+       cd uhd;
+       mkdir build;
+       cd build;
+       cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_DOXYGEN=OFF -DENABLE_MANUAL=OFF -DENABLE_MAN_PAGES=OFF -DPYTHON_EXECUTABLE="$(which python2.7)" -DENABLE_C_API=OFF -DENABLE_UTILS=ON -DENABLE_USB=OFF -DENABLE_USRP2=OFF -DENABLE_X300=OFF -DENABLE_N230=OFF -DENABLE_OCTOCLOCK=OFF ../host;
+       make -j8;
+       git clone https://github.com/pervices/gr-pv;
+       cd gr-pv;
+       sed -i -e "s/plt./#plt./g" python/qa_single_streamer_loopback.py;
+       mkdir build;
+       cd build;
+       cmake ../;
+       make -j8;
+       '
+  only:
+    - master-testing
+  
+run_grpv_tests_on_host:
+  stage: test
+  script:
+    - apk update
+    - apk add openssh sshpass
+    #Run test
+    - sshpass -p $CI_PASSWORD ssh -oStrictHostKeyChecking=no $CI_USER@$CI_HOST '
+       cd ~;
+       tempDir=ci-temp;
+       mkdir -p $tempDir;
+       cd $tempDir;
+       cd uhd/build/gr-pv/build;
+       LD_PRELOAD=~/$tempDir/uhd/build/lib/libuhd.so.3 ./python/qa_single_streamer_loopback_test.sh;
+       '
   only:
     - master-testing
