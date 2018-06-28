@@ -89,7 +89,7 @@ then
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && ["$3" != 'rtm6' ]
 then
     help_summary
     return 1
@@ -104,6 +104,11 @@ if [ "$3" == 'rtm5' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x05:m"
 fi 
+
+if [ "$3" == 'rtm6' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x06:m"
+fi
 
 BOARD_OPERATON="$1"
 
