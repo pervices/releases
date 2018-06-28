@@ -1,5 +1,5 @@
 #update repository
-git pull origin ops/val/master
+git pull origin master
 
 #remove host ssh
 sed -i '/192.168.10.2/d' ~/.ssh/known_hosts
