@@ -1,14 +1,14 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5 | rtm6]\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
     echo -e "\t Flash RTM5 Rx application code:"
     echo -e "\t\t $0 a rx rtm5\n"
-    echo -e "\t Flash RTM4 Time bootloader and application code:"
-    echo -e "\t\t $0 c time rtm4\n"
+    echo -e "\t Flash RTM6 Time bootloader and application code:"
+    echo -e "\t\t $0 c time rtm6\n"
     exit
 }
 
@@ -89,7 +89,7 @@ then
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && ["$3" != 'rtm6' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ]
 then
     help_summary
     return 1
