@@ -36,11 +36,11 @@ done
 #ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ./updateCrimsonRtm4 
 
 #Get Versions from versions file
-tMCU=$(cat crimson-rtm4/versions|grep MCU|tail -c 9)
-tFIRM=$(cat crimson-rtm4/versions|grep FIRMWARE|tail -c 9)
-tMETAPV=$(cat crimson-rtm4/versions|grep METAPV|tail -c 41)
-tWEB=$(cat crimson-rtm4/versions|grep WEB|tail -c 41)
-tFPGA=$(cat crimson-rtm4/versions|grep FPGA|tail -c 10)
+tMCU=$(cat ../crimson-rtm4/versions|grep MCU|tail -c 9)
+tFIRM=$(cat ../crimson-rtm4/versions|grep FIRMWARE|tail -c 9)
+tMETAPV=$(cat ../crimson-rtm4/versions|grep METAPV|tail -c 41)
+tWEB=$(cat ../crimson-rtm4/versions|grep WEB|tail -c 41)
+tFPGA=$(cat ../crimson-rtm4/versions|grep FPGA|tail -c 10)
 
 
 #Check Versions
