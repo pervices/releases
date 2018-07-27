@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5 | rtm6]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5 | rtm6 | tate]i\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
@@ -16,12 +16,12 @@ PATH_TIME="/dev/ttycrimson-time"
 PATH_RX="/dev/ttycrimson-rx"
 PATH_TX="/dev/ttycrimson-tx"
 
-HEXFILE_TIME_APP="synth.hex"
-HEXFILE_TIME_BOOT="SYNTH-xboot-boot.hex "
-HEXFILE_RX_APP="rx.hex"
-HEXFILE_RX_BOOT="RX-xboot-boot.hex"
-HEXFILE_TX_APP="tx.hex"
-HEXFILE_TX_BOOT="TX-xboot-boot.hex"
+HEXFILE_TIME_APP="/dev/null"
+HEXFILE_TIME_BOOT="/dev/null "
+HEXFILE_RX_APP="/dev/null"
+HEXFILE_RX_BOOT="/dev/null"
+HEXFILE_TX_APP="/dev/null"
+HEXFILE_TX_BOOT="/dev/null"
 
 AVRDUDE_BIN="avrdude"
 AVRDUDE_ARGS="-p atxmega256a3 -P usb -c avrispmkII -B 8 -b 115200"
@@ -89,7 +89,7 @@ then
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'tate' ]
 then
     help_summary
     return 1
@@ -98,16 +98,45 @@ fi
 if [ "$3" == 'rtm4' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x04:m"
+    HEXFILE_TIME_APP="synth.hex"
+    HEXFILE_TIME_BOOT="SYNTH-xboot-boot.hex "
+    HEXFILE_RX_APP="rx.hex"
+    HEXFILE_RX_BOOT="RX-xboot-boot.hex"
+    HEXFILE_TX_APP="tx.hex"
+    HEXFILE_TX_BOOT="TX-xboot-boot.hex"
 fi
 
 if [ "$3" == 'rtm5' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x05:m"
-fi 
+    HEXFILE_TIME_APP="vaunt-synth.hex"
+    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
+    HEXFILE_RX_APP="vaunt-rx.hex"
+    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
+    HEXFILE_TX_APP="vaunt-tx.hex"
+    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
+fi
 
 if [ "$3" == 'rtm6' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x06:m"
+    HEXFILE_TIME_APP="vaunt-synth.hex"
+    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
+    HEXFILE_RX_APP="vaunt-rx.hex"
+    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
+    HEXFILE_TX_APP="vaunt-tx.hex"
+    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
+fi
+
+if [ "$3" == 'tate' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
+    HEXFILE_TIME_APP="tate-synth.hex"
+    HEXFILE_TIME_BOOT="TATE_SYNTH-xboot-boot.hex "
+    HEXFILE_RX_APP="tate-rx.hex"
+    HEXFILE_RX_BOOT="TATE_RX-xboot-boot.hex"
+    HEXFILE_TX_APP="tate-tx.hex"
+    HEXFILE_TX_BOOT="TATE_TX-xboot-boot.hex"
 fi
 
 BOARD_OPERATON="$1"

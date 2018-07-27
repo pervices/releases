@@ -4,6 +4,7 @@ systemctl stop crimson-server;
 systemctl mask crimson-website; 
 systemctl mask crimson-server; 
 #Ramdisk on boot
+umount /var/crimson/state
 rm -rf /var/crimson/state
 cp fstab/fstab /etc/
 #Ram disk for now
