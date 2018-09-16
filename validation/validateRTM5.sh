@@ -8,7 +8,25 @@ then
 fi
 file_name=$serial_num$fEx
 
-git pull origin master-testing
+BOARD_REV="$1"
+
+if [[ "$BOARD_REV" -eq "6" ]] || [[ "$BOARD_REV" = "rtm6" ]] || [[ "$BOARD_REV" = "RTM6" ]]
+    then
+        UPDATE_BIN="updateCrimsonRtm6"
+        UPDATE_VER="../crimson-rtm6/versions"
+        echo $UPDATE_BIN
+elif [[ "$BOARD_REV" -eq "5" ]] || [[ "$BOARD_REV" = "rtm5" ]] || [[ "$BOARD_REV" = "RTM5" ]]
+    then
+        UPDATE_BIN="updateCrimsonRtm5"
+        UPDATE_VER="../crimson-rtm5/versions"
+        echo $UPDATE_BIN
+else
+    echo "Error, invalid revision."
+    exit -1
+fi
+
+
+#git pull origin master-testing
 #update unit
 loopDone=0
 while [[ $loopDone = 0 ]]; do
@@ -18,23 +36,23 @@ read isFlash
 if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] || [[ "$isFlash" = "yes" ]]
 then
     echo "Updating unit"
-    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../updateCrimsonRtm5 root@192.168.10.2:~/ 
-    
-    if [ -z "$1" ]
+    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN root@192.168.10.2:~/
+
+    if [ -z "$2" ]
     then
         ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
-        ./updateCrimsonRtm5; \
+        ./$UPDATE_BIN; \
         exit\
         '
-    elif [ "$1" = "nolut" ]
+    elif [ "$2" = "nolut" ]
     then
         ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
-        ./updateCrimsonRtm5 nolut; \
+        ./$UPDATE_BIN nolut; \
         exit\
         '
     else
         ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
-        ./updateCrimsonRtm5; \
+        ./$UPDATE_BIN; \
         exit\
         '
     fi
@@ -51,11 +69,11 @@ done
 #ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ./updateCrimsonRtm4 
 
 #Get Versions from versions file
-tMCU=$(cat ../crimson-rtm5/versions|grep MCU|tail -c 9)
-tFIRM=$(cat ../crimson-rtm5/versions|grep FIRMWARE|tail -c 9)
-tMETAPV=$(cat ../crimson-rtm5/versions|grep METAPV|tail -c 41)
-tWEB=$(cat ../crimson-rtm5/versions|grep WEB|tail -c 41)
-tFPGA=$(cat ../crimson-rtm5/versions|grep FPGA|tail -c 10)
+tMCU=$(cat $UPDATE_VER|grep MCU|tail -c 9)
+tFIRM=$(cat $UPDATE_VER|grep FIRMWARE|tail -c 9)
+tMETAPV=$(cat $UPDATE_VER|grep METAPV|tail -c 41)
+tWEB=$(cat $UPDATE_VER|grep WEB|tail -c 41)
+tFPGA=$(cat $UPDATE_VER|grep FPGA|tail -c 10)
 
 
 #Check Versions
@@ -106,9 +124,9 @@ fi
 
 if [[ "$CFERM_u8" = "$tFIRM" ]];
 then
-    echo "FRIMWARE Good $CFERM_u8"
+    echo "FIRMWARE Good $CFERM_u8"
 else
-    echo "FRIMWARE Bad: Crimson   $CFERM_u8  doesnt match $tFIRM"
+    echo "FIRMWARE Bad: Crimson   $CFERM_u8  doesnt match $tFIRM"
     error=1
 fi
 

@@ -11,14 +11,14 @@ then
     echo "Validating RTM6"
     if [ -z "$1" ]
     then
-        sh validateRTM5.sh
+        sh validateRTM5.sh rtm6
         ./cleanSDCard.sh nolut
     elif [ "$1" = "nolut" ]
     then
-        sh validateRTM5.sh nolut
-        ./cleanSDCard.sh nolut
+        sh validateRTM5.sh rtm6 nolut
+        ./cleanSDCard.sh
     else
-        sh validateRTM5.sh
+        sh validateRTM6.sh rtm6
        ./cleanSDCard.sh nolut
     fi
 elif [[ "$isrtm" -eq "5" ]] || [[ "$isrtm" = "rtm5" ]] || [[ "$isrtm" = "RTM5" ]]
@@ -26,14 +26,14 @@ then
     echo "Validating RTM5"
     if [ -z "$1" ]
     then
-        sh validateRTM5.sh
+        sh validateRTM5.sh rtm5
         ./cleanSDCard.sh nolut
     elif [ "$1" = "nolut" ]
     then
-        sh validateRTM5.sh nolut
-        ./cleanSDCard.sh nolut
+        sh validateRTM5.sh rtm5 nolut
+        ./cleanSDCard.sh
     else
-        sh validateRTM5.sh
+        sh validateRTM5.sh rtm5
        ./cleanSDCard.sh nolut
     fi
 elif [[ "$isrtm" -eq  "4" ]] || [[ "$isrtm" = "rtm4" ]] || [[ "$isrtm" = "RTM4" ]]
@@ -42,7 +42,7 @@ then
     sh validateRTM4.sh
     ./cleanSDCard.sh nolut
 else
-    echo "No valit selection, please type '5,rtm5,RTM5' for validationg rtm5 OR '4,rtm4,RTM4' for rtm4"
+    echo "No valid selection, please type '5,rtm5,RTM5' for validationg rtm5 OR '4,rtm4,RTM4' for rtm4"
 
 fi
 
