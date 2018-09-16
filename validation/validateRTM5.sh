@@ -40,21 +40,21 @@ then
 
     if [ -z "$2" ]
     then
-        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         ./$UPDATE_BIN; \
         exit\
-        '
+        "
     elif [ "$2" = "nolut" ]
     then
-        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         ./$UPDATE_BIN nolut; \
         exit\
-        '
+        "
     else
-        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+        ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         ./$UPDATE_BIN; \
         exit\
-        '
+        "
     fi
     sleep 120
     echo ""
