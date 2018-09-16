@@ -37,6 +37,12 @@ if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] 
 then
     echo "Updating unit"
     scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN root@192.168.10.2:~/
+    
+    DATE=$(date -Ins); 
+    ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+        date -Ins -s $DATE; hwclock -w; exit \
+        "
+
 
     if [ -z "$2" ]
     then
