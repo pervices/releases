@@ -40,7 +40,7 @@ then
     
     DATE=$(date -Ins); 
     ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-        date -Ins -s $DATE; hwclock -w; exit \
+        date -Ins -s $DATE; hwclock -w; rm -rf /home/dev0/{*,.bash_history}; rm -rf /home/root/{*,.bash_history}; history -c; exit \
         "
 
 
