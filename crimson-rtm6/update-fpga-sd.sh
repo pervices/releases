@@ -3,7 +3,10 @@
 echo "Updating SD card FPGA image"
 thisDir=$(pwd)
 cd fpga
-cp soc_system.rbf /lib/firmware/
+rm /lib/firmware/*rbf
+cp ./update.sh /lib/firmware/
+cp *.rbf /lib/firmware/
+
 cd /lib/firmware
 ./update.sh hard
 
