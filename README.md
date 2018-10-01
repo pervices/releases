@@ -75,14 +75,21 @@ $ sudo -s
 
 Crimson RTM4 users:
 
-$ ./updateCrimsonRTM4
+$ ./updateCrimsonRtm4
 
 Crimson RTM5 users:
 
-$ ./updateCrimsonRTM5
+$ ./updateCrimsonRtm5
 
+Crimson RTM6 users:
+
+$ ./updateCrimsonRtm6
 
 The update process takes some time. It is very important NOT to interupt this process.
+
+NOTE: If you are only using the low band stage, or would otherwise like to skip the LUT
+table generation process, you may appent the "nolut" arguement to the update command.
+In doing so, you will skip LUT generation. 
 
 After the SDCard image and FPGA image have been update, and the server has come 
 up again, (which can take up to 10minutes), you should see something similar to 
