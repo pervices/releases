@@ -11,13 +11,9 @@ Unless otherwise instructed, you should follow the automatic update instructions
 There are five steps to this process;
 
 1. Clone the releases repository.
-
 2. Copy the release package to Crimson.
-
 3. Execute the update script and wait for it to be completed.
-
 4. (Optionally) Regenerate the look up table.
-
 5. Update to the corresponding UHD version.
 
 
@@ -28,19 +24,19 @@ CLONE RELEASE REPOSITORY
 
 You can use git to clone the latest releases repo as follows;
 
-$ git clone https://github.com/pervices/releases/tree/master
+`$ git clone https://github.com/pervices/releases/tree/master`
 
 After cloning the releases repository, fetch all the remote tags by typing;
 
-$ git fetch --all
+`$ git fetch --all`
 
 In general, the latest release shall be available on the master branch, but you can see a list of previous releases using;
 
-$ git tag -l
+`$ git tag -l`
 
 And you can check out to those releases by typing;
 
-$ git checkout 1.6.7
+`$ git checkout 1.6.7`
 
 After cloning and checking out to a specific release, enter into the release repository, to find appropriate binaries for RTM4 and RTM5 releases.
 
@@ -51,11 +47,11 @@ You may use SCP, from within the releases repo, to copy the appropriate release 
 
 Crimson RTM4 users:
 
-$ scp updateCrimsonRTM4 dev0@192.168.10.2:
+`$ scp updateCrimsonRTM4 dev0@192.168.10.2:`
 
 Crimson RTM5 users:
 
-$ scp updateCrimsonRTM5 dev0@192.168.10.2:
+`$ scp updateCrimsonRTM5 dev0@192.168.10.2:`
 
 You will be prompted for a password, which you were previously provided with.
 
@@ -69,26 +65,26 @@ To execute the update process, you will need to SSH into Crimson, and execute th
 update binary from within a root shell. To do this, type the following commands in 
 sequence;
 
-$ ssh dev0@192.168.10.2
+`$ ssh dev0@192.168.10.2`
 
-$ sudo -s
+`$ sudo -s`
 
 Crimson RTM4 users:
 
-$ ./updateCrimsonRtm4
+`$ ./updateCrimsonRtm4`
 
 Crimson RTM5 users:
 
-$ ./updateCrimsonRtm5
+`$ ./updateCrimsonRtm5`
 
 Crimson RTM6 users:
 
-$ ./updateCrimsonRtm6
+`$ ./updateCrimsonRtm6`
 
 The update process takes some time. It is very important NOT to interupt this process.
 
-NOTE: If you are only using the low band stage, or would otherwise like to skip the LUT
-table generation process, you may appent the "nolut" arguement to the update command.
+_NOTE_: If you are only using the low band stage, or would otherwise like to skip the LUT
+table generation process, you may append the "nolut" arguement to the update command.
 In doing so, you will skip LUT generation. 
 
 After the SDCard image and FPGA image have been update, and the server has come 
@@ -111,40 +107,44 @@ VERSION GOOD
   
 ---
 
+The unit will now automatically start to re-generating the look up table.
 
-To complete the update process, reboot crimson from the shell by typing:
+_NOTE:_ If you are only using the baseband (low frequency) chain, the update process
+should now be complete, and you may now reboot the Crimson unit;
 
-$ systemctl reboot now
+`$ systemctl reboot now`
 
 
 REGENERATE LOOK UP TABLE
 ===
 
-After updating to a new release, you may choose to manually regenerate the look up tables.
+By default, after running the update utility, a look up table is re-generated.
 
-This is one-time process that regenerate the look up tables, which are specific to each Rx board and each radio chain.
+The Look Up Table (LUT) generation process optimizes the high frequency chain of
+your particular Crimson unit and is unique to your specific Rx and Tx boards and
+radio chains.
 
-NOTE 1: It will take approximately 45 min to fully complete this process.
+The process to manually force the regeneration of the Look Up Table follows;
 
-NOTE 2: If you have just updated the unit, it is best to first reboot the unit to ensure that you are using the latest code, prior to regenerating the LUT.
+1. SSH into the Crimson unit, using the dev0 user and the password provided by Per Vices.
 
-0. SSH into the Crimson unit, using the dev0 user and the password provided by Per Vices.
+2. sudo to a root shell \
+        `$ sudo -s`
 
-1. Delete the directory /var/crimson/calibration-data/
+3. Delete the directory /var/crimson/calibration-data/ \
+        `# rm -rf /var/crimson/calibration-data/`
 
-type
+4. Regenerate the calibration data by enabling the LUT. \
+        `# echo 1 |sudo tee /var/crimson/state/{t,r}x/{a,b,c,d}/rf/freq/lut_en`
 
-sudo rm -rf /var/crimson/calibration-data/
 
-2. Regenerate the calibration data by enabling the LUT.
+_NOTE 1_: During the LUT generation processs, you will not be able to use Crimson.
 
-You will need to generate the LUT for each radio chain. During the LUT generation processs, you will not be able to use Crimson.
+_NOTE 2_: It will take approximately 30-45 min to fully complete this process.
 
-echo 1 |sudo tee /var/crimson/state/{t,r}x/{a,b,c,d}/rf/freq/lut_en
+The process is complete when the bottom LED on the crimson unit stops flashing.
 
-This process will take approximately 30min; when the bottom LED on the crimson unit stops flashing the process will have completed. 
-
-While logging on to the Crimson unit, you may observe the current LUT generation process status by typing;
+While logged on to the Crimson unit, you may observe the current LUT generation process status by typing;
 
 sudo systemctl status crimson-server
 
@@ -153,8 +153,8 @@ The log results will indicate the radio chain, frequency and offset you will nee
 UPDATE UHD
 ===
 
-After updating all components, ensure that you are running an appropriate version of UHD. Speaking broadly, if you compiled from master,
-then you should use the master UHD branch. If you compiled from another branch, you should use the corresponding branch, unless otherwise
+After updating your Crimson unit, you should update to an appropriate version of UHD. Speaking broadly, if you compiled from master,
+then you should use the master UHD branch. If you compiled from a release branch, you should use the corresponding branch, unless otherwise
 specified.
 
 To identify the correct version of UHD, select the branch or release that shares the same release tag as the one you selected when updating Crimson.
@@ -181,7 +181,7 @@ COPYING BINARIES TO CRIMSON
 
 For example, for a crimson-rtm5 device, open a terminal, enter the releases directory and type;
 
-$ tar -cf crimson-rtm5.tar ./crimson-rtm5
+`$ tar -cf crimson-rtm5.tar ./crimson-rtm5`
 
 This will create a file called crimson-rtm5.tar, which contains the appropriate firmware for a Crimson RTM5 unit.
 
@@ -189,23 +189,23 @@ This will create a file called crimson-rtm5.tar, which contains the appropriate 
 
 This file then needs to be copied to crimson, which you can do using SCP. Using the default ip address of 192.168.10.2, you can type;
 
-scp -r crimson-rtm5.tar dev0@192.168.10.2:/home/dev0
+`scp -r crimson-rtm5.tar dev0@192.168.10.2:/home/dev0`
 
 3. Uncompress the binary.
 
 Using SSH, you can login to the crimson unit, and uncompress the tar ball. If you've followed the above instructions, this may be accomplished with:
 
-ssh dev0@192.168.10.2
+`ssh dev0@192.168.10.2`
 
 After logging into the unit, use sudo to correct the user and group permissions:
 
-tar -xf crimson-rtm5.tar
+`tar -xf crimson-rtm5.tar`
 
 4. Fix file permissions to root ownership, and enable read permissions;
 
-sudo chown root:root -R crimson-rtm5/
+`sudo chown root:root -R crimson-rtm5/`
 
-sudo chmod a+rX -R crimson-rtm5/
+`sudo chmod a+rX -R crimson-rtm5/`
 
 You may log in and sudo using the same password you used to copy over the binaries. 
 This will expand the tarball and create a directory called crimson-rtm5 which contains all the binaries you will need to update.
@@ -222,53 +222,50 @@ IF YOU HAVE ANY QUESTIONS PLEASE CONTACT US PRIOR TO UPDATING MCU CODE.
 
 These instructions assume that you are SSH'd onto the crimson unit, as the dev0 user, and have a release package called crimson-rtm5.
 
+0. Stop the crimson server to ensure a clean update;\
+    `sudo systemctl stop crimson-server`
+
 1. Replace the existing MCU binaries in /lib/mcu
 
-The most straight forward way of ensuring a clean update is to first delete the existing MCU folder, and then replace it by moving the new MCU directory to the appropriate location.
+    1. The most straight forward way of ensuring a clean update is to first delete the existing MCU folder, and then replace it by moving the new MCU directory to the appropriate location.
 
-To delete the existing directory, type;
+    2. To delete the existing directory, type; \
+        `sudo rm -rf /lib/mcu`
 
-sudo rm -rf /lib/mcu
-
-Then, replace it with the updated MCU directory. Navigate to the location that you copied the crimson-rtm5 update directory to, and type;
-
-sudo mv crimson-rtm5/mcu /lib/
+    3. Then, replace it with the updated MCU directory. Navigate to the location that you copied the crimson-rtm5 update directory to, and type;\
+        `sudo mv crimson-rtm5/mcu /lib/`
 
 2. Flash all the MCUs
 
-Enter the mcu directory and use the flash tool to update all the MCUs;
+    1. Enter the mcu directory and use the flash tool to update all the MCUs; \
+        `cd /lib/mcu` \
+        `sudo ./flash w all`
 
-cd /lib/mcu
-
-sudo ./flash w all
-
-Wait for this process to be completed.
+3. Wait for this process to be completed.
 
 When the process is completed, all the MCUs will have been updated.
 
 
-MANUAL FILESYSTEM UPDATE
+MANUAL BINARY UPDATE
 ===
 
 These instructions assume that you are SSH'd onto the crimson unit, as the dev0 user, and have a release package called crimson-rtm5.
 
-1. First, stop the crimson-server process.
+0. Enter a root shell using sudo;\
+    `sudo -s`
 
-You can do this by typing:
+1. Stop the crimson-server process.
 
-sudo systemctl stop crimson-server
+    1. You can do this by typing: \
+        `systemctl stop crimson-server`
 
 2. Move the upgraded binaries to /usr/bin
 
-From within the directory the release package is in, type:
+    1. From within the directory the release package is in, type:\
+        `mv crimson-rtm5/firmware/* /usr/bin/`
 
-sudo mv crimson-rtm5/firmware/* /usr/bin/
-
-3. Sync the filesystem is synchronized by typing
-
-Simply run the following command;
-
-sync
+3. Sync the filesystem is synchronized by typing; \
+        `sync`
 
 
 MANUAL FPGA RTL UPDATE
@@ -280,25 +277,19 @@ These instructions assume that you are SSH'd onto the crimson unit, as the dev0 
 
 Please read the following instructions carefully, and contact us if you have any questions.
 
-1. Mount the SDCard partion that has the FPGA image;
-
-sudo mount /dev/mmcblk0p1 /mnt
+1. Mount the SDCard partion that has the FPGA image; \
+    `sudo mount /dev/mmcblk0p1 /mnt`
 
 2. Replace the FPGA image on the SD Card;
 
-From the same location that you copied the release package to, type;
+    1. From the same location that you copied the release package to, type; \
+        `sudo mv crimson-rtm5/fpga/soc_system.rbf /mnt/`
 
-sudo mv crimson-rtm5/fpga/soc_system.rbf /mnt/
+    > Because the FAT partition you are copying the FPGA image to does not provide for ownership, you may safely disregard the following, specific, error;
+    >> `mv: failed to preserve ownership for '/mnt/soc_system.rbf': Operation not permitted`
 
-Note: You may safely ignore the following, specific, error:
-
-mv: failed to preserve ownership for '/mnt/soc_system.rbf': Operation not permitted
-
-This is because the FAT filesystem you are copying the image to does not provide for an ownership mechanism.
-
-3. Safely unmount the SD Partition
-
-sudo umount /mnt
+3. Safely unmount the SD Partition \
+    `sudo umount /mnt`
 
 This step ensures that the partition is safely unmounted.
 
@@ -308,38 +299,30 @@ MANUAL WEBSITE UPDATE
 
 These instructions assume that you are SSH'd onto the crimson unit, as the dev0 user, and have a release package called crimson-rtm5.
 
-1. Delete the existing website directory;
+1. Delete the existing website directory; \
+    `sudo rm -rf /usr/lib/node_modules/crimson-webserver`
 
-sudo rm -rf /usr/lib/node_modules/crimson-webserver
+2. From the location you have the release package in, move the updated website directory to /usr/lib/node_modules; \
+    `sudo mv crimson-rtm5/crimson-webserver /usr/lib/node_modules/`
 
-2. From the location you have the release package in, move the updated website directory to /usr/lib/node_modules;
+3. Confirm root ownership of the crimson-webserver directory; \
+    `sudo chown root:root -R /usr/lib/node_modules/crimson-webserver`
 
-sudo mv crimson-rtm5/crimson-webserver /usr/lib/node_modules/
+4. Confirm read permissions of the crimson-webserver directory; \
+    `sudo chmod a+rX /usr/lib/node_modules/crimson-webserver` \
+    `sudo chmod u+rw /usr/lib/node_modules/crimson-webserver`
 
-3. Confirm root ownership of the crimson-webserver directory;
-
-sudo chown root:root -R /usr/lib/node_modules/crimson-webserver
-
-4. Confirm read permissions of the crimson-webserver directory;
-
-sudo chmod a+rX /usr/lib/node_modules/crimson-webserver
-
-sudo chmod u+rw /usr/lib/node_modules/crimson-webserver
-
-5. Sync the filesystem.
-
-sync
+5. Sync the filesystem. \
+    `sync`
 
 
 REBOOT UNIT
 ===
 
-Sync the filesystem and then reboot the unit by typing;
+1. Sync the filesystem and then reboot the unit by typing; \
+    `sync`\
+    `systemctl reboot`
 
-sync
-systemctl reboot
-
-
-You will observe the unit restart itself. After it has completed the restart sequence, your unit will be ready and up to date.
+The unit will now restart itself. After rebooting, your Crimson Unit will be ready and up to date!
 
 
