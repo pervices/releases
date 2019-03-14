@@ -25,8 +25,27 @@ HEXFILE_TX_BOOT="/dev/null"
 
 AVRDUDE_BIN="sudo avrdude"
 AVRDUDE_ARGS="-p atxmega256a3 -P usb -c avrispmkII -B 8 -b 115200"
-AVRDUDE_FUSES="-U fuse2:w:0xBE:m  -U fuse4:w:0xF3:m -U fuse5:w:0xE9:m"
+
+# Set fuse5 to 0xED when prototyping to set a minimal Brown Out Detection Level
+# Fuse4 disables jtag and MUST be programmed first, twice (the first time
+# doesn't verify properly), and BEFORE anything else happens, especially the
+# first time we bring up boards.
+AVRDUDE_FUSES="-U fuse4:w:0xF3:m -U fuse4:w:0xF3:m -U fuse2:w:0xBE:m  -U fuse5:w:0xEA:m"
 AVRDUDE_FUSE_REV="-U fuse0:w:0xff:m" #Default Fuse to indicate unprogrammed.
+
+# Fuse2: BoD Settings;
+# bit 6 |  0: Reset vector = boot loader, 1: application reset
+# bit 1,0 | BoD operation in PowerDown Mode; 01; sample mode, 10: continuously, 11: BoD disabled
+
+# Fuse4:
+# Bit4 |External Reset Disable | 0: disable external resets, 1: allow external resets
+# bit 3,2 |  Start-up time delay | 00: 64 1kHz ULP osc cycles, 01: 4 1kHz osc cyles, 10 Reserved, 11: 0
+# bit 0 | 1: Disable JTAG, 0: Enable JTAG 
+
+# Fuse 5:
+# bit 5,4 | BoD operation in Active Mode | 00: reservered, 01: BoD Sample Mode, 10: Continuous, 11, BOD Disabled
+# bit 3 | 0: do not erase EEPROM during chip erase.
+# bit 2,1,0 | 111 = 1.6V, 101=2.1, 011=2.6, 010=2.9, 001=3.2
 
 # Common Programming Sequence
 # program_app( $PATH_TO_DEVICE $NAME_OF_HEXFILE)
@@ -34,13 +53,19 @@ function burn_seq() {
         BOARD_OP="$1"
         BOARD_HEX_BOOT="$2"
         BOARD_HEX_APP="$3"
-
+# Fuses MUST be programmed first, prior to bring up, to avoid incorrect JTAG
+# bits from preventing the board from booting.
+		echo -e "Start fuse programming"
+		$AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
+		echo -e "Repeat fuse programming as precaution incase first time failed"
+		$AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
+		
         if [[ "$BOARD_OP" = "b" ]] || [[ "$BOARD_OP" = "c" ]];
         then
             RESPONSE=""
             echo -e "Start bootloader programming using $BOARD_HEX_BOOT"
-            echo $AVRDUDE_BIN $AVRDUDE_ARGS -e -U boot:w:$BOARD_HEX_BOOT $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
-            $AVRDUDE_BIN $AVRDUDE_ARGS -e -U boot:w:$BOARD_HEX_BOOT $AVRDUDE_FUSES
+            echo $AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV -U boot:w:$BOARD_HEX_BOOT
+            $AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV -U boot:w:$BOARD_HEX_BOOT
             echo "Completed bootloader programming using $BOARD_HEX_BOOT"
             RESPONSE="marker"
         fi
@@ -49,8 +74,8 @@ function burn_seq() {
         then
             RESPONSE=""
             echo -e "Start application programming using $BOARD_HEX_APP"
-            echo $AVRDUDE_BIN $AVRDUDE_ARGS -U application:w:$BOARD_HEX_APP $AVRDUDE_FUSES
-            $AVRDUDE_BIN $AVRDUDE_ARGS -U application:w:$BOARD_HEX_APP $AVRDUDE_FUSES
+            echo $AVRDUDE_BIN $AVRDUDE_ARGS $AVRDUDE_FUSES -U application:w:$BOARD_HEX_APP
+            $AVRDUDE_BIN $AVRDUDE_ARGS $AVRDUDE_FUSES -U application:w:$BOARD_HEX_APP
             echo "Completed application programming using $BOARD_HEX_APP"
             RESPONSE="marker"
         fi
