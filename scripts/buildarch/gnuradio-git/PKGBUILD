@@ -75,7 +75,12 @@ build() {
         -DENABLE_GR_QTGUI=ON \
         -DENABLE_INTERNAL_VOLK=ON \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -Wno-dev ../
+        -Wno-dev \
+	../  # \
+# To build and install to a usr dir, set the following;
+      #	-DGR_PKG_CONF_DIR=/home/`whoami`/.gnuradio/conf.d \
+      #	-DGR_PREFSDIR=/home/`whoami`/.gnuradio/conf.d 
+
 
     make -j 5
 
