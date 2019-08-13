@@ -77,12 +77,31 @@ build() {
         -DCMAKE_INSTALL_PREFIX=/usr \
         -Wno-dev \
 	../  # \
-# To build and install to a usr dir, set the following;
+# To build and install to a usr dir, specify the INSTALL_PREFIX and set;
       #	-DGR_PKG_CONF_DIR=/home/`whoami`/.gnuradio/conf.d \
       #	-DGR_PREFSDIR=/home/`whoami`/.gnuradio/conf.d 
-
-
+    
     make -j 5
+    
+#NOTE: To build out-of-tree modules correctly, on a local compile, use the following CMAKE flags;
+#    cmake \
+#        -DCMAKE_INSTALL_PREFIX=/home/`whoami`/gnuradio/gnuradio-src-bin/ \
+#        -DGNURADIO_ANALOG_LIBRARIES_gnuradio-analog=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-analog.so      \
+#        -DGNURADIO_ANALOG_LIBRARIES_gnuradio-pmt=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-pmt.so            \
+#        -DGNURADIO_ANALOG_LIBRARIES_gnuradio-runtime=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-runtime.so    \
+#        -DGNURADIO_ANALOG_LIBRARIES_volk=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libvolk.so                            \
+#        -DGNURADIO_BLOCKS_LIBRARIES_gnuradio-blocks=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-blocks.so      \
+#        -DGNURADIO_BLOCKS_LIBRARIES_gnuradio-digital=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-digital.so    \
+#        -DGNURADIO_BLOCKS_LIBRARIES_gnuradio-pmt=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-pmt.so            \
+#        -DGNURADIO_BLOCKS_LIBRARIES_gnuradio-runtime=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-runtime.so    \
+#        -DGNURADIO_FILTER_LIBRARIES_gnuradio-fft=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-fft.so            \
+#        -DGNURADIO_FILTER_LIBRARIES_gnuradio-filter=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-filter.so      \
+#        -DGNURADIO_FILTER_LIBRARIES_gnuradio-pmt=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-pmt.so            \
+#        -DGNURADIO_FILTER_LIBRARIES_gnuradio-runtime=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-runtime.so    \
+#        -DGNURADIO_RUNTIME_LIBRARIES_gnuradio-pmt=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-pmt.so           \
+#        -DGNURADIO_RUNTIME_LIBRARIES_gnuradio-runtime=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/libgnuradio-runtime.so   \
+#        ..
+
 
 }
 
