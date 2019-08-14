@@ -80,7 +80,11 @@ build() {
 # To build and install to a usr dir, specify the INSTALL_PREFIX and set;
       #	-DGR_PKG_CONF_DIR=/home/`whoami`/.gnuradio/conf.d \
       #	-DGR_PREFSDIR=/home/`whoami`/.gnuradio/conf.d 
-    
+# You will also need to set the pythonpath appropriately prior to running gnuradio;
+#    export PYTHONPATH=/home/`whoami`/gnuradio/gnuradio-src-bin/lib/python2.7/site-packages
+#    export LD_LIBRARY_PATH=/home/`whoami`/gnuradio/gnuradio-src-bin/lib:$LD_LIBRARY_PATH
+#    export PATH=/home/`whoami`/gnuradio/gnuradio-src-bin/bin:$PATH
+
     make -j 5
     
 #NOTE: To build out-of-tree modules correctly, on a local compile, use the following CMAKE flags;
