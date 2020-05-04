@@ -174,7 +174,8 @@ soft)
 	echo -e "$ok Soft update Successful"
 	;;
 hard)
-	./$0 soft
+	#Soft update does not presently work - paths have changed.
+	#./$0 soft
 	echo -e "[        ] Updating FPGA image on SD card"
 	if [[ -d $sd_mountfolder ]]
 	then
