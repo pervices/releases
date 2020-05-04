@@ -70,6 +70,8 @@ $(document).ready(function() {
       size: 'mini',
       onColor: 'success'
    });
+   
+   
 });
 
 // socket.io connection
@@ -131,7 +133,7 @@ $("#dhcp_en").on('switchChange.bootstrapSwitch', function(event, state) {
 
 // led
 $("#led").click(function() {
-   socket.emit('prop_wr', { file: cur_root + '/board/led', message: '5' });
+    socket.emit('prop_wr', { file: cur_root + '/board/led', message: '5' });
 });
 
 // Reset buttons
@@ -182,6 +184,19 @@ $("#temperature").click(function() {
       socket.emit('raw_cmd', { message: "echo 'board -c 15 -u' | mcu -f r" });
 });
 
+
+// board diagnostic
+$("#diagnostic").click(function() {
+   if (cur_board == 'time')
+      socket.emit('raw_cmd', { message: "echo 'board -e' | mcu -f s" });
+   else if (cur_board == 'fpga')
+      socket.emit('raw_cmd', { message: "echo 'board -e' | mcu" });
+   else if (cur_board == 'tx')
+      socket.emit('raw_cmd', { message: "echo 'board -e' | mcu -f t" });
+   else if (cur_board == 'rx')
+      socket.emit('raw_cmd', { message: "echo 'board -e' | mcu -f r" });
+});
+
 // system reset
 $("#reset_system").click(function() {
    socket.emit('prop_wr', { file: 'fpga/board/sys_rstreq', message: '1' });
@@ -229,8 +244,10 @@ $("#vita_enable").on('switchChange.bootstrapSwitch', function(event, state) {
    socket.emit('prop_wr', { file: cur_root + '/link/vita_en', message: ( state ? '1' : '0' ) });
 });
 
-$("#lut_enable").on('switchChange.bootstrapSwitch', function(event, state) {
-   socket.emit('prop_wr', { file: cur_root + '/rf/freq/lut_en', message: ( state ? '1' : '0' ) });
+$("#lut_enable").click(function() {
+   socket.emit('systctl', { message: "rm -rf | tee /var/volatile/crimson/calibration-data/" });
+   socket.emit('systctl', { message: "echo 1 | tee /var/volatile/crimson/state/{t,r}x/{a,b,c,d}/rf/freq/lut_en" });
+   //socket.emit('prop_wr', { file: cur_root + '/rf/freq/lut_en', message: ( state ? '1' : '0' ) }); //regenerate files through enabling LUT
 });
 
 $("#gpiox_dump").click(function() {
@@ -426,6 +443,11 @@ $("#sfpb_set").click( function() {
    socket.emit('prop_wr', { file: 'fpga/link/sfpb/ip_addr', message: $("#sfpb_ip").val() });
    socket.emit('prop_wr', { file: 'fpga/link/sfpb/mac_addr', message: $("#sfpb_mac").val() });
    socket.emit('prop_wr', { file: 'fpga/link/sfpb/pay_len', message: $("#sfpb_paylen").val() });
+});
+
+//go to the load clock function
+$("#refreshClock").click( function() {
+   load_clock(true);
 });
 
 $("#mgmt_set").click( function() {
@@ -674,6 +696,7 @@ socket.on('prop_ret', function (data) {
    var channel = cur_chan;
 
    var debug_msg = "Read from " + data.file + ": " + data.message;
+   var clock_msg = debug_msg;
    //console.log(debug_msg);
    if (data.debug) {
       $("#cout" ).val( $("#cout" ).val() + "\n" + debug_msg);
@@ -788,7 +811,106 @@ socket.on('prop_ret', function (data) {
       var trig_sel = parseInt(data.message);
       var trig_sel_sma = 1 == ( (trig_sel >> 0) & 1 );
       $('#trig_sel_sma').bootstrapSwitch('state', trig_sel_sma, true);
+      
+   } else if (data.file == cur_root + '/status/lmk_lockdetect_jesd_pll1') {
+      
+       if(clock_msg.includes("PLL1 Locked")) {
+        document.getElementById("jesd_pll1_ok").style.visibility = "visible";   
+        document.getElementById("jesd_pll1_no").style.visibility = "hidden";
+        clock_msg = "";
+      }
+      else if(clock_msg.includes("PLL1 Unlocked")) {
+        document.getElementById("jesd_pll1_ok").style.visibility = "hidden";  
+        document.getElementById("jesd_pll1_no").style.visibility = "visible";
+        clock_msg = ""; 
+      }
+      
+   } else if (data.file == cur_root + '/status/lmk_lockdetect_jesd_pll2') {
+       if(debug_msg.includes("PLL2 Locked")) {
+         document.getElementById("jesd_pll2_ok").style.visibility = "visible"; 
+         document.getElementById("jesd_pll2_no").style.visibility = "hidden";
+         clock_msg = "";
+       }
+       else if(debug_msg.includes("PLL2 Unlocked")) {
+         document.getElementById("jesd_pll2_ok").style.visibility = "hidden"; 
+         document.getElementById("jesd_pll2_no").style.visibility = "visible";
+         clock_msg = "";
+       }
+       
+   } else if (data.file == cur_root + '/status/lmk_lockdetect_pll_pll1') {  
+       if(debug_msg.includes("PLL1 Locked")) {
+         document.getElementById("pll_pll1_ok").style.visibility = "visible"; 
+         document.getElementById("pll_pll1_no").style.visibility = "hidden";
+         clock_msg = "";
+       }
+       else if(debug_msg.includes("PLL1 Unlocked")) {
+         document.getElementById("pll_pll1_ok").style.visibility = "hidden"; 
+         document.getElementById("pll_pll1_no").style.visibility = "visible";
+         clock_msg = "";
+       }
+        
+   } else if (data.file == cur_root + '/status/lmk_lockdetect_pll_pll2') {
+       if(clock_msg.includes("PLL2 Locked")) {
+         document.getElementById("pll_pll2_ok").style.visibility = "visible"; 
+         document.getElementById("pll_pll2_no").style.visibility = "hidden";
+         clock_msg = "";
+       }
+       else if(clock_msg.includes("PLL2 Unlocked")) {
+         document.getElementById("pll_pll2_ok").style.visibility = "hidden";  
+         document.getElementById("pll_pll2_no").style.visibility = "visible";
+         clock_msg = ""; 
+       }
+       
+   } else if (data.file == cur_root + '/status/lmk_lossoflock_jesd_pll1') {
+       if(debug_msg.includes("PLL1 Synchronous Lock")) {
+         document.getElementById("lol_jesd_pll1_ok").style.visibility = "visible";
+         document.getElementById("lol_jesd_pll1_no").style.visibility = "hidden";
+         clock_msg = "";
+       }
+       else if(debug_msg.includes("PLL1 Interupted Lock")) {
+         document.getElementById("lol_jesd_pll1_ok").style.visibility = "hidden"; 
+         document.getElementById("lol_jesd_pll1_no").style.visibility = "visible";
+         clock_msg = "";
+       }
+       
+   } else if (data.file == cur_root + '/status/lmk_lossoflock_jesd_pll2') {  
+       if(debug_msg.includes("PLL2 Synchronous Lock")) {
+         document.getElementById("lol_jesd_pll2_ok").style.visibility = "visible";
+         document.getElementById("lol_jesd_pll2_no").style.visibility = "hidden";
+         clock_msg = "";
+       }
+       else if(debug_msg.includes("PLL2 Interupted Lock")) {
+         document.getElementById("lol_jesd_pll2_ok").style.visibility = "hidden";
+         document.getElementById("lol_jesd_pll2_no").style.visibility = "visible";
+         clock_msg = "";
+       }
+   } else if (data.file == cur_root + '/status/lmk_lossoflock_pll_pll1') {  
+       if(debug_msg.includes("PLL1 Synchronous Lock")) {
+         document.getElementById("lol_pll_pll1_ok").style.visibility = "visible";
+         document.getElementById("lol_pll_pll1_no").style.visibility = "hidden";
+         clock_msg = "";
+       }
+       else if(debug_msg.includes("PLL1 Interupted Lock")) {
+         document.getElementById("lol_pll_pll1_ok").style.visibility = "hidden";
+         document.getElementById("lol_pll_pll1_no").style.visibility = "visible";
+         clock_msg = "";
+       }
+   } else if (data.file == cur_root + '/status/lmk_lossoflock_pll_pll2') {  
+       if(debug_msg.includes("PLL2 Synchronous Lock")) {
+         document.getElementById("lol_pll_pll2_ok").style.visibility = "visible"
+         document.getElementById("lol_pll_pll2_no").style.visibility = "hidden";
+         clock_msg = "";
+       }
+       else if(debug_msg.includes("PLL2 Interupted Lock")) {
+         document.getElementById("lol_pll_pll2_ok").style.visibility = "hidden";
+         document.getElementById("lol_pll_pll2_no").style.visibility = "visible"
+         clock_msg = "";
+       }
    } 
+});
+
+
+
     //   } else if (data.file == cur_root + '/source/devclk') {
 //      $('#out_devclk_en').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
 //   } else if (data.file == cur_root + '/source/pll') {
@@ -799,7 +921,7 @@ socket.on('prop_ret', function (data) {
 //      $('#out_vco_en').bootstrapSwitch('state', data.message.indexOf('external') > -1, true);
 //   }
 
-});
+//  });
 
 // en/disable the configurations
 function activateControls_rx(state) {
@@ -888,8 +1010,8 @@ function load_config (isLoad) {
    socket.emit('prop_rd', { file: 'fpga/link/net/dhcp_en'     ,debug: isLoad});
    socket.emit('prop_rd', { file: 'fpga/link/net/hostname'    ,debug: isLoad});
    socket.emit('prop_rd', { file: 'fpga/link/net/ip_addr'     ,debug: isLoad});
-   socket.emit('prop_rd', { file: 'fpga/trigger/sma_dir'                ,debug: isLoad});
-   socket.emit('prop_rd', { file: 'fpga/trigger/sma_pol'                ,debug: isLoad});
+   socket.emit('prop_rd', { file: 'fpga/trigger/sma_dir'      ,debug: isLoad});
+   socket.emit('prop_rd', { file: 'fpga/trigger/sma_pol'      ,debug: isLoad});
 }
 
 function load_rx (isLoad) {
@@ -927,8 +1049,8 @@ function load_tx (isLoad) {
    socket.emit('prop_rd', { file: cur_root + '/dsp/nco_adj'   			,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/dsp/rate'      			,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/link/port'     			,debug: isLoad});
-   socket.emit('prop_rd', { file: cur_root + '/link/vita_en'     	    	,debug: isLoad});
-   socket.emit('prop_rd', { file: cur_root + '/rf/freq/lut_en'     	    	,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/link/vita_en'     	    ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/rf/freq/lut_en'     	    ,debug: isLoad});
    
    var dac_dither_en = $('#dac_dither_enable').bootstrapSwitch('state') == 'on' ? true : false;
    $('#dac_dither_mixer_enable').bootstrapSwitch('readonly', ! dac_dither_en );
@@ -938,14 +1060,23 @@ function load_tx (isLoad) {
    socket.emit('prop_rd', { file: cur_root + '/trigger/trig_sel'        ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/trigger/edge_backoff'    ,debug: isLoad});
    socket.emit('prop_rd', { file: cur_root + '/trigger/edge_sample_num' ,debug: isLoad});
+   
 }
 
 function load_clock (isLoad) {
-//   socket.emit('prop_rd', { file: cur_root + '/source/vco'    ,debug: isLoad});
-//   socket.emit('prop_rd', { file: cur_root + '/source/sysref' ,debug: isLoad});
-//   socket.emit('prop_rd', { file: cur_root + '/source/devclk' ,debug: isLoad});
-//   socket.emit('prop_rd', { file: cur_root + '/source/pll'    ,debug: isLoad});
-//   socket.emit('prop_rd', { file: cur_root + '/source/ref_dac'    ,debug: isLoad});
+   //write to the lockdetect/lossoflock to update the directories 
+   socket.emit('prop_wr', { file: cur_root + '/status/lmk_lockdetect' ,message: '0'});
+   socket.emit('prop_wr', { file: cur_root + '/status/lmk_lossoflock' ,message: '0'});
+
+   //read from all of the directories
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lockdetect_jesd_pll1' ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lockdetect_jesd_pll2'  ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lockdetect_pll_pll1' ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lockdetect_pll_pll2'  ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lossoflock_jesd_pll1' ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lossoflock_jesd_pll2' ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lossoflock_pll_pll1'  ,debug: isLoad});
+   socket.emit('prop_rd', { file: cur_root + '/status/lmk_lossoflock_pll_pll2'  ,debug: isLoad});
 }
 
 // determine which page is currently loaded
