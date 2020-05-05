@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5 | rtm6 | tate]i\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5 | rtm6 | tate | tate-rtm2]\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
@@ -55,15 +55,16 @@ function burn_seq() {
         BOARD_HEX_APP="$3"
 # Fuses MUST be programmed first, prior to bring up, to avoid incorrect JTAG
 # bits from preventing the board from booting.
-		echo -e "Start fuse programming"
-		$AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
-		echo -e "Repeat fuse programming as precaution incase first time failed"
-		$AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
+		echo -e "Start fuse programming."
+		$AVRDUDE_BIN $AVRDUDE_ARGS $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
+		echo -e "Repeat fuse programming as precaution in case first time failed."
+		$AVRDUDE_BIN $AVRDUDE_ARGS $AVRDUDE_FUSES $AVRDUDE_FUSE_REV
 		
         if [[ "$BOARD_OP" = "b" ]] || [[ "$BOARD_OP" = "c" ]];
         then
             RESPONSE=""
             echo -e "Start bootloader programming using $BOARD_HEX_BOOT"
+            #NOTE: The '-e' argument to avrdude performs a chip erase that erases the bootload and application code.
             echo $AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV -U boot:w:$BOARD_HEX_BOOT
             $AVRDUDE_BIN $AVRDUDE_ARGS -e $AVRDUDE_FUSES $AVRDUDE_FUSE_REV -U boot:w:$BOARD_HEX_BOOT
             echo "Completed bootloader programming using $BOARD_HEX_BOOT"
@@ -114,7 +115,7 @@ then
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'tate' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'tate' ] && [ "$3" != 'tate-rtm2' ]
 then
     help_summary
     return 1
@@ -161,6 +162,17 @@ then
     HEXFILE_RX_APP="tate-rx.hex"
     HEXFILE_RX_BOOT="TATE_RX-xboot-boot.hex"
     HEXFILE_TX_APP="tate-tx.hex"
+    HEXFILE_TX_BOOT="TATE_TX-xboot-boot.hex"
+fi
+
+if [ "$3" == 'tate-rtm2' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
+    HEXFILE_TIME_APP="tate-synth.hex"
+    HEXFILE_TIME_BOOT="TATE_SYNTH-xboot-boot.hex "
+    HEXFILE_RX_APP="tate-rx.hex"
+    HEXFILE_RX_BOOT="TATE_RX-xboot-boot.hex"
+    HEXFILE_TX_APP="tate-tx-ad9176.hex"
     HEXFILE_TX_BOOT="TATE_TX-xboot-boot.hex"
 fi
 
