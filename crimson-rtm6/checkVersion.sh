@@ -42,9 +42,9 @@ fi
 
 if [[ "$CFIRM" = "$serverHash" ]];
 then
-    echo "FRIMWARE $CFIRM"
+    echo "FIRMWARE $CFIRM"
 else
-    echo "FRIMWARE Bad: Crimson $serverHash  doesnt match $CFIRM"
+    echo "FIRMWARE Bad: Crimson $serverHash  doesnt match $CFIRM"
     error=1
 fi
 
