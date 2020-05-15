@@ -1,5 +1,4 @@
 extends ./layout.jade
-
 block content
    p The synth board is used for generating all of the clocks for the Digital, TX, and RX boards. This includes the on board IC clocks, JESD sysref clock, and synthesizer clocks. As shown in the block diagram above, there are a couple of configurations that are possible with the synth board. The 10MHz clock reference can be chosen between an internal or external SMA source. Moving along to the right side of the chain, the 10MHz steps up to 100MHz with a feedback circuit. This architecture maintains the high 10MHz source precision with low phase noise associated with the 100MHz PLL. The fanout buffer will propagate the 100MHz signal to the other boards (RX, TX, and Digital), and feed the LMK04828 to generate the JESD compliant signals.
    h3 Clock Configuration
@@ -35,7 +34,7 @@ block content
    .container-fluid
       .row
          .col-md-3
-            b Channel IC's
+            b Channel IC's 
             br
             .row
                .col-md-3.top-buffer-5.right-pad-0
@@ -51,7 +50,19 @@ block content
                   button.btn.btn-default.btn-xs.btn-block#lmk_dump Dump             
                .col-md-3.top-buffer-5.right-pad-0
                   button.btn.btn-default.btn-xs.btn-block#led Test
-               
+            br
+            b Board Diagnostic
+            .row
+               .col-md-4.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#diagnostic Get
+            br
+            br
+            b Lock Detect Status: 
+            br
+            b Continuous Lock Status: 
+            
+
+                
          .col-md-2
             b Board Version
             .row
@@ -63,19 +74,72 @@ block content
                .col-md-6.top-buffer-5
                   button.btn.btn-default.btn-xs.btn-block#temperature Get
             br
-            b Lock Detect
             .row
-               .col-md-1.top-buffer-5
-                  span.glyphicon.glyphicon-ok(style="color:green;")
-               .col-md-5.top-buffer-5
-                  | 10 MHz
-               .col-md-5.top-buffer-5
-                  button.btn.btn-default.btn-xs.btn-block Refresh
+                | &nbsp
+                b JESD (MHz)
+                | &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp   
+                b PLL (MHz)
+            
             .row
-               .col-md-1.top-buffer-5
-                  span.glyphicon.glyphicon-ok(style="color:green;")
-               .col-md-5.top-buffer-5
-                  | 100 MHz
+                | &nbsp
+                | 10 
+                | &nbsp &nbsp &nbsp &nbsp &nbsp 
+                
+                
+                | 100
+                | &nbsp &nbsp &nbsp &nbsp  
+                
+                | 10
+                | &nbsp &nbsp &nbsp &nbsp &nbsp  
+                
+                | 100
+            
+            .row
+                span.glyphicon.glyphicon-ok#jesd_pll1_ok(style="color:green;") 
+                span.glyphicon.glyphicon-remove#jesd_pll1_no(style="color:red;")
+                | &nbsp &nbsp &nbsp &nbsp   
+                
+                span.glyphicon.glyphicon-ok#jesd_pll2_ok(style="color:green;")
+                span.glyphicon.glyphicon-remove#jesd_pll2_no(style="color:red;")
+                | &nbsp &nbsp &nbsp &nbsp &nbsp   
+                
+                span.glyphicon.glyphicon-ok#pll_pll1_ok(style="color:green;")
+                span.glyphicon.glyphicon-remove#pll_pll1_no(style="color:red;")
+                | &nbsp &nbsp &nbsp &nbsp &nbsp  
+                
+                span.glyphicon.glyphicon-ok#pll_pll2_ok(style="color:green;")
+                span.glyphicon.glyphicon-remove#pll_pll2_no(style="color:red;")
+            .row
+                span.glyphicon.glyphicon-ok#lol_jesd_pll1_ok(style="color:green;")
+                span.glyphicon.glyphicon-remove#lol_jesd_pll1_no(style="color:red;")
+                | &nbsp &nbsp &nbsp &nbsp 
+                
+                span.glyphicon.glyphicon-ok#lol_jesd_pll2_ok(style="color:green;")
+                span.glyphicon.glyphicon-remove#lol_jesd_pll2_no(style="color:red;")
+                | &nbsp &nbsp &nbsp &nbsp &nbsp 
+                
+                span.glyphicon.glyphicon-ok#lol_pll_pll1_ok(style="color:green;")
+                span.glyphicon.glyphicon-remove#lol_pll_pll1_no(style="color:red;")
+                | &nbsp &nbsp &nbsp &nbsp &nbsp  
+                
+                span.glyphicon.glyphicon-ok#lol_pll_pll2_ok(style="color:green;")
+                span.glyphicon.glyphicon-remove#lol_pll_pll2_no(style="color:red;")
+                
+                .col-md-10.top-buffer-20
+                    button.btn.btn-default.btn-xs.btn-block#refreshClock Refresh Clocks
+                
+            script.
+                document.getElementById("jesd_pll1_no").style.visibility = "hidden";
+                document.getElementById("jesd_pll2_no").style.visibility = "hidden";
+                document.getElementById("pll_pll1_no").style.visibility = "hidden";
+                document.getElementById("pll_pll2_no").style.visibility = "hidden";
+                    
+                document.getElementById("lol_jesd_pll1_no").style.visibility = "hidden";
+                document.getElementById("lol_jesd_pll2_no").style.visibility = "hidden";
+                document.getElementById("lol_pll_pll1_no").style.visibility = "hidden";
+                document.getElementById("lol_pll_pll2_no").style.visibility = "hidden";
+                    
+
          .col-md-7
             b Console Output
             br

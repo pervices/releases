@@ -91,6 +91,11 @@ block content
             .row
                .col-md-4.top-buffer-5
                   button.btn.btn-default.btn-xs.btn-block#led Test
+            br
+            b Board Diagnostic
+            .row
+               .col-md-4.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#diagnostic Get
          .col-md-2
             b Board Version
             .row
@@ -102,22 +107,14 @@ block content
                .col-md-6.top-buffer-5
                   button.btn.btn-default.btn-xs.btn-block#temperature Get
             br
-            b FPGA
+            b FPGA Reset
             .row
                .col-md-6.top-buffer-5
                   button.btn.btn-default.btn-xs.btn-block#reset_fpga Reset
-               .col-md-6.top-buffer-5
-                  | FPGA Reset
-            .row
-               .col-md-6.top-buffer-5
-                  button.btn.btn-default.btn-xs.btn-block Get
-               .col-md-6.top-buffer-5
-                  | JESD Status
          .col-md-7
             b Console Output
             br
             textarea.form-control#cout(rows='10', readonly)
-
    h3 SMA Configuration
    hr
    .container-fluid
@@ -133,5 +130,32 @@ block content
                //- TODO: use e.g. bootstrap to create tooltips where necessary
                //- (-VE := active low / falling edge, +VE := active high / rising edge)
                b Polarity
-            input(type="checkbox", name='sma-pol', unchecked)#sma_pol       
+            input(type="checkbox", name='sma-pol', unchecked)#sma_pol      
+    
+    h3 Generate Look Up Table 
+    hr
+    .container-fluid
+        .row
+            p(style="color:black; font-size: 16px;") 1: During the LUT generation processs, you will not be able to use Crimson.
+            p(style="color:black; font-size: 16px;") 2: It will take approximately 30-45 min to fully complete this process.
+            p(style="color:black; font-size: 16px;") 3: The process is complete when the bottom LED on the crimson unit stops flashing.
             
+            .col-md-1
+                 button.btn.btn-default.btn-xs.btn-block#lut_enable(onclick ='generateLut()') Generate
+                 p#output_time
+                 script.
+                    var minCounter = 0;
+                    var min = 44;
+                    function generateLut() {
+                       var sec = 59;
+                       var timer = setInterval(function(){
+                       document.getElementById('output_time').innerHTML=  min + " : " + sec;
+                       sec--;
+                       if(sec == 0) {
+                        sec = 59;
+                        minCounter++;
+                        min--;}
+                       if (minCounter == 45) {
+                        clearInterval(timer);}}
+                       , 1000);
+                    }

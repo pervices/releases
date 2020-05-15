@@ -1,7 +1,7 @@
 # Official Per Vices libUHD build script to compile libUHD from source.
 
 pkgname=libuhdpv
-pkgver=20190808git.tng.v2.5.fulltx.r7.g979bdd071
+pkgver=20190331git.tng_003_011_000_000.r752.ge86a379c3
 _pkgid=git
 pkgrel=1
 pkgdesc="Alternative USRP Hardware Driver (UHD) userspace driver for Per Vices Crimson."
@@ -14,9 +14,7 @@ makedepends=('cmake' 'boost' 'python2-cheetah')
 provides=('libuhd')
 conflicts=('libuhd')
 
-#source=('uhd::git+https://github.com/pervices/uhd.git#branch=master')
-source=('uhd::git+https://github.com/pervices/uhd.git#branch=master-fulltx')
-# If compiling for Cyan, uncomment below, and AND ENABLE THE -DTATE config flag.
+source=('uhd::git+https://github.com/pervices/uhd.git#branch=master')
 #source=('uhd::git+https://github.com/pervices/uhd.git#branch=master-testing')
 #You can specify #branch=,#commit=,#tag=fragment
 
@@ -37,14 +35,14 @@ pkgver() {
 
 build() {
 
-       if [ -d $_gitname ]; then
-                (cd $_gitname && git clean -x -d -f && git reset --hard HEAD && git checkout master && git fetch --all && git checkout $_gitbranch && git pull origin $_gitbranch)
+#        if [ -d $_gitname ]; then
+#                (cd $_gitname && git clean -x -d -f && git reset --hard HEAD && git checkout master && git fetch --all && git checkout $_gitbranch && git pull origin $_gitbranch)
 #		(cd $_gitname && git clean -x -d -f && git reset --hard $_gitbranch && git fetch --all && git reset --hard $_gitbranch )
-                msg "Updated the local files."
-        else
-                git clone $_gitroot
-                msg "GIT checkout done or server timeout"
-        fi
+#                msg "Updated the local files."
+#        else
+#                git clone $_gitroot
+#                msg "GIT checkout done or server timeout"
+#        fi
         
         cd ${srcdir}/$_gitname/host
         
@@ -71,11 +69,7 @@ build() {
 	   -DENABLE_OCTOCLOCK=OFF \
 	   -DENABLE_DOXYGEN=OFF \
 	   -DENABLE_USB=OFF \
-	   ..
-
-# If compiling Cyan, then you'll need to move this build flag into the
-# cmak options above.
-#   -DPV_TATE=ON \
+           ..
 
         make -j4
 }
