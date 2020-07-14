@@ -10,7 +10,12 @@ file_name=$serial_num$fEx
 
 BOARD_REV="$1"
 
-if [[ "$BOARD_REV" -eq "6" ]] || [[ "$BOARD_REV" = "rtm6" ]] || [[ "$BOARD_REV" = "RTM6" ]]
+if [[ "$BOARD_REV" -eq "8" ]] || [[ "$BOARD_REV" = "rtm8" ]] || [[ "$BOARD_REV" = "RTM8" ]]
+    then
+        UPDATE_BIN="updateCrimsonRtm8"
+        UPDATE_VER="../crimson-rtm8/versions"
+        echo $UPDATE_BIN
+elif [[ "$BOARD_REV" -eq "6" ]] || [[ "$BOARD_REV" = "rtm6" ]] || [[ "$BOARD_REV" = "RTM6" ]] || [[ "$BOARD_REV" -eq "7" ]] || [[ "$BOARD_REV" = "rtm7" ]] || [[ "$BOARD_REV" = "RTM7" ]]
     then
         UPDATE_BIN="updateCrimsonRtm6"
         UPDATE_VER="../crimson-rtm6/versions"
