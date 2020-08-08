@@ -1,7 +1,7 @@
 # Official Per Vices libUHD build script to compile libUHD from source.
 
 pkgname=libuhdpv
-pkgver=20190331git.tng_003_011_000_000.r752.ge86a379c3
+pkgver=20200807git.tng.v2.5.r16.gc90009d40
 _pkgid=git
 pkgrel=1
 pkgdesc="Alternative USRP Hardware Driver (UHD) userspace driver for Per Vices Crimson."
@@ -16,8 +16,12 @@ conflicts=('libuhd')
 
 source=('uhd::git+https://github.com/pervices/uhd.git#branch=master')
 #source=('uhd::git+https://github.com/pervices/uhd.git#branch=master-testing')
+#source=('uhd::git+https://github.com/pervices/uhd.git#branch=master-fulltx')
+#source=('uhd::git+https://github.com/pervices/uhd.git#branch=ops/vvv/master-testing')
+#source=('uhd::git+https://github.com/pervices/uhd.git#commit=06ba790c2f')
+#source=('uhd::git+https://github.com/pervices/uhd.git#commit=547549ac')
+#source=('uhd::git+https://github.com/pervices/uhd.git#commit=53c696972')
 #You can specify #branch=,#commit=,#tag=fragment
-
 md5sums=('SKIP')
 sha1sums=('SKIP')
 
@@ -52,6 +56,24 @@ build() {
         #Make build directory
         mkdir -p build
         cd build
+        
+#        #Build project using CMAKE
+#        cmake \
+#           -DCMAKE_INSTALL_PREFIX=/usr/ \
+#           -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+#           -DENABLE_EXAMPLES=ON \
+#           -DENABLE_UTILS=ON \
+#           -DENABLE_TESTS=OFF \
+#           -DENABLE_E100=OFF \
+#	   -DENABLE_USRP1=OFF \
+#	   -DENABLE_USER2=OFF \
+#	   -DENABLE_B200=OFF \
+#	   -DENABLE_X300=OFF \
+#	   -DENABLE_OCTOCLOCK=OFF \
+#	   -DENABLE_DOXYGEN=OFF \
+#	   -DENABLE_USB=OFF \
+#           ..
+#           
         #Build project using CMAKE
         cmake \
            -DCMAKE_INSTALL_PREFIX=/usr/ \
@@ -66,11 +88,15 @@ build() {
 	   -DENABLE_USER2=OFF \
 	   -DENABLE_B200=OFF \
 	   -DENABLE_X300=OFF \
+       -DENABLE_CRIMSON_TNG=ON \
+       -DENABLE_CYAN_16T=OFF \
+       -DENABLE_CYAN_64T=OFF \
 	   -DENABLE_OCTOCLOCK=OFF \
 	   -DENABLE_DOXYGEN=OFF \
 	   -DENABLE_USB=OFF \
            ..
 
+        
         make -j4
 }
 
