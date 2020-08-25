@@ -12,16 +12,19 @@ BOARD_REV="$1"
 
 if [[ "$BOARD_REV" -eq "8" ]] || [[ "$BOARD_REV" = "rtm8" ]] || [[ "$BOARD_REV" = "RTM8" ]]
     then
+        BOARD_REV=8
         UPDATE_BIN="updateCrimsonRtm8"
         UPDATE_VER="../crimson-rtm8/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" -eq "6" ]] || [[ "$BOARD_REV" = "rtm6" ]] || [[ "$BOARD_REV" = "RTM6" ]] || [[ "$BOARD_REV" -eq "7" ]] || [[ "$BOARD_REV" = "rtm7" ]] || [[ "$BOARD_REV" = "RTM7" ]]
     then
+        BOARD_REV=6
         UPDATE_BIN="updateCrimsonRtm6"
         UPDATE_VER="../crimson-rtm6/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" -eq "5" ]] || [[ "$BOARD_REV" = "rtm5" ]] || [[ "$BOARD_REV" = "RTM5" ]]
     then
+        BOARD_REV=5
         UPDATE_BIN="updateCrimsonRtm5"
         UPDATE_VER="../crimson-rtm5/versions"
         echo $UPDATE_BIN
@@ -109,6 +112,23 @@ CSYNTH_u8=$(echo "$a"|grep SYNTH|tail -c 9)
 CFERM_u8=$(echo "$a"|grep SERVER|tail -c 9)
 CFPGA_u9=$(echo "$a"|grep FPGA|tail -c 10)
 
+if [[ "$BOARD_REV" -ge 8 ]];
+then
+    #Check Versions
+    echo "Checking Versions"
+    b="$(ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+    rxHW=$(cat /var/volatile/crimson/state/rx_a/about/hw_ver); \
+    txHW=$(cat /var/volatile/crimson/state/tx_a/about/hw_ver); \
+    synthHW=$(cat /var/volatile/crimson/state/time/about/hw_ver); \
+    fpgaHW=$(cat /var/volatile/crimson/state/fpga/about/hw_ver); \
+    echo "HW_RX: $rxHW"; \
+    echo "HW_TX: $txHW"; \
+    echo "HW_SYNTH: $synthHW"; \
+    echo "HW_FPGA $fpgaHW"; \
+    ')"
+    echo $b
+fi
+
 error=0
 if [[ "$CRX_u8" = "$tMCU" ]];
 then
@@ -164,4 +184,18 @@ else
     echo "MCU_SYNTH: $CSYNTH_u8" >> $file_name
     echo "SERVER: $CFERM_u8" >> $file_name
     echo "FPGA: $CFPGA_u9" >> $file_name
+    
+    if [[ "$BOARD_REV" -ge 8 ]];
+    then
+        RX_HW=$(echo "$b"|grep --line-buffered 'RX')
+        TX_HW=$(echo "$b"|grep --line-buffered 'TX')
+        SYNTH_HW=$(echo "$b"|grep --line-buffered 'SYNTH')
+        FPGA_HW=$(echo "$b"|grep --line-buffered 'FPGA')
+        echo "$RX_HW" | tee -a $file_name
+        echo "$TX_HW" | tee -a $file_name
+        echo "$SYNTH_HW" | tee -a $file_name
+        echo "$FPGA_HW" | tee -a $file_name
+    fi
 fi
+
+
