@@ -170,6 +170,7 @@ else
         elif [ "$2" = "nolut" ]
         then
             echo "Lookup table not generated" | tee -a $file_name
+            echo ""
         else
             ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
             ./$UPDATE_BIN onlylut; \
