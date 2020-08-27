@@ -11,14 +11,14 @@ then
     echo "Validating RTM8"
     if [ -z "$1" ]
     then
-        sh validateRTM5.sh rtm8
+        sh validateHelper8.sh rtm8
         ./cleanSDCard.sh nolut
     elif [ "$1" = "nolut" ]
     then
-        sh validateRTM5.sh rtm8 nolut
+        sh validateHelper8.sh rtm8 nolut
         ./cleanSDCard.sh
     else
-        sh validateRTM6.sh rtm8
+        sh validateHelper8.sh rtm8
        ./cleanSDCard.sh nolut
     fi
 elif [[ "$isrtm" -eq "7" ]] || [[ "$isrtm" = "rtm7" ]] || [[ "$isrtm" = "RTM7" ]]
@@ -72,7 +72,7 @@ then
     sh validateRTM4.sh
     ./cleanSDCard.sh nolut
 else
-    echo "No valid selection, please type '5,rtm5,RTM5' for validationg rtm5 OR '4,rtm4,RTM4' for rtm4"
+    echo "ERROR: selection invalid"
 
 fi
 
