@@ -10,5 +10,7 @@ cp *.rbf /lib/firmware/
 cd /lib/firmware
 ./update.sh hard
 
+systemctl start crimson-website; 
+
 cd $thisDir
 exit 0
