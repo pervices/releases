@@ -174,7 +174,8 @@ soft)
 	echo -e "$ok Soft update Successful"
 	;;
 hard)
-	./$0 soft
+	# Due to an errata, older versions of the filesystem can't use soft update.
+	#./$0 soft
 	echo -e "[        ] Updating FPGA image on SD card"
 	if [[ -d $sd_mountfolder ]]
 	then
