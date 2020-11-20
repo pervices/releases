@@ -155,6 +155,7 @@ fi
 echo ""
 echo "Hardware Versions"
 echo "Serial Number: $serial_num" > $file_name
+echo "Validator: $UPDATE_BIN" >> $file_name
 echo "MCU_RX: $rxHash" >> $file_name
 echo "MCU_TX: $txHash" >> $file_name
 echo "MCU_SYNTH: $synthHash" >> $file_name
@@ -168,10 +169,20 @@ echo ""
 
 if [[ "$error" = "1" ]];
 then
-    echo "=================="
-    echo "VERSION MISMATCH"
-    echo "=================="
-else 
+    echo "==================" | tee -a $file_name
+    echo "VERSION MISMATCH"   | tee -a $file_name
+    echo "==================" | tee -a $file_name
+    if [ -z "$2" ]
+        then
+            echo "WARNING: Lookup table not generated" | tee -a $file_name
+        elif [ "$2" = "nolut" ]
+        then
+            echo "Lookup table not generated" | tee -a $file_name
+            echo ""
+        else
+            echo "WARNING: Lookup table not generated" | tee -a $file_name
+        fi
+else
     # update lookup table last, if it is going to be done
     if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] || [[ "$isFlash" = "yes" ]]
     current_time=$(date "+%Y.%m.%d-%H.%M.%S")
