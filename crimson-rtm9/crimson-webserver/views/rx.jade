@@ -1,0 +1,205 @@
+extends ./layout.jade
+
+block content
+   p This page allows the configuration of the entire receive chain from the RF front end to the digital backend. Select the channel that is being configured.
+   p The signal is first sampled from the antenna which is connected to the SMA connector on the Crimson. The analog signal is fed through an RF switch based on the frequency of the signal being sampled. High band is reserved for signals greater than 500 MHz, and the low band is reserved for signals less than 500 MHz. Crimson currently supports signals up to 6 GHz. Within the respective RF chains (high and low) it filters the analog signal and divides it into I and Q channels for advanced signal processing on the FPGA. The high band offers an LNA for weaker signals, and a frequency mixer for desired intermediate frequencies prior to signal processing. The low band offers a varactor circuit to fine tune the delay between the I and Q channel. An ADC driver is common between both bands (high and low) prior to the ADC. The ADC will send the data across to the DSP chain within the FPGA at a rate of 322 MSPS using the JESD serial interface. The DSP chain will downsample the samples resulting in an adjusted final sample rate. The frequency of the signal can be adjusted prior to decimation.
+   
+   ul.nav.nav-tabs
+     li.active(role="presentation")
+         a#chan_a Channel A
+     li(role="presentation")
+        a#chan_b Channel B
+     li(role="presentation")
+        a#chan_c Channel C
+     li(role="presentation")
+        a#chan_d Channel D
+   
+   br
+   b Channel Enable 
+   input(type="checkbox", name='en', unchecked)#chan_en
+   h3 Radio Configuration
+   hr
+   .container-fluid(style="text-align:center")
+      .row
+         .col-md-1
+            p
+               b RF Band
+            input(type="checkbox", name='hi-low', unchecked)#rf_band
+         .col-md-1
+            p
+               b PA Enable
+            input(type="checkbox", name='en', unchecked)#pa_en
+         .col-md-2
+            .row 
+               p
+                  b Synthesizer Frequency
+               input.input-xs(type="text").width-100#synth_freq
+               |  Hz &nbsp;&nbsp;
+               button.btn.btn-default.btn-xs#synth_freq_set Set
+            .row
+               div(class="alert alert-danger", style="display: none")#synth_error_display MUST be >= 53MHz
+         .col-md-8
+            .row
+               .col-md-6
+                  p
+                     b RX Attenuation - PE43704
+                  input(type='range', min='0', max='127', step='1')#atten_range
+                  p
+                     #atten_display.inline-block
+               .col-md-6
+                  p
+                     b RX Gain - LMH6521
+                  input(type='range', min='0', max='126', step='2')#gain_range
+                  p
+                     #gain_display.inline-block
+            .row
+               div(class="alert alert-warning", style="display: none")#overvolt_warning ADC INPUT OVER-VOLTAGE DETECTED! REDUCE GAIN OR INCREASE ATTENUATON.
+                  
+   img(src="/img/rx_chain.svg", style="width: 100%; height: 100%;").center
+   h3 RX DSP Chain
+   hr
+   .container-fluid(style="text-align:left")
+      .row
+         .col-md-1
+            p
+               b Reset DSP
+            button.btn.btn-default.btn-xs#dsp_reset Reset
+         .col-md-1
+            p
+               b Signed Data
+            input(type="checkbox", name='en', unchecked)#signed
+         .col-md-2
+            p
+               b DSP NCO Offset
+            input.input-xs(type="text").width-100#dsp_nco
+            |  Hz &nbsp;&nbsp;
+            button.btn.btn-default.btn-xs#dsp_nco_set Set
+         .col-md-3
+            p
+               b Sample Rate
+            .row
+               .col-md-12
+                  | Desired: 
+                  input.input-xs(type="text", style="width:150px;")#sr
+                  |  SPS &nbsp;&nbsp;
+                  button.btn.btn-default.btn-xs#sr_set Set
+            .row(style="padding-top:10px;")
+               .col-md-12
+                  | Actual: 325000000 * 
+                  #sr_resamp_display.inline-block
+                  #sr_div_display.inline-block
+                  |  = 
+                  #sr_display.inline-block
+                  |  SPS
+         .col-md-4
+            p
+               b Destination Link
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | IPV4 IP Address
+               .col-md-4
+                  input.width-150.input-xs(type="text")#ip
+               .col-md-4.text-left
+                  button.btn.btn-default.btn-xs#link_set Set
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | MAC Address
+               .col-md-4
+                  input.width-150.input-xs(type="text")#mac
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | UDP Port
+               .col-md-4
+                  input.width-150.input-xs(type="text")#port
+      .row
+         .col-md-1
+            p
+               b Loopback Mode
+            input(type="checkbox", name='en', unchecked)#loopback
+   br
+   br
+   img(src="/img/rx_dsp.svg", style="width: 75%; height: 75%;").center
+   br
+   h3 RX Board Control
+   hr
+   .container-fluid
+      .row
+         .col-md-3
+            b JESD Sync
+            .row
+               .col-md-4.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#jesdsync Sync
+            br
+            b Channel IC's
+            br
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  | ADC
+               .col-md-3.top-buffer-5.right-pad-0
+                  | LMH
+               .col-md-3.top-buffer-5.right-pad-0
+                  | GPIOX
+               .col-md-3.top-buffer-5.right-pad-0
+                  | LED
+               //.col-md-3.top-buffer-5.right-pad-0
+                 // | Synth Cal.
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#adc_dump Dump
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#adrf_dump Dump
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#gpiox_dump Dump
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#led Test
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  | Synth Cal. 
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  input(type="checkbox", name='lut-en', unchecked)#lut_enable
+         .col-md-2
+            b Board Version
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#version Get
+            br
+            b Board Temperature
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#temperature Get
+            br
+            b Board Diagnostic
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#diagnostic Get
+         .col-md-7
+            b Console Output
+            br
+            textarea.form-control#cout(rows='10', readonly)
+
+   h3 Trigger Settings
+   hr
+   .container-fluid
+      .row
+         .col-md-1
+            //- default mode is level-triggered
+            p
+               b Sensitivity
+            input(type="checkbox", name='sma-mode', unchecked)#sma_mode
+         .col-md-1
+            //- The following are combined to form the "trig_sel" property 
+            p
+               b SMA
+            input.input-xs(type="checkbox", name='trig-sel-sma')#trig_sel_sma
+         .col-md-1
+            p
+               b Backoff
+            input.input-xs(type="number", name='edge-backoff')#edge_backoff
+         .col-md-1
+      br
+      .row
+         .col-md-1
+            p
+               b Samples
+            input.input-xs(type="number", name='edge-samples')#edge_samples
