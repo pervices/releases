@@ -40,14 +40,14 @@ then
     echo "Updating unit"
 
     DATE=$(date -Ins); 
-    ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-        date -Ins -s $DATE; hwclock -w; rm -rf /home/dev0/{*,.bash_history}; rm -rf /home/root/{*,.bash_history}; history -c; exit \
+    ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+        sudo date -Ins -s $DATE; sudo /sbin/hwclock -w; sudo rm -rf /home/dev0/{*,.bash_history}; sudo rm -rf /home/root/{*,.bash_history}; history -c; exit \
         "
 
-    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN root@192.168.10.2:~/
+    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/
 
-    ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-    ./$UPDATE_BIN nolut; \
+    ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+    sudo ./$UPDATE_BIN nolut; \
     exit\
     "
     echo ""
@@ -71,7 +71,7 @@ tFPGA=$(cat $UPDATE_VER|grep FPGA|tail -c 10)
 
 #Check Versions
 echo "Checking Versions"
-a="$(ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
+a="$(ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
 rxHash=$(echo board -v |mcu -f r|grep Revision|head -1|tail -c 9); \
 txHash=$(echo board -v |mcu -f t|grep Revision|head -1|tail -c 9); \
 synthHash=$(echo board -v |mcu -f s|grep Revision|head -1|tail -c 9); \
@@ -169,8 +169,8 @@ else
     then
         if [ -z "$2" ]
         then
-            ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-            ./$UPDATE_BIN onlylut; \
+            ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+            sudo ./$UPDATE_BIN onlylut; \
             exit\
             "
         elif [ "$2" = "nolut" ]
@@ -178,8 +178,8 @@ else
             echo "Lookup table not generated" | tee -a $file_name
             echo ""
         else
-            ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-            ./$UPDATE_BIN onlylut; \
+            ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+            sudo ./$UPDATE_BIN onlylut; \
             exit\
             "
         fi
