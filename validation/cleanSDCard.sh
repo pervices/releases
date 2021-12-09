@@ -11,7 +11,8 @@ then
         echo dev0 | sudo -S rm -rf /home/dev0/*; \
         sudo rm -rf /home/root/*; \
         sudo rm -rf /var/crimson/history; \
-        sudo rm -rf /var/crimson/calibration-data; \
+        sudo rm -rf /var/calibration-data; \
+        sudo mkdir /var/calibration-data; \
         sudo rm -rf /var/log/journal/*
         sudo sync
         exit\
@@ -31,7 +32,8 @@ else
         echo dev0 | sudo -S rm -rf /home/dev0/*; \
         sudo rm -rf /home/root/*; \
         sudo rm -rf /var/crimson/history; \
-        sudo rm -rf /var/crimson/calibration-data; \
+        sudo rm -rf /var/calibration-data; \
+        sudo mkdir /var/calibration-data; \
         sudo rm -rf /var/log/journal/*
         sudo sync
         exit\
