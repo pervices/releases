@@ -40,16 +40,16 @@ then
     echo "Updating unit"
 
     DATE=$(date -Ins); 
-    sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-        sudo date -Ins -s $DATE; sudo /sbin/hwclock -w; sudo rm -rf /home/dev0/{*,.bash_history}; sudo rm -rf /home/root/{*,.bash_history}; history -c; exit \
+    sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+        echo dev0 | sudo -S date -Ins -s $DATE; sudo /sbin/hwclock -w; sudo rm -rf /home/dev0/{*,.bash_history}; sudo rm -rf /home/root/{*,.bash_history}; history -c; exit \
         "
 
-    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/
+    sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/
 
-    sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-    sudo ./$UPDATE_BIN nolut; \
-    exit\
-    "
+    sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+        echo dev0 | sudo -S ./$UPDATE_BIN nolut; \
+        exit\
+        "
     echo ""
     loopDone=1
 elif [[ "$isFlash" = "n" ]] || [[ "$isFlash" = "N" ]] || [[ "$isFlash" = "n0" ]]
@@ -67,16 +67,25 @@ tWEB=$(cat $UPDATE_VER|grep WEB|tail -c 41)
 tFPGA=$(cat $UPDATE_VER|grep FPGA|tail -c 10 | head -c 9)
 
 #Check Versions
-echo "Checking Versions"
-rxHash=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f r|grep Revision|head -1|tail -c 9")
-txHash=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f t|grep Revision|head -1|tail -c 9")
-synthHash=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f s|grep Revision|head -1|tail -c 9")
-serverHash=$(sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S server -v|grep Revision")
-fpgaHash=$(sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo server -v |grep FPGA")
-RX_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/rx_a/about/hw_ver | grep Features")
-TX_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/tx_a/about/hw_ver | grep Features")
-SYNTH_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/time/about/hw_ver | grep Features")
-FPGA_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/fpga/about/hw_ver | grep Features")
+echo -n "Checking Versions"
+rxHash=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f r|grep Revision|head -1|tail -c 9")
+echo -n "."
+txHash=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f t|grep Revision|head -1|tail -c 9")
+echo -n "."
+synthHash=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f s|grep Revision|head -1|tail -c 9")
+echo -n "."
+serverHash=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S server -v|grep Revision")
+echo -n "."
+fpgaHash=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo server -v |grep FPGA")
+echo -n "."
+RX_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/rx_a/about/hw_ver | grep Features")
+echo -n "."
+TX_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/tx_a/about/hw_ver | grep Features")
+echo -n "."
+SYNTH_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/time/about/hw_ver | grep Features")
+echo "."
+FPGA_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/fpga/about/hw_ver | grep Features")
+echo ""
 
 firmHash=$(echo $serverHash | tail -c 10 | head -c 8)
 fpgaHash=$(echo $fpgaHash | tail -c 11 | head -c 9)
@@ -145,28 +154,28 @@ then
 else 
     # update lookup table last, if it is going to be done
     if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] || [[ "$isFlash" = "yes" ]]
+    current_time=$(date "+%Y.%m.%d-%H.%M.%S")
     then
         if [ -z "$2" ]
         then
-            sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-            sudo ./$UPDATE_BIN onlylut; \
+            sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+            echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
             exit\
             "
+            echo "Calibration table generation start time: $current_time (UTC)"
         elif [ "$2" = "nolut" ]
         then
             echo "Lookup table not generated" | tee -a $file_name
             echo ""
         else
-            sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-            sudo ./$UPDATE_BIN onlylut; \
+            sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+            echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
             exit\
             "
+            echo "Calibration table generation start time: $current_time (UTC)"
         fi
     else
         echo "Lookup table not generated" | tee -a $file_name
         echo ""
     fi
 fi
-
-
-
