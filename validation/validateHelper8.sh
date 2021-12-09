@@ -135,10 +135,10 @@ echo "$RX_HW" | tee -a $file_name
 echo "$TX_HW" | tee -a $file_name
 echo "$SYNTH_HW" | tee -a $file_name
 echo "$FPGA_HW" | tee -a $file_name
+echo ""
 
 if [[ "$error" = "1" ]];
 then
-    echo ""
     echo "=================="
     echo "VERSION MISMATCH"
     echo "=================="
