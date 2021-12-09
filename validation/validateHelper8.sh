@@ -40,13 +40,13 @@ then
     echo "Updating unit"
 
     DATE=$(date -Ins); 
-    ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+    sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         sudo date -Ins -s $DATE; sudo /sbin/hwclock -w; sudo rm -rf /home/dev0/{*,.bash_history}; sudo rm -rf /home/root/{*,.bash_history}; history -c; exit \
         "
 
     scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/
 
-    ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+    sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
     sudo ./$UPDATE_BIN nolut; \
     exit\
     "
@@ -58,92 +58,83 @@ then
     loopDone=1
 fi
 done
-#scp updateCrimsonRtm4 root@192.168.10.2:~/
-#ssh root@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ./updateCrimsonRtm4 
 
 #Get Versions from versions file
 tMCU=$(cat $UPDATE_VER|grep MCU|tail -c 9)
-tFIRM=$(cat $UPDATE_VER|grep FIRMWARE|tail -c 9)
+tFIRM=$(cat $UPDATE_VER|grep FIRMWARE|tail -c 9 | head -c 8)
 tMETAPV=$(cat $UPDATE_VER|grep METAPV|tail -c 41)
 tWEB=$(cat $UPDATE_VER|grep WEB|tail -c 41)
-tFPGA=$(cat $UPDATE_VER|grep FPGA|tail -c 10)
-
+tFPGA=$(cat $UPDATE_VER|grep FPGA|tail -c 10 | head -c 9)
 
 #Check Versions
 echo "Checking Versions"
-a="$(ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
-rxHash=$(echo board -v |mcu -f r|grep Revision|head -1|tail -c 9); \
-txHash=$(echo board -v |mcu -f t|grep Revision|head -1|tail -c 9); \
-synthHash=$(echo board -v |mcu -f s|grep Revision|head -1|tail -c 9); \
-serverHash=$(server -v|grep Revision|tail -c 9); \
-fpgaHash=$(server -v |grep FPGA|tail -c 10); \
-rxHW=$(cat /var/volatile/crimson/state/rx_a/about/hw_ver); \
-txHW=$(cat /var/volatile/crimson/state/tx_a/about/hw_ver); \
-synthHW=$(cat /var/volatile/crimson/state/time/about/hw_ver); \
-fpgaHW=$(cat /var/volatile/crimson/state/fpga/about/hw_ver); \
-echo "SW_RX: $rxHash"; \
-echo "SW_TX: $txHash"; \
-echo "SW_SYNTH: $synthHash"; \
-echo "SW_SERVER: $serverHash"; \
-echo "SW_FPGA $fpgaHash"; \
-echo "HW_RX: $rxHW"; \
-echo "HW_TX: $txHW"; \
-echo "HW_SYNTH: $synthHW"; \
-echo "HW_FPGA $fpgaHW"; \
-')"
-echo $a
-CRX_u8=$(echo "$a"|grep SW_RX|tail -c 9)
-CTX_u8=$(echo "$a"|grep SW_TX|tail -c 9)
-CSYNTH_u8=$(echo "$a"|grep SW_SYNTH|tail -c 9)
-CFERM_u8=$(echo "$a"|grep SW_SERVER|tail -c 9)
-CFPGA_u9=$(echo "$a"|grep SW_FPGA|tail -c 10)
-RX_HW=$(echo "$a"|grep --line-buffered 'HW_RX')
-TX_HW=$(echo "$a"|grep --line-buffered 'HW_TX')
-SYNTH_HW=$(echo "$a"|grep --line-buffered 'HW_SYNTH')
-FPGA_HW=$(echo "$a"|grep --line-buffered 'HW_FPGA')
+rxHash=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f r|grep Revision|head -1|tail -c 9")
+txHash=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f t|grep Revision|head -1|tail -c 9")
+synthHash=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo board -v |mcu -f s|grep Revision|head -1|tail -c 9")
+serverHash=$(sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S server -v|grep Revision")
+fpgaHash=$(sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo server -v |grep FPGA")
+RX_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/rx_a/about/hw_ver | grep Features")
+TX_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/tx_a/about/hw_ver | grep Features")
+SYNTH_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/time/about/hw_ver | grep Features")
+FPGA_HW=$(sshpass -p "dev0" ssh dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/fpga/about/hw_ver | grep Features")
 
+firmHash=$(echo $serverHash | tail -c 10 | head -c 8)
+fpgaHash=$(echo $fpgaHash | tail -c 11 | head -c 9)
+
+echo Software Versions
 error=0
+if [[ "$rxHash" = "$tMCU" ]];
+then
+    echo "RX Good $rxHash"
+else
+    echo "RX Bad: Crimson $rxHash doesnt match $tMCU"
+    error=1
+fi
+
+if [[ "$txHash" = "$tMCU" ]];
+then
+    echo "TX Good $txHash"
+else
+    echo "TX Bad: Crimson $txHash doesnt match $tMCU"
+    error=1
+fi
+
+if [[ "$synthHash" = "$tMCU" ]];
+then
+    echo "SYNTH Good $synthHash"
+else
+    echo "SYNTH Bad: Crimson $synthHash doesnt match $tMCU"
+    error=1
+fi
+
+if [[ "$firmHash" = "$tFIRM" ]];
+then
+    echo "FIRMWARE Good $firmHash"
+else
+    echo "FIRMWARE Bad: Crimson $firmHash doesnt match $tFIRM"
+    error=1
+fi
+
+if [[ "$fpgaHash" = "$tFPGA" ]];
+then
+    echo "FPGA Good $fpgaHash"
+else
+    echo "FPGA Bad: Crimsoni $fpgaHash doesnt match $tFPGA"
+    error=1
+fi
+
 echo ""
-if [[ "$CRX_u8" = "$tMCU" ]];
-then
-    echo "RX Good $CRX_u8"
-else
-    echo "RX Bad: Crimson $CRX_u8  doesnt match $tMCU"
-    error=1
-fi
-
-if [[ "$CTX_u8" = "$tMCU" ]];
-then
-    echo "TX Good $CTX_u8 "
-else
-    echo "TX Bad: Crimson $CTX_u8  doesnt match $tMCU"
-    error=1
-fi
-
-if [[ "$CSYNTH_u8" = "$tMCU" ]];
-then
-    echo "SYNTH Good $CSYNTH_u8 "
-else
-    echo "SYNTH Bad: Crimson Crimson  $CSYNTH_u8  doesnt match $tMCU"
-    error=1
-fi
-
-if [[ "$CFERM_u8" = "$tFIRM" ]];
-then
-    echo "FIRMWARE Good $CFERM_u8"
-else
-    echo "FIRMWARE Bad: Crimson   $CFERM_u8  doesnt match $tFIRM"
-    error=1
-fi
-
-if [[ "$CFPGA_u9" = "$tFPGA" ]];
-then
-    echo "FPGA Good $CFPGA_u9"
-else
-    echo "FPGA Bad: Crimson  $CFPGA_u9 doesnt match $tFPGA"
-    error=1
-fi
-
+echo "Hardware Versions"
+echo "Serial Number: $serial_num" > $file_name
+echo "MCU_RX: $CRX_u8" >> $file_name
+echo "MCU_TX: $CTX_u8" >> $file_name
+echo "MCU_SYNTH: $CSYNTH_u8" >> $file_name
+echo "SERVER: $CFERM_u8" >> $file_name
+echo "FPGA: $CFPGA_u9" >> $file_name
+echo "$RX_HW" | tee -a $file_name
+echo "$TX_HW" | tee -a $file_name
+echo "$SYNTH_HW" | tee -a $file_name
+echo "$FPGA_HW" | tee -a $file_name
 
 if [[ "$error" = "1" ]];
 then
@@ -151,25 +142,13 @@ then
     echo "=================="
     echo "VERSION MISMATCH"
     echo "=================="
-else
-    echo "Serial Number: $serial_num" > $file_name
-    echo "MCU_RX: $CRX_u8" >> $file_name
-    echo "MCU_TX: $CTX_u8" >> $file_name
-    echo "MCU_SYNTH: $CSYNTH_u8" >> $file_name
-    echo "SERVER: $CFERM_u8" >> $file_name
-    echo "FPGA: $CFPGA_u9" >> $file_name
-    echo "$RX_HW" | tee -a $file_name
-    echo "$TX_HW" | tee -a $file_name
-    echo "$SYNTH_HW" | tee -a $file_name
-    echo "$FPGA_HW" | tee -a $file_name
-    echo ""
-    
+else 
     # update lookup table last, if it is going to be done
     if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] || [[ "$isFlash" = "yes" ]]
     then
         if [ -z "$2" ]
         then
-            ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+            sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
             sudo ./$UPDATE_BIN onlylut; \
             exit\
             "
@@ -178,7 +157,7 @@ else
             echo "Lookup table not generated" | tee -a $file_name
             echo ""
         else
-            ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+            sshpass -p "dev0" ssh -t dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
             sudo ./$UPDATE_BIN onlylut; \
             exit\
             "
