@@ -135,11 +135,11 @@ fi
 echo ""
 echo "Hardware Versions"
 echo "Serial Number: $serial_num" > $file_name
-echo "MCU_RX: $CRX_u8" >> $file_name
-echo "MCU_TX: $CTX_u8" >> $file_name
-echo "MCU_SYNTH: $CSYNTH_u8" >> $file_name
-echo "SERVER: $CFERM_u8" >> $file_name
-echo "FPGA: $CFPGA_u9" >> $file_name
+echo "MCU_RX: $rxHash" >> $file_name
+echo "MCU_TX: $txHash" >> $file_name
+echo "MCU_SYNTH: $synthHash" >> $file_name
+echo "SERVER: $firmHash" >> $file_name
+echo "FPGA: $fpgaHash" >> $file_name
 echo "$RX_HW" | tee -a $file_name
 echo "$TX_HW" | tee -a $file_name
 echo "$SYNTH_HW" | tee -a $file_name
