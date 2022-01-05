@@ -1,4 +1,4 @@
- calDir="/var/crimson/calibration-data"
+ calDir="/var/calibration-data"
  echo "Calibration table script"
  
  #Disable lut 
@@ -13,14 +13,14 @@
  
  #Delete calibration table if it exists
  echo "Deleting existing table"
- calDir="/var/crimson/calibration-data"
 if [ -d "$calDir" ]; then
   rm -rf $calDir
 fi
+mkdir $calDir
 
 #Create table
  echo "Creating ADF cal look up table"
- echo "This can take some time (30-60mins)"
+ echo "This can take some time (up to 3 hours)"
  
  echo 1 > /var/volatile/crimson/state/rx_a/rf/freq/lut_en
  echo "Calibration table is generated when the bottom status LED stops blinking"
