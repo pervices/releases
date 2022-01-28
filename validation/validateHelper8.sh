@@ -41,7 +41,27 @@ then
 
     DATE=$(date -Ins); 
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-        echo dev0 | sudo -S date -Ins -s $DATE; sudo /sbin/hwclock -w; sudo rm -rf /home/dev0/{*,.bash_history}; sudo rm -rf /home/root/{*,.bash_history}; history -c; exit \
+        echo dev0 | sudo -S date -Ins -s $DATE; echo dev0 | sudo -S /sbin/hwclock -w;\
+        exit\
+        "
+    if [ $? -eq 0 ]
+    then
+        echo hwclock update success
+    else
+        echo "WARNING: hwclock update failed. This problem MUST be fixed before this unit can be shipped. Do you wish to continue with the validation?: (Y,n)"
+        read continue
+        if [[ "$continue" = "y" ]] || [[ "$continue" = "Y" ]] || [[ "$continue" = "yes" ]]
+        then
+            echo "Continuing validation..."
+        else
+            echo "Aborting validation."
+            exit -1
+        fi
+    fi
+
+    sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+        echo dev0 | sudo -S rm -rf /home/dev0/{*,.bash_history}; echo dev0 | sudo -S rm -rf /home/root/{*,.bash_history}; history -c;\
+        exit\
         "
 
     sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/
