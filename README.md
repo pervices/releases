@@ -3,4 +3,4 @@ Releases for Crimson TNG
 
 A snapshot of binaries and tools that identifies a release.
 
-Instructions on how to update the MCU firmware are located [here](http://support.pervices.com/crimson/updating-firmware/#automatic-mcu-update-recommend).
+Instructions on how to update the SDR firmware are located [here](http://support.pervices.com/how-to/pvht-5-updatefirmware).
