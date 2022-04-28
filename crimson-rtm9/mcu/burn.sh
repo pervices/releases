@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | time] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | tate ]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | time] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | tate ]\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
@@ -108,7 +108,7 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'tx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
+if [ "$2" != 'time' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
 then
     help_summary
     return 1
@@ -189,6 +189,8 @@ then
     HEXFILE_BBRX_BOOT="TATE_BBRX-xboot-boot.hex"
     HEXFILE_TX_APP="tate-tx.hex"
     HEXFILE_TX_BOOT="TATE_TX-xboot-boot.hex"
+    HEXFILE_TX3_APP="tate-tx3.hex"
+    HEXFILE_TX3_BOOT="TATE_TX3-xboot-boot.hex"
 fi
 
 BOARD_OPERATION="$1"
@@ -214,12 +216,12 @@ then
 	echo "Ready to program Rx 3GSPS board. Press Enter to continue."
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_RX3_BOOT" "$HEXFILE_RX3_APP"
-	echo "-- Finished programming the Rx board --"
+	echo "-- Finished programming the Rx3 board --"
 fi
 
 if [ "$2" = 'bbrx' ]
 then
-	echo "Ready to program BBRx 3GSPS board. Press the Enter key to continue."
+	echo "Ready to program BBRx 3GSPS board. Press Enter to continue."
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_BBRX_BOOT" "$HEXFILE_BBRX_APP"
 	echo "-- Finished programming the BBRx board --"
@@ -231,6 +233,14 @@ then
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_TX_BOOT" "$HEXFILE_TX_APP"
 	echo "-- Finished programming the Tx board --"
+fi
+
+if [ "$2" = 'tx3' ]
+then
+	echo "Ready to program Tx 3GSPS board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_TX3_BOOT" "$HEXFILE_TX3_APP"
+	echo "-- Finished programming the Tx3 board --"
 fi
 
 exit
