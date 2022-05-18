@@ -2,10 +2,10 @@
 #Clear /home/dev0 directory
 #Clear /home/root directory
 #Remove history   /var/crimson/history
-#Remove LUT lookup table /var/crimson/calibration-data
+#Remove LUT lookup table /var/crimson/calibration-data IF nolut is NOT SELECTED.
 #clean fpga partition
 
- if [ -z "$1" ]
+if [ -z "$1" ]
 then
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no '\
         echo dev0 | sudo -S rm -rf /home/dev0/*; \

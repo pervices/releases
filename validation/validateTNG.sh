@@ -9,15 +9,15 @@ read isrtm
 if [[ "$isrtm" -eq "9" ]] || [[ "$isrtm" = "rtm9" ]] || [[ "$isrtm" = "RTM9" ]]
 then
     echo "Validating RTM9"
-    if [ -z "$1" ]
+    if [ -z "$1" ] ## empty, generate LUT
     then
         sh validateHelper8.sh rtm9
-        ./cleanSDCard.sh nolut
-    elif [ "$1" = "nolut" ]
+        ./cleanSDCard.sh
+    elif [ "$1" = "nolut" ] ## nolut, do not delete LUT
     then
         sh validateHelper8.sh rtm9 nolut
-        ./cleanSDCard.sh
-    else
+        ./cleanSDCard.sh nolut
+    else # ??
         sh validateHelper8.sh rtm9
        ./cleanSDCard.sh nolut
     fi
