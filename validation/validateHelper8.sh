@@ -65,11 +65,17 @@ then
         "
 
     sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/
-
+    
+    
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         echo dev0 | sudo -S ./$UPDATE_BIN nolut; \
         exit\
         "
+        
+    sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S systemctl restart crimson-server"
+    echo "Restarting server, waiting 1min"
+    sleep 60;
+        
     echo ""
     loopDone=1
 elif [[ "$isFlash" = "n" ]] || [[ "$isFlash" = "N" ]] || [[ "$isFlash" = "n0" ]]
