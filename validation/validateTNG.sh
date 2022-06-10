@@ -12,14 +12,18 @@ then
     if [ -z "$1" ] ## empty, generate LUT
     then
         sh validateHelper8.sh rtm9
+        
+        # delete old information including LUT, but this script should run fast
+        # enough to delete LUT directory before new LUT is generated and written
+        # to /var/calibration-data/ so it is still deleting old information
         ./cleanSDCard.sh
     elif [ "$1" = "nolut" ] ## nolut, do not delete LUT
     then
         sh validateHelper8.sh rtm9 nolut
         ./cleanSDCard.sh nolut
-    else # ??
+    else # any other than nolut, generate lut
         sh validateHelper8.sh rtm9
-       ./cleanSDCard.sh nolut
+       ./cleanSDCard.sh
     fi
 elif [[ "$isrtm" -eq "8" ]] || [[ "$isrtm" = "rtm8" ]] || [[ "$isrtm" = "RTM8" ]]
 then
@@ -27,14 +31,14 @@ then
     if [ -z "$1" ]
     then
         sh validateHelper8.sh rtm8
-        ./cleanSDCard.sh nolut
+        ./cleanSDCard.sh
     elif [ "$1" = "nolut" ]
     then
         sh validateHelper8.sh rtm8 nolut
-        ./cleanSDCard.sh
+        ./cleanSDCard.sh nolut
     else
         sh validateHelper8.sh rtm8
-       ./cleanSDCard.sh nolut
+       ./cleanSDCard.sh
     fi
 elif [[ "$isrtm" -eq "7" ]] || [[ "$isrtm" = "rtm7" ]] || [[ "$isrtm" = "RTM7" ]]
 then
@@ -42,14 +46,14 @@ then
     if [ -z "$1" ]
     then
         sh validateRTM5.sh rtm6
-        ./cleanSDCard.sh nolut
+        ./cleanSDCard.sh
     elif [ "$1" = "nolut" ]
     then
         sh validateRTM5.sh rtm6 nolut
-        ./cleanSDCard.sh
+        ./cleanSDCard.sh nolut
     else
         sh validateRTM6.sh rtm6
-       ./cleanSDCard.sh nolut
+       ./cleanSDCard.sh
     fi
 elif [[ "$isrtm" -eq "6" ]] || [[ "$isrtm" = "rtm6" ]] || [[ "$isrtm" = "RTM6" ]]
 then
@@ -57,14 +61,14 @@ then
     if [ -z "$1" ]
     then
         sh validateRTM5.sh rtm6
-        ./cleanSDCard.sh nolut
+        ./cleanSDCard.sh
     elif [ "$1" = "nolut" ]
     then
         sh validateRTM5.sh rtm6 nolut
-        ./cleanSDCard.sh
+        ./cleanSDCard.sh nolut
     else
         sh validateRTM6.sh rtm6
-       ./cleanSDCard.sh nolut
+       ./cleanSDCard.sh
     fi
 elif [[ "$isrtm" -eq "5" ]] || [[ "$isrtm" = "rtm5" ]] || [[ "$isrtm" = "RTM5" ]]
 then
@@ -72,20 +76,20 @@ then
     if [ -z "$1" ]
     then
         sh validateRTM5.sh rtm5
-        ./cleanSDCard.sh nolut
+        ./cleanSDCard.sh
     elif [ "$1" = "nolut" ]
     then
         sh validateRTM5.sh rtm5 nolut
-        ./cleanSDCard.sh
+        ./cleanSDCard.sh nolut
     else
         sh validateRTM5.sh rtm5
-       ./cleanSDCard.sh nolut
+       ./cleanSDCard.sh
     fi
 elif [[ "$isrtm" -eq  "4" ]] || [[ "$isrtm" = "rtm4" ]] || [[ "$isrtm" = "RTM4" ]]
 then
     echo "Validating RTM4"
     sh validateRTM4.sh
-    ./cleanSDCard.sh nolut
+    ./cleanSDCard.sh
 else
     echo "ERROR: selection invalid"
 
