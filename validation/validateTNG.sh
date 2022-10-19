@@ -9,6 +9,12 @@ sed -i '/192.168.10.2/d' ~/.ssh/known_hosts
 
 echo "rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (9,8,7,6,5,4)"
 read isrtm
+
+#TOFIX: Do this properly later
+if [ -z "$#" ]
+	$1 = "0"
+fi
+
 if [[ "$isrtm" -eq "9" ]] || [[ "$isrtm" = "rtm9" ]] || [[ "$isrtm" = "RTM9" ]]
 then
     echo "Validating RTM9"
