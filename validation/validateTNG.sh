@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #Ensure failure if something fails.
 set -Eeuo pipefail
 
@@ -10,9 +12,11 @@ sed -i '/192.168.10.2/d' ~/.ssh/known_hosts
 echo "rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (9,8,7,6,5,4)"
 read isrtm
 
-#TOFIX: Do this properly later
-if [ -z "$#" ]
-	$1 = "0"
+if [[ $# == "0" ]]
+then
+	sparg=0
+else 
+	sparg=$1
 fi
 
 if [[ "$isrtm" -eq "9" ]] || [[ "$isrtm" = "rtm9" ]] || [[ "$isrtm" = "RTM9" ]]
@@ -26,7 +30,7 @@ then
         # enough to delete LUT directory before new LUT is generated and written
         # to /var/calibration-data/ so it is still deleting old information
         ./cleanSDCard.sh
-    elif [ "$1" = "nolut" ] ## nolut, do not delete LUT
+    elif [ "$sparg" = "nolut" ] ## nolut, do not delete LUT
     then
         sh validateHelper8.sh rtm9 nolut
         ./cleanSDCard.sh nolut
@@ -37,11 +41,11 @@ then
 elif [[ "$isrtm" -eq "8" ]] || [[ "$isrtm" = "rtm8" ]] || [[ "$isrtm" = "RTM8" ]]
 then
     echo "Validating RTM8"
-    if [ -z "$1" ]
+    if [ -z "$sparg" ]
     then
         sh validateHelper8.sh rtm8
         ./cleanSDCard.sh
-    elif [ "$1" = "nolut" ]
+    elif [ "$sparg" = "nolut" ]
     then
         sh validateHelper8.sh rtm8 nolut
         ./cleanSDCard.sh nolut
@@ -52,11 +56,11 @@ then
 elif [[ "$isrtm" -eq "7" ]] || [[ "$isrtm" = "rtm7" ]] || [[ "$isrtm" = "RTM7" ]]
 then
     echo "Validating RTM7"
-    if [ -z "$1" ]
+    if [ -z "$sparg" ]
     then
         sh validateRTM5.sh rtm6
         ./cleanSDCard.sh
-    elif [ "$1" = "nolut" ]
+    elif [ "$sparg" = "nolut" ]
     then
         sh validateRTM5.sh rtm6 nolut
         ./cleanSDCard.sh nolut
@@ -71,7 +75,7 @@ then
     then
         sh validateRTM5.sh rtm6
         ./cleanSDCard.sh
-    elif [ "$1" = "nolut" ]
+    elif [ "$sparg" = "nolut" ]
     then
         sh validateRTM5.sh rtm6 nolut
         ./cleanSDCard.sh nolut
@@ -86,7 +90,7 @@ then
     then
         sh validateRTM5.sh rtm5
         ./cleanSDCard.sh
-    elif [ "$1" = "nolut" ]
+    elif [ "$sparg" = "nolut" ]
     then
         sh validateRTM5.sh rtm5 nolut
         ./cleanSDCard.sh nolut
