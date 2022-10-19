@@ -12,7 +12,7 @@ read isrtm
 if [[ "$isrtm" -eq "9" ]] || [[ "$isrtm" = "rtm9" ]] || [[ "$isrtm" = "RTM9" ]]
 then
     echo "Validating RTM9"
-    if [ -z "$1" ] ## empty, generate LUT
+    if [ -z "$#" ] ## empty, generate LUT
     then
         sh validateHelper8.sh rtm9
         
@@ -61,7 +61,7 @@ then
 elif [[ "$isrtm" -eq "6" ]] || [[ "$isrtm" = "rtm6" ]] || [[ "$isrtm" = "RTM6" ]]
 then
     echo "Validating RTM6"
-    if [ -z "$1" ]
+    if [ -z "$#" ]
     then
         sh validateRTM5.sh rtm6
         ./cleanSDCard.sh
@@ -76,7 +76,7 @@ then
 elif [[ "$isrtm" -eq "5" ]] || [[ "$isrtm" = "rtm5" ]] || [[ "$isrtm" = "RTM5" ]]
 then
     echo "Validating RTM5"
-    if [ -z "$1" ]
+    if [ -z "$#" ]
     then
         sh validateRTM5.sh rtm5
         ./cleanSDCard.sh
