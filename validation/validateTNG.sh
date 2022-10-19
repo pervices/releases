@@ -1,3 +1,6 @@
+#Ensure failure if something fails.
+set -Eeuo pipefail
+
 #update repository
 git pull origin master
 
