@@ -13,13 +13,13 @@ file_name=$serial_num
 
 BOARD_REV="$1"
 
-if [[ "$BOARD_REV" = 'rtm9' ]] || [[ "$BOARD_REV" = 'RMT9' ]] ||  [[ "$BOARD_REV" -eq '9' ]]
+if [[ "$BOARD_REV" = 'rtm9' ]]
 then
         BOARD_REV=9
         UPDATE_BIN="updateCrimsonRtm9"
         UPDATE_VER="../crimson-rtm9/versions"
         echo $UPDATE_BIN
-elif [[ "$BOARD_REV" = "rtm8" ]] || [[ "$BOARD_REV" = "RTM8" ]] || [[ "$BOARD_REV" -eq "8" ]]
+elif [[ "$BOARD_REV" = "rtm8" ]]
 then
         BOARD_REV=8
         UPDATE_BIN="updateCrimsonRtm8"
