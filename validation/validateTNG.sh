@@ -24,7 +24,7 @@ then
     echo "Validating RTM9"
     if [ -z "$#" ] ## empty, generate LUT
     then
-        sh validateHelper8.sh rtm9
+        sh validateHelper8.sh rtm9 lut
         
         # delete old information including LUT, but this script should run fast
         # enough to delete LUT directory before new LUT is generated and written
@@ -35,7 +35,7 @@ then
         sh validateHelper8.sh rtm9 nolut
         ./cleanSDCard.sh nolut
     else # any other than nolut, generate lut
-        sh validateHelper8.sh rtm9
+        sh validateHelper8.sh rtm9 lut
        ./cleanSDCard.sh
     fi
 elif [[ "$isrtm" -eq "8" ]] || [[ "$isrtm" = "rtm8" ]] || [[ "$isrtm" = "RTM8" ]]
@@ -43,14 +43,14 @@ then
     echo "Validating RTM8"
     if [ -z "$sparg" ]
     then
-        sh validateHelper8.sh rtm8
+        sh validateHelper8.sh rtm8 lut
         ./cleanSDCard.sh
     elif [ "$sparg" = "nolut" ]
     then
         sh validateHelper8.sh rtm8 nolut
         ./cleanSDCard.sh nolut
     else
-        sh validateHelper8.sh rtm8
+        sh validateHelper8.sh rtm8 lut
        ./cleanSDCard.sh
     fi
 elif [[ "$isrtm" -eq "7" ]] || [[ "$isrtm" = "rtm7" ]] || [[ "$isrtm" = "RTM7" ]]
