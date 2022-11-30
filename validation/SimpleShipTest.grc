@@ -37,7 +37,7 @@ blocks:
   id: variable_qtgui_chooser
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: 2,4,1,1
     label: HB Test (2-6)
     label0: 'T2: 300MHz'
     label1: 'T3: 600MHz'
@@ -55,12 +55,12 @@ blocks:
     orient: Qt.QVBoxLayout
     type: int
     value: '0'
-    widget: combo_box
+    widget: radio_buttons
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [590, 267]
+    coordinate: [592, 288.0]
     rotation: 0
     state: enabled
 - name: MagLabelA
@@ -68,8 +68,8 @@ blocks:
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
-    label: Mag A
+    gui_hint: 3,4,1,1
+    label: 'Mag A: '
     type: real
     value: 10*numpy.log10(probeFuncA)
   states:
@@ -84,8 +84,8 @@ blocks:
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
-    label: Mag B
+    gui_hint: 4,4,1,1
+    label: 'Mag B: '
     type: real
     value: 10*numpy.log10(probeFuncB)
   states:
@@ -100,8 +100,8 @@ blocks:
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
-    label: Mag C
+    gui_hint: 5,4,1,1
+    label: 'Mag C: '
     type: real
     value: 10*numpy.log10(probeFuncC)
   states:
@@ -116,8 +116,8 @@ blocks:
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
-    label: Mag D
+    gui_hint: 6,4,1,1
+    label: 'Mag D: '
     type: real
     value: 10*numpy.log10(probeFuncD)
   states:
@@ -131,7 +131,7 @@ blocks:
   id: variable_qtgui_chooser
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: 1,4,1,1
     label: Test Select
     label0: 'T1: Freq Dependance (All Different Freq)'
     label1: 'T2-T6: (Use Second Drop Down)'
@@ -177,7 +177,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [240, 136]
+    coordinate: [224, 152.0]
     rotation: 0
     state: enabled
 - name: center_a
@@ -189,7 +189,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 4]
+    coordinate: [1376, 32.0]
     rotation: 0
     state: enabled
 - name: center_b
@@ -201,7 +201,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 68]
+    coordinate: [1376, 96.0]
     rotation: 0
     state: enabled
 - name: center_c
@@ -213,7 +213,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 132]
+    coordinate: [1376, 160.0]
     rotation: 0
     state: enabled
 - name: center_d
@@ -225,7 +225,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 196]
+    coordinate: [1376, 224.0]
     rotation: 0
     state: enabled
 - name: disp_cent_a
@@ -233,7 +233,7 @@ blocks:
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
+    gui_hint: 8,0,1,1
     label: Center A
     type: int
     value: center_a
@@ -241,15 +241,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1000, 12]
+    coordinate: [608, 16.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: disp_cent_b
   id: variable_qtgui_label
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
+    gui_hint: 8,1,1,1
     label: Center B
     type: int
     value: center_b
@@ -257,15 +257,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 12]
+    coordinate: [736, 16.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: disp_cent_c
   id: variable_qtgui_label
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
+    gui_hint: 8,2,1,1
     label: Center C
     type: int
     value: center_c
@@ -273,15 +273,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1000, 92]
+    coordinate: [608, 96.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: disp_cent_d
   id: variable_qtgui_label
   parameters:
     comment: ''
     formatter: None
-    gui_hint: ''
+    gui_hint: 8,3,1,1
     label: Center D
     type: int
     value: center_d
@@ -289,9 +289,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 92]
+    coordinate: [736, 96.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: freq_all
   id: variable_qtgui_range
   parameters:
@@ -328,7 +328,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 8]
+    coordinate: [928, 0.0]
     rotation: 0
     state: enabled
 - name: probeFuncB
@@ -344,7 +344,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 88]
+    coordinate: [928, 80.0]
     rotation: 0
     state: enabled
 - name: probeFuncC
@@ -360,7 +360,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 168]
+    coordinate: [928, 160.0]
     rotation: 0
     state: enabled
 - name: probeFuncD
@@ -376,7 +376,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 248]
+    coordinate: [928, 240.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -422,7 +422,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 172]
+    coordinate: [216, 288.0]
     rotation: 0
     state: enabled
 - name: analog_sig_source_x_0
