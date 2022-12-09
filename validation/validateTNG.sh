@@ -9,6 +9,17 @@ git pull origin master
 #remove host ssh
 sed -i '/192.168.10.2/d' ~/.ssh/known_hosts
 
+#ping crimson to ensure it is connected
+echo "Checking connection to crimson..."
+ping 192.168.10.2 -c 1 > /dev/null
+rc=$?
+if [[ $rc -eq 0 ]]; then
+	echo "Device found at 192.168.10.2"
+else
+	echo "ERROR: unable to ping crimson at 192.168.10.2"
+	exit
+fi
+
 echo "rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (9,8,7,6,5,4)"
 read isrtm
 
