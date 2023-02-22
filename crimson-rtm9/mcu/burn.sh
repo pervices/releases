@@ -108,7 +108,7 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
+if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
 then
     help_summary
     return 1
@@ -181,6 +181,8 @@ then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
     HEXFILE_TIME_APP="tate-synth.hex"
     HEXFILE_TIME_BOOT="TATE_SYNTH-xboot-boot.hex "
+    HEXFILE_TIME3_APP="tate-synth3.hex"
+    HEXFILE_TIME3_BOOT="TATE_SYNTH3-xboot-boot.hex "
     HEXFILE_RX_APP="tate-rx.hex"
     HEXFILE_RX_BOOT="TATE_RX-xboot-boot.hex"
     HEXFILE_RX3_APP="tate-rx3.hex"
@@ -200,7 +202,15 @@ then
 	echo "Ready to program Time board. Press Enter to continue."
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_TIME_BOOT" "$HEXFILE_TIME_APP"
-	echo "-- Finished programming the synth board --"
+	echo "-- Finished programming the Time board --"
+fi
+
+if [ "$2" = 'time3' ]
+then
+	echo "Ready to program Time 3GSPS board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_TIME3_BOOT" "$HEXFILE_TIME3_APP"
+	echo "-- Finished programming the Time3 board --"
 fi
 
 if [ "$2" = 'rx' ] || [ "$2" = 'all' ]
