@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | tx | time] [rtm4 | rtm5 | rtm6 | rtm8 | tate ]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | time] [rtm4 | rtm5 | rtm6 | rtm8 | tate ]\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
@@ -108,7 +108,7 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'tx' ] && [ "$2" != 'rx' ] && [ "$2" != 'all' ]
+if [ "$2" != 'time' ] && [ "$2" != 'tx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
 then
     help_summary
     return 1
@@ -172,33 +172,53 @@ then
     HEXFILE_TIME_BOOT="TATE_SYNTH-xboot-boot.hex "
     HEXFILE_RX_APP="tate-rx.hex"
     HEXFILE_RX_BOOT="TATE_RX-xboot-boot.hex"
+    HEXFILE_RX3_APP="tate-rx3.hex"
+    HEXFILE_RX3_BOOT="TATE_RX3-xboot-boot.hex"
+    HEXFILE_BBRX_APP="tate-bbrx.hex"
+    HEXFILE_BBRX_BOOT="TATE_BBRX-xboot-boot.hex"
     HEXFILE_TX_APP="tate-tx.hex"
     HEXFILE_TX_BOOT="TATE_TX-xboot-boot.hex"
 fi
 
-BOARD_OPERATON="$1"
+BOARD_OPERATION="$1"
 
 if [ "$2" = 'time' ] || [ "$2" = 'all' ]
 then
-	echo "Ready to program Time board. Press the any key to continue."
+	echo "Ready to program Time board. Press Enter to continue."
 	read
-        burn_seq "$BOARD_OPERATON" "$HEXFILE_TIME_BOOT" "$HEXFILE_TIME_APP"
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_TIME_BOOT" "$HEXFILE_TIME_APP"
 	echo "-- Finished programming the synth board --"
 fi
 
 if [ "$2" = 'rx' ] || [ "$2" = 'all' ]
 then
-	echo "Ready to program Rx board. Press the any key to continue."
+	echo "Ready to program Rx board. Press Enter to continue."
 	read
-        burn_seq "$BOARD_OPERATON" "$HEXFILE_RX_BOOT" "$HEXFILE_RX_APP"
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_RX_BOOT" "$HEXFILE_RX_APP"
 	echo "-- Finished programming the Rx board --"
+fi
+
+if [ "$2" = 'rx3' ]
+then
+	echo "Ready to program Rx 3GSPS board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_RX3_BOOT" "$HEXFILE_RX3_APP"
+	echo "-- Finished programming the Rx board --"
+fi
+
+if [ "$2" = 'bbrx' ]
+then
+	echo "Ready to program BBRx 3GSPS board. Press the Enter key to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_BBRX_BOOT" "$HEXFILE_BBRX_APP"
+	echo "-- Finished programming the BBRx board --"
 fi
 
 if [ "$2" = 'tx' ] || [ "$2" = 'all' ]
 then
-	echo "Ready to program Tx board. Press the any key to continue."
+	echo "Ready to program Tx board. Press Enter to continue."
 	read
-        burn_seq "$BOARD_OPERATON" "$HEXFILE_TX_BOOT" "$HEXFILE_TX_APP"
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_TX_BOOT" "$HEXFILE_TX_APP"
 	echo "-- Finished programming the Tx board --"
 fi
 
