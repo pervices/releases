@@ -19,7 +19,7 @@ if [[ "$BOARD_REV" -eq "8" ]] || [[ "$BOARD_REV" = "rtm8" ]] || [[ "$BOARD_REV" 
 elif [[ "$BOARD_REV" -eq "6" ]] || [[ "$BOARD_REV" = "rtm6" ]] || [[ "$BOARD_REV" = "RTM6" ]] || [[ "$BOARD_REV" -eq "7" ]] || [[ "$BOARD_REV" = "rtm7" ]] || [[ "$BOARD_REV" = "RTM7" ]]
     then
         BOARD_REV=6
-        UPDATE_BIN="updateCrimsonRtm6"
+        UPDATE_BIN="updateCrimsonRtm6+7"
         UPDATE_VER="../crimson-rtm6/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" -eq "5" ]] || [[ "$BOARD_REV" = "rtm5" ]] || [[ "$BOARD_REV" = "RTM5" ]]
