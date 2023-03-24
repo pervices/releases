@@ -165,9 +165,7 @@ blocks:
     label: Amp Sel
     min_len: '200'
     orient: QtCore.Qt.Horizontal
-    outputmsgname: value
     rangeType: float
-    showports: 'False'
     start: '0'
     step: '100'
     stop: '32000'
@@ -300,9 +298,7 @@ blocks:
     label: Freq Sel
     min_len: '2000'
     orient: QtCore.Qt.Horizontal
-    outputmsgname: value
     rangeType: float
-    showports: 'False'
     start: -samp_rate/2
     step: '1000'
     stop: samp_rate/2
@@ -1563,8 +1559,8 @@ blocks:
     comment: ''
     dev_addr: ''
     dev_args: '"crimson"'
-    gain0: '0'
-    gain1: '0'
+    gain0: '10'
+    gain1: '10'
     gain10: '0'
     gain11: '0'
     gain12: '0'
@@ -1575,7 +1571,7 @@ blocks:
     gain17: '0'
     gain18: '0'
     gain19: '0'
-    gain2: '0'
+    gain2: '10'
     gain20: '0'
     gain21: '0'
     gain22: '0'
@@ -1586,7 +1582,7 @@ blocks:
     gain27: '0'
     gain28: '0'
     gain29: '0'
-    gain3: '0'
+    gain3: '10'
     gain30: '0'
     gain31: '0'
     gain4: '0'
@@ -1904,8 +1900,8 @@ blocks:
     dc_offs_enb9: default
     dev_addr: ''
     dev_args: ''
-    gain0: '15'
-    gain1: '15'
+    gain0: '10'
+    gain1: '10'
     gain10: '0'
     gain11: '0'
     gain12: '0'
@@ -1916,7 +1912,7 @@ blocks:
     gain17: '0'
     gain18: '0'
     gain19: '0'
-    gain2: '15'
+    gain2: '10'
     gain20: '0'
     gain21: '0'
     gain22: '0'
@@ -1927,7 +1923,7 @@ blocks:
     gain27: '0'
     gain28: '0'
     gain29: '0'
-    gain3: '15'
+    gain3: '10'
     gain30: '0'
     gain31: '0'
     gain4: '0'
