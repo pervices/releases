@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>SimpleShipTest-cyan.grc - Sales - Per Vices Internal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="description" content="Redmine" />
+<meta name="keywords" content="issue,bug,tracker" />
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="rqNzqTgnbLJ4BKsLE5m4oQp6YhRubEP0r6x0AzWI8On4bI0vDOaZT/2otNSnP9iZHsr3L5c/BbhHBK+zWgCf6Q==" />
+<link rel='shortcut icon' href='/themes/minimalflat2/favicon/favicon.ico?1578733788' />
+<link rel="stylesheet" media="all" href="/stylesheets/jquery/jquery-ui-1.11.0.css?1576842318" />
+<link rel="stylesheet" media="all" href="/themes/minimalflat2/stylesheets/application.css?1578733790" />
+<link rel="stylesheet" media="all" href="/themes/minimalflat2/stylesheets/responsive.css?1578733791" />
+
+<script src="/javascripts/jquery-1.11.1-ui-1.11.0-ujs-3.1.4.js?1576842318"></script>
+<script src="/javascripts/application.js?1576842318"></script>
+<script src="/javascripts/responsive.js?1576842318"></script>
+<script>
+//<![CDATA[
+$(window).load(function(){ warnLeavingUnsaved('The current page contains unsaved text that will be lost if you leave this page.'); });
+//]]>
+</script>
+<script src="/themes/minimalflat2/javascripts/theme.js?1578733788"></script>
+
+<link rel="stylesheet" media="screen" href="/plugin_assets/redmine_dmsf/stylesheets/dmsf.css?1583185064" /> <link rel="stylesheet" media="screen" href="/plugin_assets/redmine_agile/stylesheets/redmine_agile.css?1583185064" /> <link rel="stylesheet" media="screen" href="/plugin_assets/redmine_contacts/stylesheets/contacts.css?1583185064" /> <link rel="stylesheet" media="screen" href="/plugin_assets/redmine_contacts_helpdesk/stylesheets/helpdesk.css?1583185064" />
+<!-- page specific tags -->
+    <link rel="stylesheet" media="screen" href="/stylesheets/scm.css?1576842318" /></head>
+<body class="theme-Minimalflat2 project-sales controller-attachments action-show">
+
+<div id="wrapper">
+
+<div class="flyout-menu js-flyout-menu">
+
+
+        <div class="flyout-menu__search">
+            <form action="/projects/sales/search" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
+            
+            <label class="search-magnifier search-magnifier--flyout" for="flyout-search">&#9906;</label>
+            <input type="text" name="q" id="flyout-search" class="small js-search-input" placeholder="Search" />
+</form>        </div>
+
+        <div class="flyout-menu__avatar flyout-menu__avatar--no-avatar">
+            <a class="user active" href="/users/20">sfeng</a>
+        </div>
+
+        <h3>Project</h3>
+        <span class="js-project-menu"></span>
+
+    <h3>General</h3>
+    <span class="js-general-menu"></span>
+
+    <span class="js-sidebar flyout-menu__sidebar"></span>
+
+    <h3>Profile</h3>
+    <span class="js-profile-menu"></span>
+
+</div>
+
+<div id="wrapper2">
+<div id="wrapper3">
+<div id="top-menu">
+    <div id="account">
+        <ul><li><a class="my-account" href="/my/account">My account</a></li><li><a class="logout" rel="nofollow" data-method="post" href="/logout">Sign out</a></li></ul>    </div>
+    <div id="loggedas">Logged in as <a class="user active" href="/users/20">sfeng</a></div>
+    <ul><li><a class="home" href="/">Home</a></li><li><a class="my-page" href="/my/page">My page</a></li><li><a class="projects" href="/projects">Projects</a></li><li><a class="contacts" href="/contacts">Contacts</a></li><li><a class="administration" href="/admin">Administration</a></li><li><a class="help" href="https://www.redmine.org/guide">Help</a></li></ul></div>
+
+<div id="header">
+
+    <a href="#" class="mobile-toggle-button js-flyout-menu-toggle-button"></a>
+
+    <div id="quick-search">
+        <form action="/projects/sales/search" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
+        <input type="hidden" name="scope" />
+        
+        <label for='q'>
+          <a accesskey="4" href="/projects/sales/search">Search</a>:
+        </label>
+        <input type="text" name="q" id="q" size="20" class="small" accesskey="f" />
+</form>        <div id="project-jump" class="drdn"><span class="drdn-trigger">Sales</span><div class="drdn-content"><div class="quick-search"><input type="text" name="q" id="projects-quick-search" value="" class="autocomplete" data-automcomplete-url="/projects/autocomplete.js?jump=issues" autocomplete="off" /></div><div class="drdn-items projects selection"><a title="Corporate" href="/projects/corp?jump=issues"><span style="padding-left:0px;">Corporate</span></a><a title="Finance" href="/projects/fin?jump=issues"><span style="padding-left:16px;">Finance</span></a><a title="Media and Marketing" href="/projects/media?jump=issues"><span style="padding-left:16px;">Media and Marketing</span></a><a title="Operations" href="/projects/operations?jump=issues"><span style="padding-left:16px;">Operations</span></a><a title="Sales" class="selected" href="/projects/sales?jump=issues"><span style="padding-left:16px;">Sales</span></a><a title="Support" href="/projects/support?jump=issues"><span style="padding-left:16px;">Support</span></a><a title="Kelly" href="/projects/kelly?jump=issues"><span style="padding-left:0px;">Kelly</span></a><a title="Kiraly" href="/projects/kiraly?jump=issues"><span style="padding-left:0px;">Kiraly</span></a><a title="Langford" href="/projects/langford?jump=issues"><span style="padding-left:0px;">Langford</span></a><a title="Lily" href="/projects/lily?jump=issues"><span style="padding-left:0px;">Lily</span></a><a title="Manufacturing" href="/projects/manufacturing?jump=issues"><span style="padding-left:0px;">Manufacturing</span></a><a title="Product" href="/projects/product?jump=issues"><span style="padding-left:0px;">Product</span></a><a title="Shine" href="/projects/shine?jump=issues"><span style="padding-left:0px;">Shine</span></a><a title="Standards" href="/projects/standards?jump=issues"><span style="padding-left:0px;">Standards</span></a><a title="Tate" href="/projects/tate?jump=issues"><span style="padding-left:0px;">Tate</span></a><a title="Vaunt" href="/projects/vaunt?jump=issues"><span style="padding-left:0px;">Vaunt</span></a><a title="Radar" href="/projects/vaunt-raytheon?jump=issues"><span style="padding-left:16px;">Radar</span></a><a title="radio-modem" href="/projects/radio-modem?jump=issues"><span style="padding-left:16px;">radio-modem</span></a></div><div class="drdn-items all-projects selection"><a href="/projects?jump=issues">All Projects</a></div></div></div>
+    </div>
+
+    <h1><span class="breadcrumbs"><a class="root" href="/projects/corp?jump=issues">Corporate</a><span class="separator"> &raquo; </span></span><span class="current-project">Sales</span></h1>
+
+    <div id="main-menu" class="tabs">
+        <ul><li>
+<a id="new-object" onclick="toggleNewObjectDropdown(); return false;" class="new-object" href="#"> + </a>
+<ul class="menu-children"><li><a accesskey="7" class="new-issue-sub" href="/projects/sales/issues/new">New issue</a></li><li><a class="new-issue-category" href="/projects/sales/issue_categories/new">New category</a></li><li><a class="new-version" href="/projects/sales/versions/new">New version</a></li><li><a class="new-news" href="/projects/sales/news/new">Add news</a></li><li><a class="new-wiki-page" href="/projects/sales/wiki/new">New wiki page</a></li></ul>
+</li><li><a class="overview" href="/projects/sales">Overview</a></li><li><a class="activity" href="/projects/sales/activity">Activity</a></li><li><a class="issues selected" href="/projects/sales/issues">Issues</a></li><li><a class="dashboard" href="/projects/sales/rdb">Dashboard</a></li><li><a class="gantt" href="/projects/sales/issues/gantt">Gantt</a></li><li><a class="calendar" href="/projects/sales/issues/calendar">Calendar</a></li><li><a class="news" href="/projects/sales/news">News</a></li><li><a class="dmsf" href="/projects/sales/dmsf">DMSF</a></li><li><a class="wiki" href="/projects/sales/wiki">Wiki</a></li><li><a class="settings" href="/projects/sales/settings">Settings</a></li></ul>
+        <div class="tabs-buttons" style="display:none;">
+            <button class="tab-left" onclick="moveTabLeft(this); return false;"></button>
+            <button class="tab-right" onclick="moveTabRight(this); return false;"></button>
+        </div>
+    </div>
+</div>
+
+<div id="main" class="nosidebar">
+    <div id="sidebar">
+        
+        
+    </div>
+
+    <div id="content">
+        
+        <div class="contextual">
+  <a class="icon icon-download" href="/attachments/download/4360/SimpleShipTest-cyan.grc">Download (63.3 KB)</a></div>
+
+<h2>SimpleShipTest-cyan.grc</h2>
+
+<div class="attachments">
+<p>
+   <span class="author"><a class="user active" href="/users/10">Brandon Malatest</a>, 2023-05-04 07:43</span></p>
+</div>
+
+  <p class="nodata">
+    No preview available. <a class="icon icon-download" href="/attachments/download/4360/SimpleShipTest-cyan.grc">Download</a> the file instead.
+</p>
+
+
+
+
+
+        
+        <div style="clear:both;"></div>
+    </div>
+</div>
+</div>
+
+<div id="ajax-indicator" style="display:none;"><span>Loading...</span></div>
+<div id="ajax-modal" style="display:none;"></div>
+
+<div id="footer">
+  <div class="bgl"><div class="bgr">
+    Powered by <a href="https://www.redmine.org/">Redmine</a> &copy; 2006-2019 Jean-Philippe Lang
+  </div></div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
