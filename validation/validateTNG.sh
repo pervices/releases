@@ -20,7 +20,7 @@ else
 	exit
 fi
 
-echo "rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (9,8,7,6,5,4)"
+echo "rtm10, rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (10,9,8,7,6,5,4)"
 read isrtm
 
 if [[ $# == "0" ]]
@@ -30,7 +30,26 @@ else
 	sparg=$1
 fi
 
-if [[ "$isrtm" -eq "9" ]] || [[ "$isrtm" = "rtm9" ]] || [[ "$isrtm" = "RTM9" ]]
+if [[ "$isrtm" -eq "10" ]] || [[ "$isrtm" = "rtm10" ]] || [[ "$isrtm" = "RTM10" ]]
+then
+    echo "Validating RTM10"
+    if [ -z "$#" ] ## empty, generate LUT
+    then
+        sh validateHelper8.sh rtm10 lut
+        
+        # delete old information including LUT, but this script should run fast
+        # enough to delete LUT directory before new LUT is generated and written
+        # to /var/calibration-data/ so it is still deleting old information
+        ./cleanSDCard.sh
+    elif [ "$sparg" = "nolut" ] ## nolut, do not delete LUT
+    then
+        sh validateHelper8.sh rtm10 nolut
+        ./cleanSDCard.sh nolut
+    else # any other than nolut, generate lut
+        sh validateHelper8.sh rtm10 lut
+       ./cleanSDCard.sh
+    fi
+elif [[ "$isrtm" -eq "9" ]] || [[ "$isrtm" = "rtm9" ]] || [[ "$isrtm" = "RTM9" ]]
 then
     echo "Validating RTM9"
     if [ -z "$#" ] ## empty, generate LUT
