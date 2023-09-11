@@ -111,13 +111,13 @@ serverHash=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=
 echo -n "."
 fpgaHash=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo server -v |grep FPGA")
 echo -n "."
-RX_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/rx_a/about/hw_ver | grep Features")
+RX_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo cat /var/volatile/crimson/state/rx_a/about/hw_ver | grep Features")
 echo -n "."
-TX_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/tx_a/about/hw_ver | grep Features")
+TX_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo cat /var/volatile/crimson/state/tx_a/about/hw_ver | grep Features")
 echo -n "."
-SYNTH_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/time/about/hw_ver | grep Features")
+SYNTH_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo cat /var/volatile/crimson/state/time/about/hw_ver | grep Features")
 echo "."
-FPGA_HW=$(sshpass -p "dev0" ssh -q dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "cat /var/volatile/crimson/state/fpga/about/hw_ver | grep Features")
+FPGA_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo cat /var/volatile/crimson/state/fpga/about/hw_ver | grep Features")
 echo ""
 
 firmHash=$(echo $serverHash | tail -c 10 | head -c 8)
