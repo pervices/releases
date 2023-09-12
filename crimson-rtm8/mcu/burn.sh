@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | time] [rtm4 | rtm5 | rtm6 | rtm8 | tate ]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | time] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | tate ]\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
@@ -108,18 +108,27 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'tx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
+if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
 then
     help_summary
     return 1
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ]&& [ "$3" != 'tate' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ] && [ "$3" != 'tate' ]
 then
     help_summary
     return 1
 fi
+
+# Default to hexfiles for crimson RTM5+ these properties overwritten below for
+# any case that is different
+HEXFILE_TIME_APP="vaunt-synth.hex"
+HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
+HEXFILE_RX_APP="vaunt-rx.hex"
+HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
+HEXFILE_TX_APP="vaunt-tx.hex"
+HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 
 if [ "$3" == 'rtm4' ]
 then
@@ -132,37 +141,30 @@ then
     HEXFILE_TX_BOOT="TX-xboot-boot.hex"
 fi
 
+
 if [ "$3" == 'rtm5' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x05:m"
-    HEXFILE_TIME_APP="vaunt-synth.hex"
-    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="vaunt-rx.hex"
-    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
-    HEXFILE_TX_APP="vaunt-tx.hex"
-    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 fi
 
 if [ "$3" == 'rtm6' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x06:m"
-    HEXFILE_TIME_APP="vaunt-synth.hex"
-    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="vaunt-rx.hex"
-    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
-    HEXFILE_TX_APP="vaunt-tx.hex"
-    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 fi
 
 if [ "$3" == 'rtm8' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x08:m"
-    HEXFILE_TIME_APP="vaunt-synth.hex"
-    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="vaunt-rx.hex"
-    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
-    HEXFILE_TX_APP="vaunt-tx.hex"
-    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
+fi
+
+if [ "$3" == 'rtm9' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x09:m"
+fi
+
+if [ "$3" == 'rtm10' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x0a:m"
 fi
 
 if [ "$3" == 'tate' ]
@@ -170,6 +172,8 @@ then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
     HEXFILE_TIME_APP="tate-synth.hex"
     HEXFILE_TIME_BOOT="TATE_SYNTH-xboot-boot.hex "
+    HEXFILE_TIME3_APP="tate-synth3.hex"
+    HEXFILE_TIME3_BOOT="TATE_SYNTH3-xboot-boot.hex "
     HEXFILE_RX_APP="tate-rx.hex"
     HEXFILE_RX_BOOT="TATE_RX-xboot-boot.hex"
     HEXFILE_RX3_APP="tate-rx3.hex"
@@ -178,6 +182,8 @@ then
     HEXFILE_BBRX_BOOT="TATE_BBRX-xboot-boot.hex"
     HEXFILE_TX_APP="tate-tx.hex"
     HEXFILE_TX_BOOT="TATE_TX-xboot-boot.hex"
+    HEXFILE_TX3_APP="tate-tx3.hex"
+    HEXFILE_TX3_BOOT="TATE_TX3-xboot-boot.hex"
 fi
 
 BOARD_OPERATION="$1"
@@ -187,7 +193,15 @@ then
 	echo "Ready to program Time board. Press Enter to continue."
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_TIME_BOOT" "$HEXFILE_TIME_APP"
-	echo "-- Finished programming the synth board --"
+	echo "-- Finished programming the Time board --"
+fi
+
+if [ "$2" = 'time3' ]
+then
+	echo "Ready to program Time 3GSPS board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_TIME3_BOOT" "$HEXFILE_TIME3_APP"
+	echo "-- Finished programming the Time3 board --"
 fi
 
 if [ "$2" = 'rx' ] || [ "$2" = 'all' ]
@@ -203,12 +217,12 @@ then
 	echo "Ready to program Rx 3GSPS board. Press Enter to continue."
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_RX3_BOOT" "$HEXFILE_RX3_APP"
-	echo "-- Finished programming the Rx board --"
+	echo "-- Finished programming the Rx3 board --"
 fi
 
 if [ "$2" = 'bbrx' ]
 then
-	echo "Ready to program BBRx 3GSPS board. Press the Enter key to continue."
+	echo "Ready to program BBRx 3GSPS board. Press Enter to continue."
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_BBRX_BOOT" "$HEXFILE_BBRX_APP"
 	echo "-- Finished programming the BBRx board --"
@@ -220,6 +234,14 @@ then
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_TX_BOOT" "$HEXFILE_TX_APP"
 	echo "-- Finished programming the Tx board --"
+fi
+
+if [ "$2" = 'tx3' ]
+then
+	echo "Ready to program Tx 3GSPS board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_TX3_BOOT" "$HEXFILE_TX3_APP"
+	echo "-- Finished programming the Tx3 board --"
 fi
 
 exit

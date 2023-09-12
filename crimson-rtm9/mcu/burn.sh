@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | time] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | tate ]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | time] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | tate ]\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
@@ -115,11 +115,20 @@ then
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'tate' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ] && [ "$3" != 'tate' ]
 then
     help_summary
     return 1
 fi
+
+# Default to hexfiles for crimson RTM5+ these properties overwritten below for
+# any case that is different
+HEXFILE_TIME_APP="vaunt-synth.hex"
+HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
+HEXFILE_RX_APP="vaunt-rx.hex"
+HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
+HEXFILE_TX_APP="vaunt-tx.hex"
+HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 
 if [ "$3" == 'rtm4' ]
 then
@@ -132,48 +141,30 @@ then
     HEXFILE_TX_BOOT="TX-xboot-boot.hex"
 fi
 
+
 if [ "$3" == 'rtm5' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x05:m"
-    HEXFILE_TIME_APP="vaunt-synth.hex"
-    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="vaunt-rx.hex"
-    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
-    HEXFILE_TX_APP="vaunt-tx.hex"
-    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 fi
 
 if [ "$3" == 'rtm6' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x06:m"
-    HEXFILE_TIME_APP="vaunt-synth.hex"
-    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="vaunt-rx.hex"
-    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
-    HEXFILE_TX_APP="vaunt-tx.hex"
-    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 fi
 
 if [ "$3" == 'rtm8' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x08:m"
-    HEXFILE_TIME_APP="vaunt-synth.hex"
-    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="vaunt-rx.hex"
-    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
-    HEXFILE_TX_APP="vaunt-tx.hex"
-    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 fi
 
 if [ "$3" == 'rtm9' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x09:m"
-    HEXFILE_TIME_APP="vaunt-synth.hex"
-    HEXFILE_TIME_BOOT="VAUNT_SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="vaunt-rx.hex"
-    HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
-    HEXFILE_TX_APP="vaunt-tx.hex"
-    HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
+fi
+
+if [ "$3" == 'rtm10' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x0a:m"
 fi
 
 if [ "$3" == 'tate' ]
