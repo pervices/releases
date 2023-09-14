@@ -53,6 +53,7 @@ then
     echo "FPGA $CFPGA"
 else
     echo "FPGA Bad: Crimson $fpgaHash doesnt match $CFPGA"
+    echo "NOTE: crimson must be rebooted to apply new FPGA after update for this hardware revision"
     error=1
 fi
 
