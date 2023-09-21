@@ -52,7 +52,7 @@ then
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         echo dev0 | sudo -S date -Ins -s $DATE; echo dev0 | sudo -S /sbin/hwclock -w;\
         exit\
-        "
+        " > /dev/null
     if [ $? -eq 0 ]
     then
         echo hwclock update success
@@ -71,17 +71,14 @@ then
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         echo dev0 | sudo -S rm -rf /home/dev0/{*,.bash_history}; echo dev0 | sudo -S rm -rf /home/root/{*,.bash_history}; history -c;\
         exit\
-        "
+        " > /dev/null
 
-    sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/
+    sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/ > /dev/null
 
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         echo dev0 | sudo -S ./$UPDATE_BIN nolut; \
         exit\
         "
-    sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S systemctl restart crimson-server"
-    echo "Restarting server, waiting 1min"
-    sleep 60
 
     echo ""
     loopDone=1
@@ -205,7 +202,7 @@ else
             sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
             echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
             exit\
-            "
+            " > /dev/null
             echo "Calibration table generation start time: $current_time (UTC)"
         elif [ "$2" = "nolut" ]
         then
@@ -215,7 +212,7 @@ else
             sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
             echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
             exit\
-            "
+            " > /dev/null
             echo "Calibration table generation start time: $current_time (UTC)"
         fi
     else
