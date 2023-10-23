@@ -108,7 +108,7 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
+if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
 then
     help_summary
     return 1
@@ -174,6 +174,8 @@ then
     HEXFILE_TIME_BOOT="TATE_SYNTH-xboot-boot.hex "
     HEXFILE_TIME3_APP="tate-synth3.hex"
     HEXFILE_TIME3_BOOT="TATE_SYNTH3-xboot-boot.hex "
+    HEXFILE_TIME1ON3_APP="tate-synth1on3.hex"
+    HEXFILE_TIME1ON3_BOOT="TATE_SYNTH1ON3-xboot-boot.hex "
     HEXFILE_RX_APP="tate-rx.hex"
     HEXFILE_RX_BOOT="TATE_RX-xboot-boot.hex"
     HEXFILE_RX3_APP="tate-rx3.hex"
@@ -202,6 +204,14 @@ then
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_TIME3_BOOT" "$HEXFILE_TIME3_APP"
 	echo "-- Finished programming the Time3 board --"
+fi
+
+if [ "$2" = 'time1on3' ]
+then
+	echo "Ready to program Time 1GSPS-on-3GSPS board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_TIME1ON3_BOOT" "$HEXFILE_TIME1ON3_APP"
+	echo "-- Finished programming the Time1on3 board --"
 fi
 
 if [ "$2" = 'rx' ] || [ "$2" = 'all' ]
