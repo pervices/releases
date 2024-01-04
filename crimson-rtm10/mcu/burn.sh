@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | time] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | tate ]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | time | time3 | time1on3 | avery-rx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | tate ]\n"
     echo -e "Examples:"
     echo -e "\t Flash RTM4 Tx bootloader code:"
     echo -e "\t\t $0 b tx rtm4\n"
@@ -11,10 +11,6 @@ function help_summary {
     echo -e "\t\t $0 c time rtm6\n"
     exit
 }
-
-PATH_TIME="/dev/ttycrimson-time"
-PATH_RX="/dev/ttycrimson-rx"
-PATH_TX="/dev/ttycrimson-tx"
 
 HEXFILE_TIME_APP="/dev/null"
 HEXFILE_TIME_BOOT="/dev/null "
@@ -108,14 +104,14 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'all' ]
+if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'avery-rx' ]
 then
     help_summary
     return 1
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ] && [ "$3" != 'tate' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ]  && [ "$3" != 'rtm11' ] && [ "$3" != 'tate' ]
 then
     help_summary
     return 1
@@ -129,6 +125,8 @@ HEXFILE_RX_APP="vaunt-rx.hex"
 HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
 HEXFILE_TX_APP="vaunt-tx.hex"
 HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
+HEXFILE_AVERYRX_APP="vaunt-avery-rx.hex"
+HEXFILE_AVERYRX_BOOT="VAUNT_AVERY_RX-xboot-boot.hex"
 
 if [ "$3" == 'rtm4' ]
 then
@@ -167,6 +165,11 @@ then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x0a:m"
 fi
 
+if [ "$3" == 'rtm11' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x0b:m"
+fi
+
 if [ "$3" == 'tate' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
@@ -190,7 +193,7 @@ fi
 
 BOARD_OPERATION="$1"
 
-if [ "$2" = 'time' ] || [ "$2" = 'all' ]
+if [ "$2" = 'time' ]
 then
 	echo "Ready to program Time board. Press Enter to continue."
 	read
@@ -214,7 +217,7 @@ then
 	echo "-- Finished programming the Time1on3 board --"
 fi
 
-if [ "$2" = 'rx' ] || [ "$2" = 'all' ]
+if [ "$2" = 'rx' ]
 then
 	echo "Ready to program Rx board. Press Enter to continue."
 	read
@@ -238,7 +241,7 @@ then
 	echo "-- Finished programming the BBRx board --"
 fi
 
-if [ "$2" = 'tx' ] || [ "$2" = 'all' ]
+if [ "$2" = 'tx' ]
 then
 	echo "Ready to program Tx board. Press Enter to continue."
 	read
@@ -252,6 +255,14 @@ then
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_TX3_BOOT" "$HEXFILE_TX3_APP"
 	echo "-- Finished programming the Tx3 board --"
+fi
+
+if [ "$2" = 'avery-rx' ]
+then
+	echo "Ready to program Avery-RX board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_AVERYRX_BOOT" "$HEXFILE_AVERYRX_APP"
+	echo "-- Finished programming the Avery-RX board --"
 fi
 
 exit
