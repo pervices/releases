@@ -18,7 +18,27 @@ tar -czvf crimsonUpdate.tar.gz $updateDirectory
 updateHash=`md5sum crimsonUpdate.tar.gz|awk '{print $1;}'`
 
 
-echo 'echo "Extracting files"' > crimsonUpdate.sh
+echo '#~/bin/bash' > crimsonUpdate.sh
+
+# extract does not require root permissions, otherwise error out for non-sudo
+echo 'if [ "$1" != "extract" ]; then' >> crimsonUpdate.sh
+echo '    if (( $EUID != 0 )); then' >> crimsonUpdate.sh
+echo '        echo ERROR update requires root permissions. Please use sudo.' >> crimsonUpdate.sh
+echo '        exit 1' >> crimsonUpdate.sh
+echo '    fi' >> crimsonUpdate.sh
+echo 'fi' >> crimsonUpdate.sh
+
+echo "if [ -d $updateDirNoRel ]; then" >> crimsonUpdate.sh
+echo "    echo 'WARNING: directory $updateDirNoRel already exists. Do you wish to overwrite it with this update?'" >> crimsonUpdate.sh
+echo '    select yn in "Yes" "No"; do' >> crimsonUpdate.sh
+echo '      case $yn in' >> crimsonUpdate.sh
+echo '        Yes ) break;;' >> crimsonUpdate.sh
+echo '        No ) exit 1;;' >> crimsonUpdate.sh
+echo '      esac' >> crimsonUpdate.sh
+echo '    done' >> crimsonUpdate.sh
+echo 'fi' >> crimsonUpdate.sh
+
+echo 'echo "Extracting files"' >> crimsonUpdate.sh
 echo "SKIP=\`awk '/^__TARFILE_FOLLOWS__/ { print NR + 1; exit 0; }' \$0\`"  >> crimsonUpdate.sh
 echo "THIS=\`pwd\`/\$0"  >> crimsonUpdate.sh
 #Take the tarfile and pipe it into tar
