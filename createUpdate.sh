@@ -42,6 +42,10 @@ echo "cd $updateDirNoRel" >> crimsonUpdate.sh
 echo 'if [ -z "$1" ]'>> crimsonUpdate.sh
 echo '  then'>> crimsonUpdate.sh
 echo '      sh update-sd.sh' >> crimsonUpdate.sh
+echo '  elif [ "$1" = "extract" ]' >> crimsonUpdate.sh
+echo '  then'>> crimsonUpdate.sh
+echo "      echo Extracted update to $updateDirNoRel" >> crimsonUpdate.sh
+echo '      exit 0' >> crimsonUpdate.sh
 echo '  elif [ "$1" = "nolut" ]' >> crimsonUpdate.sh
 echo '  then'>> crimsonUpdate.sh
 echo '      sh update-sd.sh nolut' >> crimsonUpdate.sh
