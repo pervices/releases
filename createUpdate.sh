@@ -29,10 +29,10 @@ echo 'echo "Validating update"' >> crimsonUpdate.sh
 echo "checkHash=\`tail -n +\$SKIP \$THIS | md5sum |awk '{print \$1;}'\`"  >> crimsonUpdate.sh
 
 echo "if [ \"$updateHash\" != \"\$checkHash\" ] " >> crimsonUpdate.sh
-echo 'then ' >> crimsonUpdate.sh
-    echo '"MD5SUM Mismatch, try recopying file"' >> crimsonUpdate.sh
-    echo "rm -rf $updateDirNoRel" >> crimsonUpdate.sh
-    echo "exit" >> crimsonUpdate.sh     
+echo '  then ' >> crimsonUpdate.sh
+echo '      "MD5SUM Mismatch, try recopying file"' >> crimsonUpdate.sh
+echo "      rm -rf $updateDirNoRel" >> crimsonUpdate.sh
+echo "      exit" >> crimsonUpdate.sh
 echo 'fi ' >> crimsonUpdate.sh
 echo 'echo "OK"' >> crimsonUpdate.sh
 
