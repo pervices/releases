@@ -1,4 +1,4 @@
-#~/bin/bash
+#!/bin/bash
 if [ -z "$1" ]
   then
     echo "Error - missing arg. Usage: createUpdate.sh <updateDirectory> <updateFileName>"
@@ -18,7 +18,7 @@ tar -czvf crimsonUpdate.tar.gz $updateDirectory
 updateHash=`md5sum crimsonUpdate.tar.gz|awk '{print $1;}'`
 
 
-echo '#~/bin/bash' > crimsonUpdate.sh
+echo '#!/bin/bash' > crimsonUpdate.sh
 
 # extract does not require root permissions, otherwise error out for non-sudo
 echo 'if [ "$1" != "extract" ]; then' >> crimsonUpdate.sh
