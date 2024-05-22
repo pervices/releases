@@ -4,7 +4,7 @@
 set -Eeuo pipefail
 set -o pipefail -o noclobber -o nounset
 
-debug=y
+debug=n
 
 # #Set flags
 # # -e : Exit immediately on command failure
@@ -117,14 +117,12 @@ while true; do
     esac
 done
 
-###DEBUGvvv
-echo fpga: $fpga $fpga_rev
-echo server: $server $server_rev
-echo mcu: $mcu $mcu_rev
-echo meta: $meta $meta_rev
-echo website: $website $website_rev
-
 if [ $debug == y ]; then
+    echo fpga: $fpga $fpga_rev
+    echo server: $server $server_rev
+    echo mcu: $mcu $mcu_rev
+    echo meta: $meta $meta_rev
+    echo website: $website $website_rev
     if [ $fpga == y ]; then
         echo "INFO: Apply FPGA $fpga_rev"
     fi
