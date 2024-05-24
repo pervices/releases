@@ -35,12 +35,15 @@ normal=$(tput -T xterm-256color sgr0)
 ##############################################
 # Parse the CmdLine arguments
 ##############################################
-# saner programming env: these switches turn some bugs into errors
-set -o pipefail -o noclobber -o nounset
+
+if [ $# -eq 0 ]; then
+   print_help
+   exit 22
+fi
 
 ! getopt --test > /dev/null
 if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
-    echo "I’m sorry, `getopt --test` failed in this environment."
+    echo "ERROR: `getopt --test` failed in this environment."
     exit 1
 fi
 
@@ -55,7 +58,8 @@ LONGOPTS=fpga:,server:,firmware:,mcu:,website:,meta:
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
     # e.g. return value is 1
     #  then getopt has complained about wrong arguments to stdout
-    exit 2
+    print_help
+    exit 22
 fi
 # read getopt’s output this way to handle the quoting right:
 eval set -- "$PARSED"
@@ -112,7 +116,7 @@ while true; do
             echo "${bold}ERROR: Invalid option.${normal}"
             echo ""
             print_help
-            exit 3
+            exit 22
             ;;
     esac
 done
