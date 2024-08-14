@@ -199,21 +199,25 @@ else
     then
         if [ -z "$2" ]
         then
+            echo "Calibration table generation start time: $current_time (UTC)"
+            echo "Calibration table is generated when the bottom status LED stops blinking"
+            echo "This can take some time (up to 3 hours), please do not turn off the unit until the bottom LED stops blinking"
             sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
             echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
             exit\
             " > /dev/null
-            echo "Calibration table generation start time: $current_time (UTC)"
         elif [ "$2" = "nolut" ]
         then
             echo "Lookup table not generated" | tee -a $file_name
             echo ""
         else
+            echo "Calibration table generation start time: $current_time (UTC)"
+            echo "Calibration table is generated when the bottom status LED stops blinking"
+            echo "This can take some time (up to 3 hours), please do not turn off the unit until the bottom LED stops blinking"
             sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
             echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
             exit\
             " > /dev/null
-            echo "Calibration table generation start time: $current_time (UTC)"
         fi
     else
         echo "Lookup table not generated" | tee -a $file_name
