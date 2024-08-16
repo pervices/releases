@@ -114,8 +114,20 @@ TX_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/
 echo -n "."
 SYNTH_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo cat /var/volatile/crimson/state/time/about/hw_ver | grep Features")
 echo "."
-FPGA_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo cat /var/volatile/crimson/state/fpga/about/hw_ver | grep Features")
-echo ""
+if FPGA_HW=$(sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "echo dev0 | sudo -S sudo cat /var/volatile/crimson/state/fpga/about/hw_ver | grep Features")
+then
+	echo "."
+else
+        echo "WARNING: Failed to read Digital board EEPROM. Do you wish to continue with the validation?: (Y,n)"
+        read continue
+        if [[ "$continue" = "y" ]] || [[ "$continue" = "Y" ]] || [[ "$continue" = "yes" ]]
+        then
+            echo "Continuing validation..."
+        else
+            echo "Aborting validation."
+            exit -1
+        fi
+fi
 
 firmHash=$(echo $serverHash | tail -c 10 | head -c 8)
 fpgaHash=$(echo $fpgaHash | tail -c 11 | head -c 9)
