@@ -193,9 +193,9 @@ then
             echo "WARNING: Lookup table not generated" | tee -a $file_name
         fi
 else
+    current_time=$(date "+%Y.%m.%d-%H.%M.%S")
     # update lookup table last, if it is going to be done
     if [[ -z "${isFlash// }" ]] || [[ "$isFlash" = "y" ]] || [[ "$isFlash" = "Y" ]] || [[ "$isFlash" = "yes" ]]
-    current_time=$(date "+%Y.%m.%d-%H.%M.%S")
     then
         if [ -z "$2" ]
         then
