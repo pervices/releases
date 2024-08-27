@@ -434,6 +434,7 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: 'samp_rate '
+    showports: 'False'
     type: complex
     waveform: analog.GR_COS_WAVE
   states:
@@ -456,6 +457,7 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: 'samp_rate '
+    showports: 'False'
     type: complex
     waveform: analog.GR_COS_WAVE
   states:
@@ -478,6 +480,7 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: 'samp_rate '
+    showports: 'False'
     type: complex
     waveform: analog.GR_COS_WAVE
   states:
@@ -500,6 +503,7 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: 'samp_rate '
+    showports: 'False'
     type: complex
     waveform: analog.GR_COS_WAVE
   states:
@@ -807,7 +811,7 @@ blocks:
     width9: '1'
     wintype: window.WIN_BLACKMAN_hARRIS
     ymax: '75'
-    ymin: '-20'
+    ymin: '-40'
   states:
     bus_sink: false
     bus_source: false
@@ -888,7 +892,7 @@ blocks:
     width9: '1'
     wintype: window.WIN_BLACKMAN_hARRIS
     ymax: '75'
-    ymin: '-20'
+    ymin: '-40'
   states:
     bus_sink: false
     bus_source: false
@@ -969,7 +973,7 @@ blocks:
     width9: '1'
     wintype: window.WIN_BLACKMAN_hARRIS
     ymax: '75'
-    ymin: '-20'
+    ymin: '-40'
   states:
     bus_sink: false
     bus_source: false
@@ -1050,7 +1054,7 @@ blocks:
     width9: '1'
     wintype: window.WIN_BLACKMAN_hARRIS
     ymax: '75'
-    ymin: '-20'
+    ymin: '-40'
   states:
     bus_sink: false
     bus_source: false
@@ -2189,4 +2193,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.4.0
+  grc_version: 3.10.10.0
