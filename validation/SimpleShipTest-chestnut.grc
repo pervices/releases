@@ -135,11 +135,11 @@ blocks:
     label: Test Select
     label0: 'T1: Freq Dependance (All Different Freq)'
     label1: 'T2-T6: (Use Second Drop Down)'
-    label2: 'T7: HB 8.5GHz'
-    label3: 'T8: LB'
-    label4: HB  1600
+    label2: 'T7: HB 7.5GHz'
+    label3: 'T8: HB 8.5GHz'
+    label4: 'T9: LB'
     labels: '[]'
-    num_opts: '4'
+    num_opts: '5'
     option0: '0'
     option1: '1'
     option2: '2'
@@ -182,7 +182,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*945000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*8500000000)+((TS==3)*15000000)
+    value: (TS==0)*945000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*7500000000)+((TS==3)*8500000000)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -194,7 +194,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1045000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*8500000000)+((TS==3)*15000000)
+    value: (TS==0)*1045000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*7500000000)+((TS==3)*8500000000)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -206,7 +206,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1145000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*8500000000)+((TS==3)*15000000)
+    value: (TS==0)*1145000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*7500000000)+((TS==3)*8500000000)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -218,7 +218,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1245000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*8500000000)+((TS==3)*15000000)
+    value: (TS==0)*1245000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*2700000000)+((TS==1)*(HBTS==2)*4000000000)+((TS==1)*(HBTS==3)*5500000000)+((TS==1)*(HBTS==4)*6500000000)+((TS==2)*7500000000)+((TS==3)*8500000000)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
