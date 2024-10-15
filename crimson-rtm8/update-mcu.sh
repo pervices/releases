@@ -13,6 +13,8 @@ cd /lib/mcu;
 wait $PIDTIMEBOARD
 wait $PIDRXBOARD  
 wait $PIDTXBOARD  
+echo "Waiting for MCUs to boot"
+sleep 15;
 systemctl unmask crimson-server; 
 systemctl unmask crimson-website;
 systemctl start crimson-server; 

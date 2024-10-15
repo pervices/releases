@@ -12,7 +12,9 @@ cd /lib/mcu;
 ./flash w tx crimson & PIDTXBOARD=$!
 wait $PIDTIMEBOARD
 wait $PIDRXBOARD  
-wait $PIDTXBOARD  
+wait $PIDTXBOARD
+echo "Waiting for MCUs to boot"
+sleep 15;
 systemctl unmask crimson-server; 
 systemctl unmask crimson-website;
 systemctl start crimson-server; 
