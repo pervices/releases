@@ -246,7 +246,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*945000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*945000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -258,7 +258,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1045000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*1045000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -270,7 +270,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1145000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*1145000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -282,7 +282,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1245000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*1245000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -294,7 +294,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1345000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*1345000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -306,7 +306,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1445000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*1445000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -318,7 +318,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1545000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*1545000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -330,7 +330,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*1645000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*15000000)
+    value: (TS==0)*1645000000+((TS==1)*(HBTS==0)*200000000)+((TS==1)*(HBTS==1)*600000000)+((TS==1)*(HBTS==2)*1200000000)+((TS==1)*(HBTS==3)*2700000000)+((TS==1)*(HBTS==4)*4000000000)+((TS==2)*9000000000)+((TS==3)*17e9)+((TS==4)*15000000)
   states:
     bus_sink: false
     bus_source: false
@@ -357,6 +357,27 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [232, 16]
+    rotation: 0
+    state: enabled
+- name: gain_sel
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: RX Gain Select
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '90'
+    value: '20'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 424.0]
     rotation: 0
     state: enabled
 - name: probeFuncA
@@ -491,7 +512,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '20'
+    value: gain_sel
   states:
     bus_sink: false
     bus_source: false
@@ -3081,4 +3102,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: v3.10.6.0-1-g6a62c345
+  grc_version: 3.10.11.0
