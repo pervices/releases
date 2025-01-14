@@ -7,7 +7,7 @@ After=dev-tty1.device
 User=root
 Group=dev-grp0
 ExecStart=/etc/crimson/startup
-ExecStop=/bin/sh -c "pkill sshd && /usr/bin/mem rw sys0 0 && sleep 15"
+ExecStop=/bin/sh -c "/usr/bin/mem rw sys0 0 && sleep 15"
 Type=oneshot
 RemainAfterExit=yes
 
