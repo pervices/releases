@@ -30,7 +30,13 @@ else
 	sparg=$1
 fi
 
-if [[ "$isrtm" -eq "10" ]] || [[ "$isrtm" = "rtm10" ]] || [[ "$isrtm" = "RTM10" ]]
+if [[ "$isrtm" -eq "12" ]] || [[ "$isrtm" = "rtm12" ]] || [[ "$isrtm" = "RTM12" ]]
+then
+    echo "Validating RTM12"
+    ## changed PLL devices for RTM12. LUT no longer available
+    sh validateHelper12.sh rtm12
+    ./cleanSDCard.sh
+elif [[ "$isrtm" -eq "10" ]] || [[ "$isrtm" = "rtm10" ]] || [[ "$isrtm" = "RTM10" ]]
 then
     echo "Validating RTM10"
     if [ -z "$#" ] ## empty, generate LUT
