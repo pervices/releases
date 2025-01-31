@@ -1,0 +1,161 @@
+extends ./layout.jade
+
+block content
+   p The digital board houses the FPGA with the SoC ARM Cortex-A9 Processor and hard processing system for JESD communication between the boards. The digital board is required for communicating with the RX and TX board, and retrieves all of the clocks through the Synth board. The digital board supports 20Gbps using dual 10GbE and digital down/up conversion on the FPGA with Per Vices DSP IP core. The ADC and DAC chains that you see refer to the hardware running on the Arria V ST FPGA. It includes a series of filters before it feeds to and from the 10GbE SFP + Port.
+   //h3 System Reset
+   //hr
+   //.container-fluid
+   //   .row.top-buffer-5
+   //      .col-md-1
+   //         button.btn.btn-default.btn-xs#reset_system System Reset
+   //      .col-md-11
+   //         i(style="color:red;display:block-inline;") Please wait a few minutes for Crimson to come back online.
+   //br
+
+   h3 Network Configuration
+   hr
+   .container-fluid
+      .row.top-buffer-5
+         .col-md-1
+            | Host Name
+         .col-md-1
+            input(type='text')#hostname
+      .row.top-buffer-5
+         .col-md-1
+            | IP Address
+         .col-md-1
+            input(type='text')#mgmt_ip
+      .row.top-buffer-5
+         .col-md-1
+            button.btn.btn-default.btn-xs#mgmt_set Update
+         .col-md-3
+            i(style="color:red;display:block-inline;") Changes will take into affect after a reset.
+   br
+
+   .container-fluid.no-padding
+      .row
+         .col-md-4
+            h3 SFP+ Port A
+            hr
+            .container
+               .row.top-buffer-5
+                  .col-md-2
+                     | IP Address
+                  .col-md-1
+                     input(type='text')#sfpa_ip
+               .row.top-buffer-5
+                  .col-md-2
+                     | MAC Address
+                  .col-md-1
+                     input(type='text')#sfpa_mac
+               .row.top-buffer-5
+                  .col-md-2
+                     | Payload Length
+                  .col-md-1
+                     input(type='text')#sfpa_paylen
+               .row.top-buffer-5
+                  .col-md-2
+                     button.btn.btn-default.btn-xs#sfpa_set Update
+         .col-md-4
+            h3 SFP+ Port B
+            hr
+            .container
+               .row.top-buffer-5
+                  .col-md-2
+                     | IP Address
+                  .col-md-1
+                     input(type='text')#sfpb_ip
+               .row.top-buffer-5
+                  .col-md-2
+                     | MAC Address
+                  .col-md-1
+                     input(type='text')#sfpb_mac
+               .row.top-buffer-5
+                  .col-md-2
+                     | Payload Length
+                  .col-md-1
+                     input(type='text')#sfpb_paylen
+               .row.top-buffer-5
+                  .col-md-2
+                     button.btn.btn-default.btn-xs#sfpb_set Update
+   br
+
+   h3 Digital Board Control
+   hr
+   .container-fluid
+      .row
+         .col-md-3
+            b Board IC's
+            br
+            | LED
+            .row
+               .col-md-4.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#led Test
+            br
+            b Board Diagnostic
+            .row
+               .col-md-4.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#diagnostic Get
+         .col-md-2
+            b Board Version
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#version Get
+            br
+            b Board Temperature
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#temperature Get
+            br
+            b FPGA Reset
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#reset_fpga Reset
+         .col-md-7
+            b Console Output
+            br
+            textarea.form-control#cout(rows='10', readonly)
+   h3 SMA Configuration
+   hr
+   .container-fluid
+      .row
+         .col-md-1
+            //- default direction is output
+            p
+               b Direction
+            input(type="checkbox", name='sma-dir', unchecked)#sma_dir
+         .col-md-1
+            //- default polarity is active low / falling edge
+            p
+               //- TODO: use e.g. bootstrap to create tooltips where necessary
+               //- (-VE := active low / falling edge, +VE := active high / rising edge)
+               b Polarity
+            input(type="checkbox", name='sma-pol', unchecked)#sma_pol      
+    
+    h3 Generate Look Up Table 
+    hr
+    .container-fluid
+        .row
+            p(style="color:black; font-size: 16px;") 1: During the LUT generation processs, you will not be able to use Crimson.
+            p(style="color:black; font-size: 16px;") 2: It will take approximately 30-45 min to fully complete this process.
+            p(style="color:black; font-size: 16px;") 3: The process is complete when the bottom LED on the crimson unit stops flashing.
+            
+            .col-md-1
+                 button.btn.btn-default.btn-xs.btn-block#lut_enable(onclick ='generateLut()') Generate
+                 p#output_time
+                 script.
+                    var minCounter = 0;
+                    var min = 44;
+                    function generateLut() {
+                       var sec = 59;
+                       var timer = setInterval(function(){
+                       document.getElementById('output_time').innerHTML=  min + " : " + sec;
+                       sec--;
+                       if(sec == 0) {
+                        sec = 59;
+                        minCounter++;
+                        min--;}
+                       if (minCounter == 45) {
+                        clearInterval(timer);}}
+                       , 1000);
+                    }
