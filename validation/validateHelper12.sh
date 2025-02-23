@@ -156,7 +156,7 @@ if [[ "$fpgaHash" = "$tFPGA" ]];
 then
     echo "FPGA Good $fpgaHash"
 else
-    echo "FPGA Bad: Crimsoni $fpgaHash doesnt match $tFPGA"
+    echo "FPGA Bad: Crimson $fpgaHash doesnt match $tFPGA"
     error=1
 fi
 

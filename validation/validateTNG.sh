@@ -20,7 +20,7 @@ else
 	exit
 fi
 
-echo "rtm10, rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (10,9,8,7,6,5,4)"
+echo "rtm12, rtm10, rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (12,10,9,8,7,6,5,4)"
 read isrtm
 
 if [[ $# == "0" ]]
