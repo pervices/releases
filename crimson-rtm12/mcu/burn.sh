@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | tate | lily]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | rtm12 | tate | lily]\n"
     echo -e "Examples:"
     echo -e "\t Flash Crimson RTM10 Rx application code:"
     echo -e "\t\t $0 a rx rtm10\n"
@@ -111,7 +111,7 @@ then
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ]  && [ "$3" != 'rtm11' ] && [ "$3" != 'tate' ] && [ "$3" != 'lily' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ]  && [ "$3" != 'rtm11' ]  && [ "$3" != 'rtm12' ] && [ "$3" != 'tate' ] && [ "$3" != 'lily' ]
 then
     help_summary
     return 1
@@ -158,6 +158,9 @@ then
 elif [ "$3" == 'rtm11' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x0b:m"
+elif [ "$3" == 'rtm12' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x0c:m"
 elif [ "$3" == 'tate' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
