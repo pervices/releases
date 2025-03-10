@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #This is a wrapper to quickly generate all the updates;
-rm updateCrimsonRtm10 updateCrimsonRtm4 updateCrimsonRtm5 updateCrimsonRtm6 updateCrimsonRtm7 updateCrimsonRtm8 updateCrimsonRtm9
-./createUpdate.sh crimson-rtm6/ updateCrimsonRtm6 && \
-./createUpdate.sh crimson-rtm7/ updateCrimsonRtm7 && \
-./createUpdate.sh crimson-rtm8/ updateCrimsonRtm8 && \
-./createUpdate.sh crimson-rtm9/ updateCrimsonRtm9 && \
-./createUpdate.sh crimson-rtm10/ updateCrimsonRtm10
+rm updateCrimsonRtm10-325msps updateCrimsonRtm4-325msps updateCrimsonRtm5-325msps updateCrimsonRtm6-325msps updateCrimsonRtm7-325msps updateCrimsonRtm8-325msps updateCrimsonRtm9-325msps
+./createUpdate.sh crimson-rtm6-325msps/ updateCrimsonRtm6-325msps && \
+./createUpdate.sh crimson-rtm7-325msps/ updateCrimsonRtm7-325msps && \
+./createUpdate.sh crimson-rtm8-325msps/ updateCrimsonRtm8-325msps && \
+./createUpdate.sh crimson-rtm9-325msps/ updateCrimsonRtm9-325msps && \
+./createUpdate.sh crimson-rtm10-325msps/ updateCrimsonRtm10-325msps
