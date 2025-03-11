@@ -147,11 +147,11 @@ fi
 
 for dir in crimson-rtm*; do
 
-    if [ $dir == crimson-rtm4 ]; then
+    if [ $dir == crimson-rtm4-325msps ]; then
         echo "INFO: Skipping $dir"
         continue
     fi
-    if [ $dir == crimson-rtm5 ]; then
+    if [ $dir == crimson-rtm5-325msps ]; then
         echo "INFO: Skipping $dir"
         continue
     fi
