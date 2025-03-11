@@ -1,0 +1,15 @@
+[Unit]
+Description=Crimson startup service
+Before=getty@tty1.service
+After=dev-tty1.device
+
+[Service]
+User=root
+Group=dev-grp0
+ExecStart=/etc/crimson/startup
+ExecStop=/bin/sh -c "/usr/bin/mem rw sys0 0 && sleep 15"
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
