@@ -13,17 +13,19 @@ BOARD_REV="$1"
 if [[ "$BOARD_REV" -eq "8" ]] || [[ "$BOARD_REV" = "rtm8" ]] || [[ "$BOARD_REV" = "RTM8" ]]
     then
         BOARD_REV=8
-        UPDATE_BIN="updateCrimsonRtm8"
+        UPDATE_BIN="updateCrimsonRtm8-325msps"
         UPDATE_VER="../crimson-rtm8/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" -eq "6" ]] || [[ "$BOARD_REV" = "rtm6" ]] || [[ "$BOARD_REV" = "RTM6" ]] || [[ "$BOARD_REV" -eq "7" ]] || [[ "$BOARD_REV" = "rtm7" ]] || [[ "$BOARD_REV" = "RTM7" ]]
     then
         BOARD_REV=6
-        UPDATE_BIN="updateCrimsonRtm6+7"
+        UPDATE_BIN="updateCrimsonRtm7-325msps"
         UPDATE_VER="../crimson-rtm6/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" -eq "5" ]] || [[ "$BOARD_REV" = "rtm5" ]] || [[ "$BOARD_REV" = "RTM5" ]]
     then
+        echo "ERROR: RTM5 currently not supported"
+        exit
         BOARD_REV=5
         UPDATE_BIN="updateCrimsonRtm5"
         UPDATE_VER="../crimson-rtm5/versions"

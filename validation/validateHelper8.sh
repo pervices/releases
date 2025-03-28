@@ -16,19 +16,19 @@ BOARD_REV="$1"
 if [[ "$BOARD_REV" = 'rtm10' ]]
 then
         BOARD_REV=10
-        UPDATE_BIN="updateCrimsonRtm10"
+        UPDATE_BIN="updateCrimsonRtm10-325msps"
         UPDATE_VER="../crimson-rtm10/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" = 'rtm9' ]]
 then
         BOARD_REV=9
-        UPDATE_BIN="updateCrimsonRtm9"
+        UPDATE_BIN="updateCrimsonRtm9-325msps"
         UPDATE_VER="../crimson-rtm9/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" = "rtm8" ]]
 then
         BOARD_REV=8
-        UPDATE_BIN="updateCrimsonRtm8"
+        UPDATE_BIN="updateCrimsonRtm8-325msps"
         UPDATE_VER="../crimson-rtm8/versions"
         echo $UPDATE_BIN
 else

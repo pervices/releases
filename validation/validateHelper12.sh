@@ -16,7 +16,7 @@ BOARD_REV="$1"
 if [[ "$BOARD_REV" = 'rtm12' ]]
 then
         BOARD_REV=12
-        UPDATE_BIN="updateCrimsonRtm12"
+        UPDATE_BIN="updateCrimsonRtm12-325msps"
         UPDATE_VER="../crimson-rtm12/versions"
         echo $UPDATE_BIN
 else
