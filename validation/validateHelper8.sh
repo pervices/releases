@@ -17,19 +17,19 @@ if [[ "$BOARD_REV" = 'rtm10' ]]
 then
         BOARD_REV=10
         UPDATE_BIN="updateCrimsonRtm10-325msps"
-        UPDATE_VER="../crimson-rtm10/versions"
+        UPDATE_VER="../crimson-rtm10-325msps/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" = 'rtm9' ]]
 then
         BOARD_REV=9
         UPDATE_BIN="updateCrimsonRtm9-325msps"
-        UPDATE_VER="../crimson-rtm9/versions"
+        UPDATE_VER="../crimson-rtm9-325msps/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" = "rtm8" ]]
 then
         BOARD_REV=8
         UPDATE_BIN="updateCrimsonRtm8-325msps"
-        UPDATE_VER="../crimson-rtm8/versions"
+        UPDATE_VER="../crimson-rtm8-325msps/versions"
         echo $UPDATE_BIN
 else
     echo "Error, invalid revision."
