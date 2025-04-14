@@ -63,70 +63,6 @@ blocks:
     coordinate: [592, 288.0]
     rotation: 0
     state: enabled
-- name: MagLabelA
-  id: variable_qtgui_label
-  parameters:
-    comment: ''
-    formatter: None
-    gui_hint: 1,4,1,1
-    label: 'Mag A: '
-    type: real
-    value: 10*numpy.log10(probeFuncA)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [352, 16.0]
-    rotation: 0
-    state: enabled
-- name: MagLabelB
-  id: variable_qtgui_label
-  parameters:
-    comment: ''
-    formatter: None
-    gui_hint: 2,4,1,1
-    label: 'Mag B: '
-    type: real
-    value: 10*numpy.log10(probeFuncB)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [464, 16.0]
-    rotation: 0
-    state: enabled
-- name: MagLabelC
-  id: variable_qtgui_label
-  parameters:
-    comment: ''
-    formatter: None
-    gui_hint: 3,4,1,1
-    label: 'Mag C: '
-    type: real
-    value: 10*numpy.log10(probeFuncC)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [576, 16.0]
-    rotation: 0
-    state: enabled
-- name: MagLabelD
-  id: variable_qtgui_label
-  parameters:
-    comment: ''
-    formatter: None
-    gui_hint: 4,4,1,1
-    label: 'Mag D: '
-    type: real
-    value: 10*numpy.log10(probeFuncD)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [688, 16.0]
-    rotation: 0
-    state: enabled
 - name: TS
   id: variable_qtgui_chooser
   parameters:
@@ -187,7 +123,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1376, 32.0]
+    coordinate: [1600, 40.0]
     rotation: 0
     state: enabled
 - name: center_b
@@ -199,7 +135,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1376, 96.0]
+    coordinate: [1600, 104.0]
     rotation: 0
     state: enabled
 - name: center_c
@@ -211,7 +147,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1376, 160.0]
+    coordinate: [1600, 168.0]
     rotation: 0
     state: enabled
 - name: center_d
@@ -223,7 +159,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1376, 224.0]
+    coordinate: [1600, 232.0]
     rotation: 0
     state: enabled
 - name: freq_all
@@ -265,71 +201,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1368, 352.0]
-    rotation: 0
-    state: enabled
-- name: probeFuncA
-  id: variable_function_probe
-  parameters:
-    block_id: magProbeA
-    comment: ''
-    function_args: ''
-    function_name: level
-    poll_rate: '10'
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 0.0]
-    rotation: 0
-    state: enabled
-- name: probeFuncB
-  id: variable_function_probe
-  parameters:
-    block_id: magProbeB
-    comment: ''
-    function_args: ''
-    function_name: level
-    poll_rate: '10'
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 80.0]
-    rotation: 0
-    state: enabled
-- name: probeFuncC
-  id: variable_function_probe
-  parameters:
-    block_id: magProbeC
-    comment: ''
-    function_args: ''
-    function_name: level
-    poll_rate: '10'
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 160.0]
-    rotation: 0
-    state: enabled
-- name: probeFuncD
-  id: variable_function_probe
-  parameters:
-    block_id: magProbeD
-    comment: ''
-    function_args: ''
-    function_name: level
-    poll_rate: '10'
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 240.0]
+    coordinate: [1592, 360.0]
     rotation: 0
     state: enabled
 - name: rx_gain
@@ -366,6 +238,258 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [104, 120.0]
+    rotation: 0
+    state: enabled
+- name: MagNumberA
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_NONE
+    gui_hint: 3,4,1,1
+    label1: '"Mag A: "'
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '-1'
+    name: '""'
+    nconnections: '1'
+    type: float
+    unit1: ''
+    unit10: ''
+    unit2: ''
+    unit3: ''
+    unit4: ''
+    unit5: ''
+    unit6: ''
+    unit7: ''
+    unit8: ''
+    unit9: ''
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 40.0]
+    rotation: 0
+    state: enabled
+- name: MagNumberB
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_NONE
+    gui_hint: 4,4,1,1
+    label1: '"Mag B: "'
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '-1'
+    name: '""'
+    nconnections: '1'
+    type: float
+    unit1: ''
+    unit10: ''
+    unit2: ''
+    unit3: ''
+    unit4: ''
+    unit5: ''
+    unit6: ''
+    unit7: ''
+    unit8: ''
+    unit9: ''
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1408, 288.0]
+    rotation: 0
+    state: enabled
+- name: MagNumberC
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_NONE
+    gui_hint: 5,4,1,1
+    label1: '"Mag C: "'
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '-1'
+    name: '""'
+    nconnections: '1'
+    type: float
+    unit1: ''
+    unit10: ''
+    unit2: ''
+    unit3: ''
+    unit4: ''
+    unit5: ''
+    unit6: ''
+    unit7: ''
+    unit8: ''
+    unit9: ''
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 544.0]
+    rotation: 0
+    state: enabled
+- name: MagNumberD
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_NONE
+    gui_hint: 6,4,1,1
+    label1: '"Mag D: "'
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '-1'
+    name: '""'
+    nconnections: '1'
+    type: float
+    unit1: ''
+    unit10: ''
+    unit2: ''
+    unit3: ''
+    unit4: ''
+    unit5: ''
+    unit6: ''
+    unit7: ''
+    unit8: ''
+    unit9: ''
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 800.0]
     rotation: 0
     state: enabled
 - name: Tab
@@ -475,7 +599,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 756]
+    coordinate: [872, 672.0]
     rotation: 0
     state: enabled
 - name: blocks_interleaved_short_to_complex_0_0_1
@@ -493,7 +617,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [861, 634]
+    coordinate: [872, 408.0]
     rotation: 0
     state: enabled
 - name: blocks_interleaved_short_to_complex_0_0_2
@@ -511,7 +635,79 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 436]
+    coordinate: [848, 152.0]
+    rotation: 0
+    state: enabled
+- name: blocks_nlog10_ff_0
+  id: blocks_nlog10_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: '10'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1256, 64.0]
+    rotation: 0
+    state: enabled
+- name: blocks_nlog10_ff_0_0
+  id: blocks_nlog10_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: '10'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1264, 312.0]
+    rotation: 0
+    state: enabled
+- name: blocks_nlog10_ff_0_0_0
+  id: blocks_nlog10_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: '10'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1248, 568.0]
+    rotation: 0
+    state: enabled
+- name: blocks_nlog10_ff_0_0_0_0
+  id: blocks_nlog10_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: '10'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1248, 824.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -537,12 +733,12 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     threshold: '90'
-    type: c
+    type: cf
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [872, 340]
+    coordinate: [1056, 56.0]
     rotation: 0
     state: enabled
 - name: magProbeB
@@ -555,12 +751,12 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     threshold: '90'
-    type: c
+    type: cf
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [885, 546]
+    coordinate: [1080, 304.0]
     rotation: 0
     state: enabled
 - name: magProbeC
@@ -573,12 +769,12 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     threshold: '90'
-    type: c
+    type: cf
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 692]
+    coordinate: [1088, 560.0]
     rotation: 0
     state: enabled
 - name: magProbeD
@@ -591,12 +787,12 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     threshold: '90'
-    type: c
+    type: cf
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [885, 841]
+    coordinate: [1080, 816.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_0
@@ -677,7 +873,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 896]
+    coordinate: [1072, 960.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_0_0
@@ -758,7 +954,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 736]
+    coordinate: [1080, 704.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_0_1
@@ -839,7 +1035,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 576]
+    coordinate: [1088, 448.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_0_2
@@ -920,7 +1116,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 416]
+    coordinate: [1080, 200.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -1017,7 +1213,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 336]
+    coordinate: [1248, 136.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_0
@@ -1114,7 +1310,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 496]
+    coordinate: [1256, 368.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_1
@@ -1211,7 +1407,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 656]
+    coordinate: [1248, 616.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_2
@@ -1308,7 +1504,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 816]
+    coordinate: [1248, 880.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_sink_0_0_3_0
@@ -2043,6 +2239,14 @@ connections:
 - [blocks_interleaved_short_to_complex_0_0_2, '0', magProbeA, '0']
 - [blocks_interleaved_short_to_complex_0_0_2, '0', qtgui_freq_sink_x_0_0_2, '0']
 - [blocks_interleaved_short_to_complex_0_0_2, '0', qtgui_time_sink_x_0, '0']
+- [blocks_nlog10_ff_0, '0', MagNumberA, '0']
+- [blocks_nlog10_ff_0_0, '0', MagNumberB, '0']
+- [blocks_nlog10_ff_0_0_0, '0', MagNumberC, '0']
+- [blocks_nlog10_ff_0_0_0_0, '0', MagNumberD, '0']
+- [magProbeA, '0', blocks_nlog10_ff_0, '0']
+- [magProbeB, '0', blocks_nlog10_ff_0_0, '0']
+- [magProbeC, '0', blocks_nlog10_ff_0_0_0, '0']
+- [magProbeD, '0', blocks_nlog10_ff_0_0_0_0, '0']
 - [uhd_usrp_source_0, '0', blocks_interleaved_short_to_complex_0_0_2, '0']
 - [uhd_usrp_source_0, '1', blocks_interleaved_short_to_complex_0_0_1, '0']
 - [uhd_usrp_source_0, '2', blocks_interleaved_short_to_complex_0_0_0, '0']
@@ -2050,4 +2254,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.8.0
+  grc_version: 3.10.11.0
