@@ -1,14 +1,14 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | time | time3 | time1on3 | avery-rx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | tate ]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | rtm12 | tate | lily]\n"
     echo -e "Examples:"
-    echo -e "\t Flash RTM4 Tx bootloader code:"
-    echo -e "\t\t $0 b tx rtm4\n"
-    echo -e "\t Flash RTM5 Rx application code:"
-    echo -e "\t\t $0 a rx rtm5\n"
-    echo -e "\t Flash RTM6 Time bootloader and application code:"
-    echo -e "\t\t $0 c time rtm6\n"
+    echo -e "\t Flash Crimson RTM10 Rx application code:"
+    echo -e "\t\t $0 a rx rtm10\n"
+    echo -e "\t Flash Cyan RTM6 Time bootloader and application code:"
+    echo -e "\t\t $0 c time tate\n"
+    echo -e "\t Flash Chestnut RTM1 Tx bootloader and application code:"
+    echo -e "\t\t $0 c tx lily\n"
     exit
 }
 
@@ -104,14 +104,14 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'avery-rx' ]
+if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'bbtx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'avery-rx' ]
 then
     help_summary
     return 1
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ]  && [ "$3" != 'rtm11' ] && [ "$3" != 'tate' ]
+if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ]  && [ "$3" != 'rtm11' ]  && [ "$3" != 'rtm12' ] && [ "$3" != 'tate' ] && [ "$3" != 'lily' ]
 then
     help_summary
     return 1
@@ -143,34 +143,25 @@ fi
 if [ "$3" == 'rtm5' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x05:m"
-fi
-
-if [ "$3" == 'rtm6' ]
+elif [ "$3" == 'rtm6' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x06:m"
-fi
-
-if [ "$3" == 'rtm8' ]
+elif [ "$3" == 'rtm8' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x08:m"
-fi
-
-if [ "$3" == 'rtm9' ]
+elif [ "$3" == 'rtm9' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x09:m"
-fi
-
-if [ "$3" == 'rtm10' ]
+elif [ "$3" == 'rtm10' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x0a:m"
-fi
-
-if [ "$3" == 'rtm11' ]
+elif [ "$3" == 'rtm11' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x0b:m"
-fi
-
-if [ "$3" == 'tate' ]
+elif [ "$3" == 'rtm12' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x0c:m"
+elif [ "$3" == 'tate' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
     HEXFILE_TIME_APP="tate-synth.hex"
@@ -189,6 +180,17 @@ then
     HEXFILE_TX_BOOT="TATE_TX-xboot-boot.hex"
     HEXFILE_TX3_APP="tate-tx3.hex"
     HEXFILE_TX3_BOOT="TATE_TX3-xboot-boot.hex"
+    HEXFILE_BBTX_APP="tate-bbtx.hex"
+    HEXFILE_BBTX_BOOT="TATE_BBTX-xboot-boot.hex"
+elif [ "$3" == 'lily' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x98:m"
+    HEXFILE_TIME_APP="lily-synth.hex"
+    HEXFILE_TIME_BOOT="LILY_SYNTH-xboot-boot.hex "
+    HEXFILE_RX_APP="lily-rx.hex"
+    HEXFILE_RX_BOOT="LILY_RX-xboot-boot.hex"
+    HEXFILE_TX_APP="lily-tx.hex"
+    HEXFILE_TX_BOOT="LILY_TX-xboot-boot.hex"
 fi
 
 BOARD_OPERATION="$1"
@@ -255,6 +257,14 @@ then
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_TX3_BOOT" "$HEXFILE_TX3_APP"
 	echo "-- Finished programming the Tx3 board --"
+fi
+
+if [ "$2" = 'bbtx' ]
+then
+	echo "Ready to program BBTx board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_BBTX_BOOT" "$HEXFILE_BBTX_APP"
+	echo "-- Finished programming the BBTx board --"
 fi
 
 if [ "$2" = 'avery-rx' ]
