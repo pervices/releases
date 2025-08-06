@@ -3,8 +3,8 @@ txHash=$(echo board -v |mcu -f t|grep Revision|head -1|tail -c 9);
 synthHash=$(echo board -v |mcu -f s|grep Revision|head -1|tail -c 9); 
 serverHash=$(server -v|grep Revision|tail -c 9); 
 fpgaHash=$(server -v |grep FPGA|tail -c 10); 
-metapvHASH=$(cat /etc/crimson/crimson-filesystem|grep meta-pervices|tail -c 41); 
-webHASH=$(cat /etc/crimson/crimson-website|tail -c 41); 
+# metapvHASH=$(cat /etc/crimson/crimson-filesystem|grep meta-pervices|tail -c 41); 
+# webHASH=$(cat /etc/crimson/crimson-website|tail -c 41); 
 
 #Get Versions from versions file
 CMCU=$(cat versions|grep MCU|tail -c 9)
