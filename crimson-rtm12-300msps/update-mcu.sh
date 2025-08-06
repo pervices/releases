@@ -7,9 +7,9 @@ thisDir=$(pwd)
 rm /lib/mcu/*
 cp mcu/* /lib/mcu/;
 cd /lib/mcu;
-./flash w time crimson & PIDTIMEBOARD=$!
-./flash w rx crimson & PIDRXBOARD=$!
-./flash w tx crimson & PIDTXBOARD=$!
+flash w time crimson & PIDTIMEBOARD=$!
+flash w rx crimson & PIDRXBOARD=$!
+flash w tx crimson & PIDTXBOARD=$!
 wait $PIDTIMEBOARD
 wait $PIDRXBOARD  
 wait $PIDTXBOARD
