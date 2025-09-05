@@ -9,7 +9,7 @@ cp mcu/* /lib/mcu/;
 cd /lib/mcu;
 flash w time crimson & PIDTIMEBOARD=$!
 flash w rx crimson & PIDRXBOARD=$!
-flash w tx crimson & PIDTXBOARD=$!
+flash w fulltx crimson & PIDTXBOARD=$!
 wait $PIDTIMEBOARD
 wait $PIDRXBOARD  
 wait $PIDTXBOARD

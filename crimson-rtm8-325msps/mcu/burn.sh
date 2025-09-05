@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | rtm12 | tate | lily]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx | fulltx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | rtm12 | tate | lily]\n"
     echo -e "Examples:"
     echo -e "\t Flash Crimson RTM10 Rx application code:"
     echo -e "\t\t $0 a rx rtm10\n"
@@ -104,7 +104,7 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'bbtx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'avery-rx' ]
+if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'bbtx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'avery-rx' ] && [ "$2" != 'fulltx' ]
 then
     help_summary
     return 1
@@ -125,8 +125,10 @@ HEXFILE_RX_APP="vaunt-rx.hex"
 HEXFILE_RX_BOOT="VAUNT_RX-xboot-boot.hex"
 HEXFILE_TX_APP="vaunt-tx.hex"
 HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
-HEXFILE_AVERYRX_APP="vaunt-avery-rx.hex"
-HEXFILE_AVERYRX_BOOT="VAUNT_AVERY_RX-xboot-boot.hex"
+HEXFILE_AVERYRX_APP="avery-rx.hex"
+HEXFILE_AVERYRX_BOOT="AVERY_RX-xboot-boot.hex"
+HEXFILE_FULLTX_APP="vaunt-fulltx.hex"
+HEXFILE_FULLTX_BOOT="VAUNT_FULLTX-xboot-boot.hex"
 
 if [ "$3" == 'rtm4' ]
 then
@@ -273,6 +275,14 @@ then
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_AVERYRX_BOOT" "$HEXFILE_AVERYRX_APP"
 	echo "-- Finished programming the Avery-RX board --"
+fi
+
+if [ "$2" = 'fulltx' ]
+then
+	echo "Ready to program FullTx board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_FULLTX_BOOT" "$HEXFILE_FULLTX_APP"
+	echo "-- Finished programming the FullTx board --"
 fi
 
 exit
