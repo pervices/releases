@@ -3,7 +3,7 @@
 1fa555fb708dc6ffb321aa4b887a60ee  VAUNT_SYNTH-xboot-boot.hex
 52bded53af4125ad9acefdeeecd81333  VAUNT_TX-xboot-boot.hex
 db87ed464a3f9df1d7b793895bf907ca  burn.sh
-b7e8b5440854fdf42531c52b6604adf1  vaunt-fulltx.hex
-a4e97c15cd81b055ab511468175ba075  vaunt-rx.hex
-79ea3e4a9146f7ecaa7c197f36652341  vaunt-synth.hex
-70a5b2108ddd945418b81f3840183173  vaunt-tx.hex
+65349bffc1cb46ccfe201d5ac6e3e34f  vaunt-fulltx.hex
+c0d3d14e0dbe86e11d838449d1fcd22c  vaunt-rx.hex
+40b3ede410e6a2eabf91f1b1675ba6b2  vaunt-synth.hex
+44c141829fc38aade2587939f4bab136  vaunt-tx.hex
