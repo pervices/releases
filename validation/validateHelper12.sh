@@ -62,7 +62,7 @@ then
     sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/ > /dev/null
 
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-        echo dev0 | sudo -S ./$UPDATE_BIN nolut; \
+        echo dev0 | sudo -S bash ./$UPDATE_BIN nolut; \
         exit\
         "
 

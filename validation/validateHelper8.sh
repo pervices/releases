@@ -22,7 +22,7 @@ then
 elif [[ "$BOARD_REV" = 'rtm9' ]]
 then
         BOARD_REV=9
-        UPDATE_BIN="update-rrimson-rtm9-325msps"
+        UPDATE_BIN="update-crimson-rtm9-325msps"
         UPDATE_VER="../crimson-rtm9-325msps/versions"
         echo $UPDATE_BIN
 elif [[ "$BOARD_REV" = "rtm8" ]]
@@ -76,7 +76,7 @@ then
     sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/ > /dev/null
 
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-        echo dev0 | sudo -S ./$UPDATE_BIN nolut; \
+        echo dev0 | sudo -S bash ./$UPDATE_BIN nolut; \
         exit\
         "
 
@@ -215,7 +215,7 @@ else
             echo "Calibration table is generated when the bottom status LED stops blinking"
             echo "This can take some time (up to 3 hours), please do not turn off the unit until the bottom LED stops blinking"
             sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-            echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
+            echo dev0 | sudo -S bash ./$UPDATE_BIN onlylut; \
             exit\
             " > /dev/null
         elif [ "$2" = "nolut" ]
@@ -227,7 +227,7 @@ else
             echo "Calibration table is generated when the bottom status LED stops blinking"
             echo "This can take some time (up to 3 hours), please do not turn off the unit until the bottom LED stops blinking"
             sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-            echo dev0 | sudo -S ./$UPDATE_BIN onlylut; \
+            echo dev0 | sudo -S bash ./$UPDATE_BIN onlylut; \
             exit\
             " > /dev/null
         fi
