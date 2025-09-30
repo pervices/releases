@@ -35,12 +35,10 @@ then
     echo "Updating unit"
 
     DATE=$(date -Ins); 
-    sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
+    if sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
         echo dev0 | sudo -S date -Ins -s $DATE; echo dev0 | sudo -S /sbin/hwclock -w;\
         exit\
-        " > /dev/null
-    if [ $? -eq 0 ]
-    then
+        " > /dev/null; then
         echo hwclock update success
     else
         echo "WARNING: hwclock update failed. This problem MUST be fixed before this unit can be shipped. Do you wish to continue with the validation?: (Y,n)"
