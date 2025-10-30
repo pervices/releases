@@ -184,24 +184,15 @@ blocks:
     rotation: 0
     state: enabled
 - name: gain_sel
-  id: variable_qtgui_range
+  id: variable
   parameters:
     comment: ''
-    gui_hint: ''
-    label: RX Gain Select
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
-    rangeType: float
-    start: '0'
-    step: '1'
-    stop: '90'
-    value: '20'
-    widget: counter_slider
+    value: (TS==0)*0+((TS==1)*(HBTS==0)*0)+((TS==1)*(HBTS==1)*0)+((TS==1)*(HBTS==2)*0)+((TS==1)*(HBTS==3)*0)+((TS==1)*(HBTS==4)*0)+((TS==2)*40)+((TS==3)*70)+((TS==4)*0)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1592, 360.0]
+    coordinate: [1600, 376.0]
     rotation: 0
     state: enabled
 - name: rx_gain
@@ -232,7 +223,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '20'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
