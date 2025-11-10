@@ -7,6 +7,15 @@ thisDir=$(pwd)
 rm /lib/mcu/*
 cp mcu/* /lib/mcu/;
 cd /lib/mcu;
+SOURCE_PATH="/dev/ttyUSB3"
+SYMLINK_PATH="/dev/ttycrimson-gpio"
+if [[ -L "$SYMLINK_PATH" ]]; then
+    echo "Symbolic link '$SYMLINK_PATH' exists."
+else
+    echo "Symbolic link '$SYMLINK_PATH' does not exist. Creating symlink"
+    ln -s  "$SOURCE_PATH" "$SYMLINK_PATH"
+    echo "Symbolic link created: $SYMLINK_PATH -> $SOURCE_PATH"
+fi
 flash w time crimson & PIDTIMEBOARD=$!
 flash w rx crimson & PIDRXBOARD=$!
 flash w tx crimson & PIDTXBOARD=$!
