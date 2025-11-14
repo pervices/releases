@@ -1,0 +1,15 @@
+[Unit]
+Description=Crimson Server
+Requires=network-online.target
+Before=crimson-website.service
+After=network-online.target
+
+[Service]
+User=root
+Group=dev-grp0
+ExecStart=/usr/bin/server -d
+Type=notify
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,211 @@
+extends ./layout.jade
+
+block content
+   p This page allows the configuration of the entire transmit chain from the digital backend to the RF frontend. Select the channel that is being configured.
+   p The digital signal comes from the FPGA and gets interpolated through the DSP chain on the FPGA. The interpolation can go up to a maximum of 322 MSPS and can be frequency adjusted prior to DAC conversion. The digital signal is sent to the RF frontend using the JESD serial interface, providing the DAC with both IQ channel values. The analog signal passes through an RF switch for high band and low band selection. The high band is reserved for signals greater than 500 MHz and the low band is reserved for signals under 500 MHz. The high band offers a frequency mixer for up-conversion up to a maximum of 6 GHz.
+   ul.nav.nav-tabs
+      li.active(role="presentation")
+         a#chan_a Channel A
+      li(role="presentation")
+         a#chan_b Channel B
+      li(role="presentation")
+         a#chan_c Channel C
+      li(role="presentation")
+         a#chan_d Channel D
+   br
+   b Channel Enable 
+   input(type="checkbox", name='en', unchecked)#chan_en
+   h3 Radio Configuration
+   hr
+   .container-fluid(style="text-align:center;")
+      .row
+         .col-md-1.right-pad-0
+            p
+               b RF Band
+            input(type="checkbox", name='hi-low', unchecked)#rf_band
+         .col-md-2.right-pad-0
+            .row
+               p
+                  b Synthesizer Frequency
+               input.input-xs.width-100(type="text")#synth_freq
+               |  Hz &nbsp;&nbsp;
+               button.btn.btn-default.btn-xs#synth_freq_set Set
+            .row
+               div(class="alert alert-danger", style="display: none")#synth_error_display MUST be >= 53MHz
+         .col-md-2.right-pad-0
+            p
+               b DAC NCO Offset
+            input.input-xs.width-100(type="text")#dac_nco
+            |  Hz &nbsp;&nbsp;
+            button.btn.btn-default.btn-xs#dac_nco_set Set
+         .col-md-3.right-pad-0
+            p
+               b IQ Voltage Bias
+            .row
+               .col-md-5.align-right.no-padding#ibias_display I:
+               .col-md-7
+                  input(type='range', min='0', max='2400', step='100')#ibias_range
+            .row
+               .col-md-5.align-right.no-padding#qbias_display Q:
+               .col-md-7
+                  input(type='range', min='0', max='2400', step='100')#qbias_range
+            p
+               .inline-block
+         .col-md-4
+            p
+               b TX Gain - PE43704
+            input(type='range', min='0', max='127', step='1')#gain_range
+            p
+               #gain_display.inline-block
+      .row
+         .col-md-1
+            p
+               b Dither
+            input(type="checkbox", name='dither-en', unchecked)#dac_dither_enable
+         .col-md-2
+            p
+               b Dither Up-Conversion (+Fs/2)
+            input(type="checkbox", name='dither-mixer-en', unchecked)#dac_dither_mixer_enable
+         .col-md-3
+            p
+               b Dither Amplitude
+            input(type="range", min=6, max=96, step=6, name='dither-sra-sel')#dac_dither_amplitude_select
+            p
+               #dac_dither_amplitude_display.inline-block
+                  
+   img(src="/img/tx_chain.svg", style="width: 100%; height: 100%;").center
+   h3 TX DSP Chain
+   hr
+   .container-fluid(style="text-align:left")
+      .row
+         .col-md-1
+            p
+               b Reset DSP
+            button.btn.btn-default.btn-xs#dsp_reset Reset
+         .col-md-2
+            p
+               b DSP NCO Offset
+            input.input-xs(type="text").width-100#dsp_nco
+            |  Hz &nbsp;&nbsp;
+            button.btn.btn-default.btn-xs#dsp_nco_set Set
+         .col-md-5
+            p
+               b Sample Rate
+            .row
+               .col-md-12
+                  | Desired: 
+                  input.input-xs(type="text", style="width:150px;")#sr
+                  |  SPS &nbsp;&nbsp;
+                  button.btn.btn-default.btn-xs#sr_set Set
+            .row(style="padding-top:10px;")
+               .col-md-12
+                  | Actual: 325000000 * 
+                  #sr_resamp_display.inline-block
+                  #sr_div_display.inline-block
+                  |  = 
+                  #sr_display.inline-block
+                  |  SPS
+         .col-md-4
+            p
+               b Origin Link
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | IPV4 IP Address
+               .col-md-4
+                  input.width-150.input-xs(type="text", placeholder='configuration page', disabled)
+               .col-md-4.text-left
+                  button.btn.btn-default.btn-xs#link_set Set
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | MAC Address
+               .col-md-4
+                  input.width-150.input-xs(type="text", placeholder='configuration page', disabled)
+            .row.top-buffer-5
+               .col-md-4.text-right
+                  | UDP Port
+               .col-md-4
+                  input.width-150.input-xs(type="text")#port
+      .row
+         .col-md-1
+        p
+            b Vita Enable
+        input(type="checkbox", name='vita-en', unchecked)#vita_enable
+
+   br
+   br
+   img(src="/img/tx_dsp.svg", style="width: 75%; height: 75%;").center
+   br
+   h3 TX Board Control
+   hr
+   .container-fluid
+      .row
+         .col-md-3
+            b JESD Sync
+            .row
+               .col-md-4.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#jesdsync Sync
+            br
+            b Channel IC's
+            br
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  | DAC
+               .col-md-3.top-buffer-5.right-pad-0
+                  | GPIOX
+               .col-md-3.top-buffer-5.right-pad-0
+                  | LED
+               .col-md-3.top-buffer-5.right-pad-0
+                  | Synth Cal.
+            .row
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#dac_dump Dump
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#gpiox_dump Dump
+               .col-md-3.top-buffer-5.right-pad-0
+                  button.btn.btn-default.btn-xs.btn-block#led Test
+               .col-md-3.top-buffer-5.right-pad-0
+                  input(type="checkbox", name='lut-en', unchecked)#lut_enable
+         .col-md-2
+            b Board Version
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#version Get
+            br
+            b Board Temperature
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#temperature Get
+            br
+            b Board Diagnostic
+            .row
+               .col-md-6.top-buffer-5
+                  button.btn.btn-default.btn-xs.btn-block#diagnostic Get
+         .col-md-7
+            b Console Output
+            br
+            textarea.form-control#cout(rows='10', readonly)
+
+   h3 Trigger Settings
+   hr
+   .container-fluid
+      .row
+         .col-md-1
+            //- default mode is level-triggered
+            p
+               b Sensitivity
+            input(type="checkbox", name='sma-mode', unchecked)#sma_mode
+         .col-md-1
+            //- The following are combined to form the "trig_sel" property 
+            p
+               b SMA
+            input.input-xs(type="checkbox", name='trig-sel-sma')#trig_sel_sma
+         .col-md-1
+            p
+               b Backoff
+            input.input-xs(type="number", name='edge-backoff')#edge_backoff
+         br
+      .row
+         .col-md-1
+            p
+               b Samples
+            input.input-xs(type="number", name='edge-samples')#edge_samples
