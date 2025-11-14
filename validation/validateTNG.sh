@@ -20,7 +20,7 @@ else
 	exit
 fi
 
-echo "rtm12, rtm10, rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (12,10,9,8,7,6,5,4)"
+echo "rtm15, rtm12, rtm10, rtm9, rtm8, rtm7, rtm6, rtm5 or rtm4?: (15,12,10,9,8,7,6,5,4)"
 read isrtm
 
 if [[ $# == "0" ]]
@@ -30,7 +30,12 @@ else
 	sparg=$1
 fi
 
-if [[ "$isrtm" -eq "12" ]] || [[ "$isrtm" = "rtm12" ]] || [[ "$isrtm" = "RTM12" ]]
+if [[ "$isrtm" -eq "15" ]] || [[ "$isrtm" = "rtm15" ]] || [[ "$isrtm" = "RTM15" ]]
+then
+    echo "Validating RTM15"
+    sh validateHelper12.sh rtm15
+    ./cleanSDCard.sh
+elif [[ "$isrtm" -eq "12" ]] || [[ "$isrtm" = "rtm12" ]] || [[ "$isrtm" = "RTM12" ]]
 then
     echo "Validating RTM12"
     ## changed PLL devices for RTM12. LUT no longer available

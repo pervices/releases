@@ -13,16 +13,21 @@ file_name=$serial_num
 
 BOARD_REV="$1"
 
-if [[ "$BOARD_REV" = 'rtm12' ]]
+if [[ "$BOARD_REV" = 'rtm15' ]]
 then
-        BOARD_REV=12
-        UPDATE_BIN="update-crimson-rtm12-325msps"
-        UPDATE_VER="../crimson-rtm12-325msps/versions"
-        echo $UPDATE_BIN
+        UPDATE_DIR="crimson-rtm15-325msps"
+elif [[ "$BOARD_REV" = 'rtm12' ]]
+then
+        UPDATE_DIR="crimson-rtm12-325msps"
 else
     echo "Error, invalid revision."
     exit -1
 fi
+
+GIT_REL=$(git rev-parse --short=8 HEAD)
+
+echo $UPDATE_DIR
+UPDATE_VER="../$UPDATE_DIR/versions"
 
 #update unit
 loopDone=0
@@ -57,10 +62,11 @@ then
         exit\
         " > /dev/null
 
-    sshpass -p "dev0" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_BIN dev0@192.168.10.2:~/ > /dev/null
+    sshpass -p "dev0" scp -qrO -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ../$UPDATE_DIR dev0@192.168.10.2:~/ > /dev/null
 
     sshpass -p "dev0" ssh -tq dev0@192.168.10.2  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "\
-        echo dev0 | sudo -S bash ./$UPDATE_BIN nolut; \
+        cd $UPDATE_DIR;\
+        echo dev0 | sudo -S bash ./update-sd.sh nolut; \
         exit\
         "
 
@@ -161,7 +167,8 @@ fi
 echo ""
 echo "Hardware Versions"
 echo "Serial Number: $serial_num" > $file_name
-echo "Validator: $UPDATE_BIN" >> $file_name
+echo "Validator: $UPDATE_DIR" >> $file_name
+echo "Releases: $GIT_REL" >> $file_name
 echo "MCU_RX: $rxHash" >> $file_name
 echo "MCU_TX: $txHash" >> $file_name
 echo "MCU_SYNTH: $synthHash" >> $file_name
@@ -178,6 +185,4 @@ then
     echo "==================" | tee -a $file_name
     echo "VERSION MISMATCH"   | tee -a $file_name
     echo "==================" | tee -a $file_name
-else
-    echo "Lookup table not necessary for RTM$BOARD_REV" | tee -a $file_name
 fi
