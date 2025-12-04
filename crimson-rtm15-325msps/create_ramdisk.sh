@@ -11,6 +11,9 @@ cp fstab/fstab /etc/
 mount -t tmpfs -o size=50m tmpfs /var/volatile/crimson/state
 systemctl unmask crimson-server; 
 systemctl unmask crimson-website; 
+if [ -z "$1" ]; then
+echo restarting services
 systemctl start crimson-server; 
 systemctl start crimson-website; 
+fi
 

@@ -26,7 +26,10 @@ echo "Waiting for MCUs to boot"
 sleep 15;
 systemctl unmask crimson-server; 
 systemctl unmask crimson-website;
+if [ -z "$1" ]; then
+echo restarting services
 systemctl start crimson-server; 
 systemctl start crimson-website; 
+fi
 cd $thisDir
 

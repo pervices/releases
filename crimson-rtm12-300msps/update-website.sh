@@ -8,6 +8,8 @@ cp -r crimson-webserver/* /usr/lib/node_modules/crimson-webserver/;
 cp node /usr/bin/; 
 systemctl unmask crimson-server; 
 systemctl unmask crimson-website; 
+if [ -z "$1" ]; then
+echo restarting services
 systemctl start crimson-server; 
 systemctl start crimson-website; 
-
+fi
