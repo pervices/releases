@@ -162,15 +162,13 @@ soft)
 	fi
 	echo "installed-${version}-temp" >> $version_path/crimson-fpga
 	echo "[        ] Restarting service..."
-	systemctl start crimson-website
-	rc10=$?
+	systemctl start crimson-website; rc10=$?
 	if [[ $rc10 != 0 ]]; then
-		echo -e "$failed Failed to restart service, exiting..."
+		echo -e "$failed Failed to restart website service, exiting..."
 		exit $rc10
 	else
-		echo -e "$ok Successfully restarted service"
+		echo -e "$ok Successfully restarted website service"
 	fi
-	sleep 10
 	echo -e "$ok Soft update Successful"
 	;;
 hard)
