@@ -10,5 +10,5 @@ rm updateCrimsonRtm*
 ./createUpdate.sh crimson-rtm10-300msps/ update-crimson-rtm10-300msps && \
 ./createUpdate.sh crimson-rtm12-325msps/ update-crimson-rtm12-325msps && \
 ./createUpdate.sh crimson-rtm12-300msps/ update-crimson-rtm12-300msps && \
-./createUpdate.sh crimson-rtm15-325msps/ update-crimson-rtm15-335msps && \
+./createUpdate.sh crimson-rtm15-325msps/ update-crimson-rtm15-325msps && \
 ./createUpdate.sh crimson-rtm15-300msps/ update-crimson-rtm15-300msps
