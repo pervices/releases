@@ -10,6 +10,7 @@ Group=dev-grp0
 ExecStart=/usr/bin/server -d
 Type=notify
 Restart=always
+TimeoutStartSec=120
 
 [Install]
 WantedBy=multi-user.target
