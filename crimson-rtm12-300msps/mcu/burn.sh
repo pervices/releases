@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx | fulltx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | rtm12 | tate | lily]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx | avery-ctrl | fulltx] [rtm1 | rtm2 | ... | rtm12 | rtm15 | tate | lily]\n"
     echo -e "Examples:"
     echo -e "\t Flash Crimson RTM10 Rx application code:"
     echo -e "\t\t $0 a rx rtm10\n"
@@ -104,14 +104,14 @@ then
     return 1
 fi
 
-if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'bbtx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'avery-rx' ] && [ "$2" != 'fulltx' ]
+if [ "$2" != 'time' ] && [ "$2" != 'time3' ] && [ "$2" != 'time1on3' ] && [ "$2" != 'tx' ] && [ "$2" != 'tx3' ] && [ "$2" != 'bbtx' ] && [ "$2" != 'rx' ] && [ "$2" != 'rx3' ] && [ "$2" != 'bbrx' ] && [ "$2" != 'avery-rx' ] && [ "$2" != 'avery-ctrl' ] && [ "$2" != 'fulltx' ]
 then
     help_summary
     return 1
 fi
 
 
-if [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ]  && [ "$3" != 'rtm11' ]  && [ "$3" != 'rtm12' ] && [ "$3" != 'tate' ] && [ "$3" != 'lily' ]
+if [ "$3" != 'rtm1' ] && [ "$3" != 'rtm2' ] && [ "$3" != 'rtm3' ] && [ "$3" != 'rtm4' ] && [ "$3" != 'rtm5' ] && [ "$3" != 'rtm6' ] && [ "$3" != 'rtm8' ] && [ "$3" != 'rtm9' ] && [ "$3" != 'rtm10' ] && [ "$3" != 'rtm11' ] && [ "$3" != 'rtm12' ] && [ "$3" != 'rtm15' ] && [ "$3" != 'tate' ] && [ "$3" != 'lily' ]
 then
     help_summary
     return 1
@@ -127,27 +127,32 @@ HEXFILE_TX_APP="vaunt-tx.hex"
 HEXFILE_TX_BOOT="VAUNT_TX-xboot-boot.hex"
 HEXFILE_AVERYRX_APP="avery-rx.hex"
 HEXFILE_AVERYRX_BOOT="AVERY_RX-xboot-boot.hex"
+HEXFILE_AVERYCTRL_APP="avery-ctrl.hex"
+HEXFILE_AVERYCTRL_BOOT="AVERY_CTRL-xboot-boot.hex"
 HEXFILE_FULLTX_APP="vaunt-fulltx.hex"
 HEXFILE_FULLTX_BOOT="VAUNT_FULLTX-xboot-boot.hex"
 
-if [ "$3" == 'rtm4' ]
+if [ "$3" == 'rtm1' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x01:m"
+elif [ "$3" == 'rtm2' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x02:m"
+elif [ "$3" == 'rtm3' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x03:m"
+elif [ "$3" == 'rtm4' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x04:m"
-    HEXFILE_TIME_APP="synth.hex"
-    HEXFILE_TIME_BOOT="SYNTH-xboot-boot.hex "
-    HEXFILE_RX_APP="rx.hex"
-    HEXFILE_RX_BOOT="RX-xboot-boot.hex"
-    HEXFILE_TX_APP="tx.hex"
-    HEXFILE_TX_BOOT="TX-xboot-boot.hex"
-fi
-
-
-if [ "$3" == 'rtm5' ]
+elif [ "$3" == 'rtm5' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x05:m"
 elif [ "$3" == 'rtm6' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x06:m"
+elif [ "$3" == 'rtm7' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x07:m"
 elif [ "$3" == 'rtm8' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x08:m"
@@ -163,6 +168,9 @@ then
 elif [ "$3" == 'rtm12' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x0c:m"
+elif [ "$3" == 'rtm15' ]
+then
+    AVRDUDE_FUSE_REV="-U fuse0:w:0x0f:m"
 elif [ "$3" == 'tate' ]
 then
     AVRDUDE_FUSE_REV="-U fuse0:w:0x99:m"
@@ -275,6 +283,14 @@ then
 	read
         burn_seq "$BOARD_OPERATION" "$HEXFILE_AVERYRX_BOOT" "$HEXFILE_AVERYRX_APP"
 	echo "-- Finished programming the Avery-RX board --"
+fi
+
+if [ "$2" = 'avery-ctrl' ]
+then
+	echo "Ready to program Avery-CTRL board. Press Enter to continue."
+	read
+        burn_seq "$BOARD_OPERATION" "$HEXFILE_AVERYCTRL_BOOT" "$HEXFILE_AVERYCTRL_APP"
+	echo "-- Finished programming the Avery-CTRL board --"
 fi
 
 if [ "$2" = 'fulltx' ]
