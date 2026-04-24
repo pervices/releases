@@ -187,7 +187,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (TS==0)*10+((TS==1)*(HBTS==0)*10)+((TS==1)*(HBTS==1)*10)+((TS==1)*(HBTS==2)*10)+((TS==1)*(HBTS==3)*10)+((TS==1)*(HBTS==4)*51.75)+((TS==2)*51.75)+((TS==3)*10)
+    value: (TS==0)*10+((TS==1)*(HBTS==0)*10)+((TS==1)*(HBTS==1)*10)+((TS==1)*(HBTS==2)*10)+((TS==1)*(HBTS==3)*10)+((TS==1)*(HBTS==4)*51.75)+((TS==2)*61.75)+((TS==3)*10)
   states:
     bus_sink: false
     bus_source: false
