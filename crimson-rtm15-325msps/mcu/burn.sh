@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help_summary {
-    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx | avery-ctrl | fulltx] [rtm4 | rtm5 | rtm6 | rtm8 | rtm9 | rtm10 | rtm11 | rtm12 | rtm15 | tate | lily]\n"
+    echo -e "Usage : $0 [b(ootlader)|a(pplication)|c(complete)] [rx | rx3 | bbrx | tx | tx3 | bbtx | time | time3 | time1on3 | avery-rx | avery-ctrl | fulltx] [rtm1 | rtm2 | ... | rtm12 | rtm15 | tate | lily]\n"
     echo -e "Examples:"
     echo -e "\t Flash Crimson RTM10 Rx application code:"
     echo -e "\t\t $0 a rx rtm10\n"
